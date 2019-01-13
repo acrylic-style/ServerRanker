@@ -8,5 +8,7 @@
   "error": "An error occurred: `{0}`",
   "pinging": "Pinging...",
   "pong": "Pong!\nMessage sending time: {0}ms\nAPI response time: {1}ms",
-  "issuedcmd": "{0} issued command: '{1}'"
+  "issuedcmd": "{0} issued command: '{1}'",
+  "today_commands": "I got {0} commands today!",
+  "not_allowed_in_here": "This command can't run here. (Allowed types: {0})"
 }

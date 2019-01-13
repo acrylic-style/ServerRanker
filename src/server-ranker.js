@@ -8,6 +8,7 @@ const Command = require('./structures/Command')
 const parser = require('./util/parser')
 const language = require('./language')
 const f = require('string-format')
+const temp = require('./temp')
 
 module.exports = {
   Discord,
@@ -18,5 +19,6 @@ module.exports = {
     parser,
     language,
     f,
+    temp,
   },
 }

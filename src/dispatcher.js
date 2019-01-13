@@ -9,15 +9,12 @@ async function runCommand(command, settings, msg, lang) {
   if (!command.enabled) return msg.channel.send(f(lang.disabled_command, command.name))
   if (!command.isAllowed(msg, c.owners)) return msg.channel.send(lang.youdonthaveperm)
   logger.info(f(lang.issuedcmd, msg.author.tag, msg.content))
-  try { // eslint-disable-line
-    const args = msg.content.replace(settings.prefix, '').split(/\s{1,}/g)
-    const opts = argsresolver(args.slice(1))
-    await command.start(msg, settings, lang, args.filter(a => !opts.args.includes(a)), opts)
-  } catch (e) {
-    await msg.channel.send(f(lang.error_occurred, command.name))
-    logger.info(f(lang.error_occurred, command.name))
-    throw e
-  }
+  const args = msg.content.replace(settings.prefix, '').split(/\s{1,}/g)
+  const opts = argsresolver(args.slice(1))
+  await command.start(msg, settings, lang, args.filter(a => !opts.args.includes(a)), opts).catch(e => {
+    msg.channel.send(f(lang.error_occurred, command.name))
+    logger.error(f(lang.error, e.stack || e))
+  })
 }
 
 module.exports = async function(settings, msg, lang) {

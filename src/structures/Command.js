@@ -6,7 +6,7 @@ class Command {
    * @typedef CommandOptions
    * @property {Array<string>} alias
    * @property {Array<string>} args
-   * @property {["textchannel", "dm", "gdm"]} allowedIn
+   * @property {["TextChannel", "DMChannel", "GroupDMChannel"]} allowedIn
    * @property {number} permission
    * @property {boolean} enabled
    */
@@ -27,10 +27,11 @@ class Command {
       alias: [],
       args: [],
       permission: 0,
-      allowedIn: ['textchannel', 'dm', 'gdm'],
+      allowedIn: ['TextChannel', 'DMChannel', 'GroupDMChannel'],
       enabled: true,
     }, options)
 
+    this.allowedIn = this.options.allowedIn
     this.enabled = this.options.enabled
     this.alias = this.options.alias
     this.args = this.options.args
@@ -42,16 +43,17 @@ class Command {
    */
   async run() {}
 
-  async start(...args) {
-    return await this.run(...args)
+  async start(msg, settings, lang, ...args) {
+    if (!this.allowedIn.includes(msg.channel.constructor.name)) return msg.channel.send(require('string-format')(lang.not_allowed_in_here, this.allowedIn.join(', ')))
+    return await this.run(msg, settings, lang, ...args)
   }
 
   /**
    * @abstract
    * @param {Discord.Message} msg
    */
-  isAllowed({ member }) {
-    return member.hasPermission(this.permission.bitfield)
+  isAllowed(msg) {
+    return !msg.guild || msg.member.hasPermission(this.permission.bitfield)
   }
 }
 
