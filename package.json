@@ -1,0 +1,17 @@
+{
+  "name": "server-ranker",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/acrylic-style/ServerRanker",
+  "author": "acrylic-style <rht0910@rht0910.tk>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "discord.js": "^11.4.2",
+    "fast-levenshtein": "^2.0.6",
+    "moment": "^2.23.0",
+    "object-assign-deep": "^0.4.0",
+    "string-format": "^2.0.0",
+    "yaml": "^1.2.0"
+  }
+}

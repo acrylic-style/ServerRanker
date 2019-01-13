@@ -1,0 +1,12 @@
+{
+  "error_occurred": "An error occurred in `{0}`, Oh no!",
+  "disabled_command": "This({0}) command is disabled.",
+  "youdonthaveperm": "I'm sorry, but you don't have permission.",
+  "prefixis": "My prefix is `{0}`.",
+  "no_command": "Can't find command `{0}{1}`.",
+  "didyoumean": "Did you mean:\n{0}",
+  "error": "An error occurred: `{0}`",
+  "pinging": "Pinging...",
+  "pong": "Pong!\nMessage sending time: {0}ms\nAPI response time: {1}ms",
+  "issuedcmd": "{0} issued command: '{1}'"
+}
