@@ -1,0 +1,2 @@
+# ServerRanker
+A Discord Bot.
