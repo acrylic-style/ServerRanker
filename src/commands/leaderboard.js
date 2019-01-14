@@ -24,6 +24,7 @@ module.exports = class extends Command {
       }
       const embed = new Discord.RichEmbed()
         .setTimestamp()
+        .setColor([0,255,0])
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.data.point.toLocaleString(), settings.data.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.data.point/1000)-1), Math.floor(Math.sqrt(4 + settings.data.point/3000)-1)))
       if (s_points[4]) embed.addField(':first_place:', `${parseInt(s_points[4]).toLocaleString()} points (${getServer(s_ids[4])})`)
@@ -49,6 +50,7 @@ module.exports = class extends Command {
       }
       const embed = new Discord.RichEmbed()
         .setTimestamp()
+        .setColor([0,255,0])
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.data.point.toLocaleString(), settings.data.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.data.point/1000)-1), Math.floor(Math.sqrt(4 + settings.data.point/3000)-1)))
         .setFooter(`Want to see server leaderboard? Type \`${settings.data.prefix || 'sr!'}leaderboard server\``)
