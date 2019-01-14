@@ -4,6 +4,6 @@ module.exports = async (settings, user) => {
   const random = Math.floor(Math.random() * (max + 1 - min)) + min
   settings.data.point = settings.data.point + random
   user.data.point = user.data.point + random
-  settings.write(settings.data)
-  user.write(user.data)
+  await settings.write(settings.data)
+  await user.write(user.data)
 }
