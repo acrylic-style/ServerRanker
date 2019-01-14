@@ -43,9 +43,9 @@ class Command {
    */
   async run() {}
 
-  async start(msg, settings, lang, ...args) {
+  async start(msg, settings, user, lang, ...args) {
     if (!this.allowedIn.includes(msg.channel.constructor.name)) return msg.channel.send(require('string-format')(lang.not_allowed_in_here, this.allowedIn.join(', ')))
-    return await this.run(msg, settings, lang, ...args)
+    return await this.run(msg, settings, user, lang, ...args)
   }
 
   /**

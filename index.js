@@ -1,36 +1,60 @@
 const initTime = new Date()
 const ServerRanker = require('./src/server-ranker')
 const client = new ServerRanker.Discord.Client()
+const { config } = ServerRanker
 const logger = ServerRanker.Logger.getLogger('main', 'blue')
 const moment = require('moment')
+const dispatcher = require('./src/dispatcher')
 const args = ServerRanker.commons.parser(process.argv.slice(2))
+const ratelimited = new Set()
+const log = require('./src/log')
+const globalprefix = args['prefix'] || config['prefix']
+const data = require('./src/data')
 
-if (['token', 'prefix'].some(e => !Object.keys(args).includes(e))) {
-  const missing = ['token', 'prefix'].filter(e => !Object.keys(args).includes(e)).join(', ') + '.'
+if ([].some(e => !Object.keys(args).includes(e))) {
+  const missing = [].filter(e => !Object.keys(args).includes(e)).join(', ') + '.'
   logger.error('You must specify ' + missing)
   process.exit(1)
 }
 
+client.on('reconnecting', () => {
+  logger.warn('Disconnected from WebSocket, reconnecting!')
+})
+
+client.on('resume', replayed => {
+  logger.warn(`Reconnected. (${replayed} times)`)
+})
+
 client.on('ready', async () => {
-  client.user.setActivity(`${args['prefix']}ping | ${client.guilds.size} guilds`)
+  client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
   client.setTimeout(() => {
     logger.info('I got ' + ServerRanker.commons.temp.commands + ' commands today!')
   }, moment().endOf('day').toDate().getTime() - new Date().getTime())
   logger.info(`ServerRanker is ready! (${client.readyAt.getTime()-initTime.getTime()}ms)`)
 })
 
-const dispatcher = require('./src/dispatcher')
-const prefix = args['prefix']
 client.on('message', async msg => {
   if (msg.author.bot || msg.system) return
-  const lang = ServerRanker.commons.language.get(args['language'] || 'en')
+  log.messageLog(msg)
+  const serveruser = msg.guild ? await data.data(msg.guild.id, msg.author.id) : await data.user(msg.author.id)
+  const settings = serveruser.server
+  const prefix = settings.data.prefix || config['prefix'] || 'sr!'
+  const user = serveruser.user
+  const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')
+  if (!ratelimited.has(msg.author.id)) {
+    ratelimited.add(msg.author.id)
+    ServerRanker['functions']['addpoint'](settings, user)
+  }
+  setTimeout(() => {
+    ratelimited.delete(msg.author.id)
+  }, 60 * 1000)
   if (msg.content.startsWith(prefix)) {
-    dispatcher(args, msg, lang)
+    dispatcher(serveruser, msg, lang)
     ServerRanker.commons.temp.commands++
   }
 })
 
-client.login(args['token'])
+client.login(config['token'])
 
 process.on('SIGINT', async () => {
   await client.destroy()

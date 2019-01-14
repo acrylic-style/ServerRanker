@@ -10,6 +10,8 @@ const language = require('./language')
 const f = require('string-format')
 const temp = require('./temp')
 
+const addpoint = require('./functions/addpoint')
+
 module.exports = {
   Discord,
   Resolver,
@@ -21,4 +23,8 @@ module.exports = {
     f,
     temp,
   },
+  functions: {
+    addpoint,
+  },
+  config: require('./config.yml'),
 }

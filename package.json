@@ -9,6 +9,7 @@
     "chalk": "^2.4.2",
     "discord.js": "^11.4.2",
     "fast-levenshtein": "^2.0.6",
+    "mkdirp-promise": "^5.0.1",
     "moment": "^2.23.0",
     "object-assign-deep": "^0.4.0",
     "string-format": "^2.0.0",

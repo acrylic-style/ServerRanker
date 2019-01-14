@@ -1,0 +1,17 @@
+{
+  "defaultServer": {
+    "prefix": "sr!",
+    "language": "en",
+    "banned": false,
+    "point": 0
+  },
+  "defaultUser": {
+    "language": null,
+    "point": 0,
+    "banned": false
+  },
+  "validLanguages": [
+    "en",
+    "ja"
+  ]
+}
