@@ -43,14 +43,14 @@ client.on('message', async msg => {
   const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')
   if (!ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
-    ServerRanker['functions']['addpoint'](settings, user)
+    await ServerRanker['functions']['addpoint'](settings, user)
   }
   setTimeout(() => {
     ratelimited.delete(msg.author.id)
   }, 60 * 1000)
   if (msg.content.startsWith(prefix)) {
-    dispatcher(serveruser, msg, lang)
     ServerRanker.commons.temp.commands++
+    dispatcher(serveruser, msg, lang)
   }
 })
 
