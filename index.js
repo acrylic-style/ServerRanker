@@ -29,6 +29,7 @@ client.on('ready', async () => {
   client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
   client.setTimeout(() => {
     logger.info('I got ' + ServerRanker.commons.temp.commands + ' commands today!')
+    ServerRanker.commons.temp.commands = 0
   }, moment().endOf('day').toDate().getTime() - new Date().getTime())
   logger.info(`ServerRanker is ready! (${client.readyAt.getTime()-initTime.getTime()}ms)`)
 })
@@ -52,6 +53,16 @@ client.on('message', async msg => {
     ServerRanker.commons.temp.commands++
     dispatcher(serveruser, msg, lang)
   }
+})
+
+client.on('guildCreate', guild => {
+  logger.info(`Discovered new guild: ${guild.name}(${guild.id})`)
+  client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
+})
+
+client.on('guildDelete', guild => {
+  logger.info(`Disappeared guild: ${guild.name}(${guild.id})`)
+  client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
 })
 
 client.login(config['token'])

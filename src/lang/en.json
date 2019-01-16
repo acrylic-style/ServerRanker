@@ -1,4 +1,12 @@
 {
+  "commands": {
+    "points": "Shows your server's point and your points.",
+    "commands": "It shows how many commands were received.",
+    "leaderboard": "Leaderboard of user, shows only top 5.",
+    "leaderboard_server": "Leaderboard of server, shows only top 5.",
+    "ping": "Check latency.",
+    "help": "Just shows help / commands."
+  },
   "error_occurred": "An error occurred in `{0}`, Oh no!",
   "disabled_command": "This({0}) command is disabled.",
   "youdonthaveperm": "I'm sorry, but you don't have permission.",
