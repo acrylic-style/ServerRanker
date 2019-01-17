@@ -20,7 +20,7 @@ async function runCommand(command, settings, user, msg, lang) {
 module.exports = async function(data, msg, lang) {
   const settings = data.server
   const user = data.user
-  if ((msg.content === `<@${msg.client.user.id}>` || msg.content === `<@!${msg.client.user.id}>`) && msg.attachments.length === 0)
+  if ((msg.content === `<@${msg.client.user.id}> ` || msg.content === `<@!${msg.client.user.id}> `) && msg.attachments.length === 0)
     return msg.channel.send(f(lang.prefixis, settings.data.prefix))
   if (msg.content.startsWith(settings.data.prefix)) {
     const [cmd] = msg.content.replace(settings.data.prefix, '').replace(/\s{1,}/gm, ' ').split(' ')
@@ -33,8 +33,7 @@ module.exports = async function(data, msg, lang) {
       const cmds = similarCommand.sort((a, b) => a.no - b.no).filter(item => item.no <= 2)
       const list = cmds.map(item => `・\`${settings.data.prefix}${item.cmd} ${item.args || ''}\``)
       const nocmd = f(lang.no_command, settings.data.prefix, cmd)+'\n'
-      const message = await msg.channel.send(nocmd)
-      if (list.length) message.edit(nocmd + f(lang.didyoumean, list.join('\n')))
+      if (list.length) msg.channel.send(nocmd + f(lang.didyoumean, list.join('\n')))
     }
   }
 }
