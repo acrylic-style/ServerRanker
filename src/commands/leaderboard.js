@@ -1,5 +1,6 @@
 const { commons: { f }, Command, Discord } = require('../server-ranker')
 const fs = require('fs').promises
+const util = require('../util')
 
 module.exports = class extends Command {
   constructor() {
@@ -37,12 +38,14 @@ module.exports = class extends Command {
       const users = new Discord.Collection()
       const user_files = await fs.readdir(__dirname + '/../../data/users')
       await Promise.all(user_files.map(async e => {
-        users.set(e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point)
+        util.exists(`${__dirname}/../../data/users/${e}/config.json`)
+          ? users.set(e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point)
+          : true // don't do anything
       }))
       let u_points = Array.from(users.sort().values()).slice(-5)
       let u_ids = Array.from(users.sort().keys()).slice(-5)
-      if (u_points.length !== 5) {u_points.unshift('0');u_points.unshift('0');u_points.unshift('0');u_points.unshift('0')}
-      if (u_ids.length !== 5) {u_ids.unshift('0');u_ids.unshift('0');u_ids.unshift('0');u_ids.unshift('0')}
+      if (u_points.length !== 5) {util.repeat(() => u_points.unshift('0'), 4)}
+      if (u_ids.length !== 5) {util.repeat(() => u_ids.unshift('0'), 4)}
       u_points = u_points.slice(-5)
       u_ids = u_ids.slice(-5)
       const getUser = id => {
