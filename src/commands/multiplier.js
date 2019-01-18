@@ -36,7 +36,7 @@ module.exports = class extends Command {
       setTimeout(() => {
         delete this.confirms[msg.author.id]
       }, 10000)
-      if (user.data.points >= 100000) return msg.channel.send(lang.not_enough_points)
+      if (user.data.point >= 100000) return msg.channel.send(lang.not_enough_points)
       this.confirms[msg.author.id] = async () => {
         user.data.point = user.data.point - 100000
         user.data.multipliers.push({
