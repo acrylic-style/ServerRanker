@@ -19,5 +19,6 @@
   "issuedcmd": "{0} issued command: '{1}'",
   "today_commands": "I got {0} commands today!",
   "not_allowed_in_here": "This command can't run here. (Allowed types: {0})",
-  "points": "You have {0} points(Lv {2})\nTotal points in this server: {1} points(Lv {3})"
+  "points": "You have {0} points(Lv {2})\nTotal points in this server: {1} points(Lv {3})",
+  "user_points": "You have {0} points(Lv {2})"
 }
