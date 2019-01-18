@@ -1,5 +1,4 @@
 const fs = require('fs')
-const defaults = require('../src/defaults')
 const util = require('../src/util')
 
 const servers = []
