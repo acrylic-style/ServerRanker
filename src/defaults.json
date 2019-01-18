@@ -3,12 +3,14 @@
     "prefix": "sr!",
     "language": "en",
     "banned": false,
+    "multipliers": [],
     "point": 0
   },
   "defaultUser": {
     "language": null,
     "point": 0,
-    "banned": false
+    "banned": false,
+    "multipliers": []
   },
   "validLanguages": [
     "en",

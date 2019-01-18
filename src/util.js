@@ -33,7 +33,7 @@ module.exports = {
   },
   async repeat(callback, count) {
     try { // eslint-disable-line no-restricted-syntax
-      for (let i = 0;i <= parseInt(count); i++) {
+      for (let i = 0;i <= parseInt(count)-1; i++) {
         await callback()
       }
       return true

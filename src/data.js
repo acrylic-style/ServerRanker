@@ -21,7 +21,8 @@ async function dataStore(id, type, _default) {
   const clonedDefault = JSON.parse(JSON.stringify(_default))
   const data = Object.assign(clonedDefault, json)
   return {data, write: async settings => {
-    return await fs.writeFile(path[type](id), JSON.stringify(settings), 'utf8')
+    await fs.writeFile(path[type](id), JSON.stringify(settings), 'utf8')
+    return await settings
   }}
 }
 
