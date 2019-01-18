@@ -33,6 +33,7 @@ module.exports = class extends Command {
       if (s_points[2]) embed.addField(':third_place:', `${parseInt(s_points[2]).toLocaleString()} points (${getServer(s_ids[2])})`)
       if (s_points[1]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(s_points[1]).toLocaleString()} points (${getServer(s_ids[1])})`)
       if (s_points[0]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(s_points[0]).toLocaleString()} points (${getServer(s_ids[0])})`)
+      embed.setFooter('https://server-ranker.ga/leaderboard/server')
       msg.channel.send(embed)
     } else {
       const users = new Discord.Collection()
