@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
+    "dblapi.js": "^2.3.0",
     "discord.js": "^11.4.2",
     "fast-levenshtein": "^2.0.6",
     "mkdirp-promise": "^5.0.1",

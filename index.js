@@ -2,6 +2,7 @@ const initTime = new Date()
 const ServerRanker = require('./src/server-ranker')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
+const DBL = require('dblapi.js')
 const logger = ServerRanker.Logger.getLogger('main', 'blue')
 const moment = require('moment')
 const dispatcher = require('./src/dispatcher')
@@ -26,6 +27,7 @@ client.on('resume', replayed => {
 })
 
 client.on('ready', async () => {
+  if (config.dbl) new DBL(config.dbl, client)
   client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
   client.setTimeout(() => {
     logger.info('I got ' + ServerRanker.commons.temp.commands + ' commands today!')
