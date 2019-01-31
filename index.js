@@ -12,12 +12,6 @@ const log = require('./src/log')
 const globalprefix = args['prefix'] || config['prefix']
 const data = require('./src/data')
 
-if ([].some(e => !Object.keys(args).includes(e))) {
-  const missing = [].filter(e => !Object.keys(args).includes(e)).join(', ') + '.'
-  logger.error('You must specify ' + missing)
-  process.exit(1)
-}
-
 client.on('reconnecting', () => {
   logger.warn('Disconnected from WebSocket, reconnecting!')
 })
