@@ -26,5 +26,6 @@
   "only10": "所持できるのは10個だけです。",
   "not_has_multiplier": "まだPoint multiplierを持っていません！",
   "not_enough_points": "ポイントが足りません({0}ポイント必要です)。",
-  "invalid_args": ":x: 無効な引数です。"
+  "invalid_args": ":x: 無効な引数です。",
+  "no_activated_multiplier": "このサーバーで有効なPoint Multiplierはありません。"
 }

@@ -20,7 +20,18 @@ module.exports = class extends Command {
         .setDescription(lang.not_has_multiplier)
       user.data.multipliers.forEach((e, i) => {
         embed.setDescription('')
-        embed.addField(`#${i+1}`, `Point Multiplier (${e['multiplier']}x)`)
+        embed.addField(`#${i+1}`, `Point Multiplier (+${e['multiplier']}%)`)
+      })
+      msg.channel.send(embed)
+    } else if (args[1] === 'list' && args[2] === 'server') {
+      const embed = new Discord.RichEmbed()
+        .setTitle('Your unused point multipliers')
+        .setTimestamp()
+        .setColor([0,255,0])
+        .setDescription(lang.not_has_multiplier)
+      user.data.multipliers.forEach((e, i) => {
+        embed.setDescription('')
+        embed.addField(`#${i+1}`, `Point Multiplier (+${e['multiplier']}%)`)
       })
       msg.channel.send(embed)
     } else if (args[1] === 'activate') {
@@ -30,7 +41,7 @@ module.exports = class extends Command {
       await user.write(user.data)
       settings.data.multipliers.push({
         author: msg.author.id,
-        multiplier: parseInt(args[2]),
+        multiplier: 100, // +100%
         expires: moment().add(1, 'days').toDate().getTime(),
       })
       await settings.data.write(settings.data)
@@ -43,7 +54,7 @@ module.exports = class extends Command {
       this.confirms[msg.author.id] = async () => {
         user.data.point = user.data.point - 100000
         user.data.multipliers.push({
-          multiplier: 2,
+          multiplier: 100, // +100%
         })
         return await user.write(user.data)
       }
