@@ -11,6 +11,7 @@ Promise.all(user_files.map(e => {
 }))
 users.forEach(user => {
   const data = util.readJSONSync(user)
+  if (typeof data.multipliers === 'undefined') data.multipliers = []
   data.multipliers.forEach(multiplier => {
     if (multiplier.multiplier === 2) {
       multiplier.multiplier = 100
