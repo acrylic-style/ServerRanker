@@ -4,6 +4,7 @@ const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
 const DBL = require('dblapi.js')
 const logger = ServerRanker.Logger.getLogger('main', 'blue')
+logger.info('Initializing')
 const moment = require('moment')
 const dispatcher = require('./src/dispatcher')
 const args = ServerRanker.commons.parser(process.argv.slice(2))
@@ -16,8 +17,8 @@ client.on('reconnecting', () => {
   logger.warn('Disconnected from WebSocket, reconnecting!')
 })
 
-client.on('resume', replayed => {
-  logger.warn(`Reconnected. (${replayed} times)`)
+client.on('resume', retried => {
+  logger.warn(`Reconnected. (${retried} times)`)
 })
 
 client.on('ready', async () => {
@@ -61,6 +62,7 @@ client.on('guildDelete', guild => {
   client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
 })
 
+logger.info('Logging in...')
 client.login(config['token'])
 
 process.on('SIGINT', async () => {
