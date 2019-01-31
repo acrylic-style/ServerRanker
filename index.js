@@ -38,6 +38,8 @@ client.on('message', async msg => {
   const settings = serveruser.server
   const prefix = settings.data.prefix || config['prefix'] || 'sr!'
   const user = serveruser.user
+  user.data.tag = msg.author.tag
+  user.write(user.data)
   const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')
   if (!ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
