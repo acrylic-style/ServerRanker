@@ -18,7 +18,7 @@ module.exports = class extends Command {
         .setTimestamp()
         .setColor([0,255,0])
         .setDescription(lang.no_activated_multiplier)
-      settings.data.multipliers.forEach((e, i) => {
+      settings.data.multipliers.forEach(e => {
         embed.setDescription('')
         embed.addField(`Point Multiplier (+${e['multiplier']}%) [Expires ${moment(e.expires).fromNow()}]`, `by ${msg.client.users.get(e.author)}`)
       })
@@ -36,7 +36,6 @@ module.exports = class extends Command {
       msg.channel.send(embed)
     } else if (args[1] === 'activate') {
       if (!user.data.multipliers[parseInt(args[2])-1]) return msg.channel.send(lang.invalid_args)
-      await msg.channel.send(f(lang.activated_multiplier, user.data.multipliers[parseInt(args[2])-1].multiplier))
       user.data.multipliers.splice(parseInt(args[2])-1, 1)
       await user.write(user.data)
       settings.data.multipliers.push({
@@ -45,6 +44,7 @@ module.exports = class extends Command {
         expires: moment().add(1, 'days').toDate().getTime(),
       })
       await settings.write(settings.data)
+      await msg.channel.send(f(lang.activated_multiplier, settings.data.multipliers[parseInt(args[2])-1].multiplier))
     } else {
       if (user.data.multipliers.length >= 10) return msg.channel.send(lang.only10)
       setTimeout(() => {
