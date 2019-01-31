@@ -2,7 +2,7 @@ const start = new Date().getTime()
 console.log('[User] Migration is now progress.\n[User] It may takes few minutes.')
 
 const fs = require('fs')
-const exists = () => {
+const exists = path => {
   try {
     fs.accessSync(path)
     return true
@@ -13,9 +13,9 @@ const exists = () => {
 
 const users = []
 const user_files = fs.readdirSync(__dirname + '/../data/users')
-Promise.all(user_files.map(e => {
+user_files.map(e => {
   users.push(`${__dirname}/../data/users/${e}/config.json`)
-}))
+})
 users.forEach(user => {
   if (!exists(user)) fs.rmdirSync(user.replace('/config.json', ''))
 })
