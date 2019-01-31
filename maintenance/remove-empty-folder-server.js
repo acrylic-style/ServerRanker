@@ -17,7 +17,10 @@ server_files.map(e => {
   servers.push(`${__dirname}/../data/servers/${e}/config.json`)
 })
 servers.forEach(server => {
-  if (!exists(server)) fs.rmdirSync(server.replace('/config.json', ''))
+  if (!exists(server)) {
+    fs.unlinkSync(server.replace('/config.json', '/messages.log'))
+    fs.rmdirSync(server.replace('/config.json', ''))
+  }
 })
 const end = new Date().getTime()
 console.log(`[Server] Done in ${Math.round((end - start) / 10) / 100}s.`) // Done in 123.45s.

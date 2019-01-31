@@ -17,7 +17,10 @@ user_files.map(e => {
   users.push(`${__dirname}/../data/users/${e}/config.json`)
 })
 users.forEach(user => {
-  if (!exists(user)) fs.rmdirSync(user.replace('/config.json', ''))
+  if (!exists(user)) {
+    fs.unlinkSync(user.replace('/config.json', '/messages.log'))
+    fs.rmdirSync(user.replace('/config.json', ''))
+  }
 })
 const end = new Date().getTime()
 console.log(`[User] Done in ${Math.round((end - start) / 10) / 100}s.`) // Done in 123.45s.
