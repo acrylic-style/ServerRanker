@@ -44,7 +44,7 @@ module.exports = class extends Command {
         expires: moment().add(1, 'days').toDate().getTime(),
       })
       await settings.write(settings.data)
-      await msg.channel.send(f(lang.activated_multiplier, settings.data.multipliers[parseInt(args[2])-1].multiplier))
+      await msg.channel.send(f(lang.activated_multiplier, msg.author.tag, settings.data.multipliers[parseInt(args[2])-1].multiplier))
     } else {
       if (user.data.multipliers.length >= 10) return msg.channel.send(lang.only10)
       setTimeout(() => {
