@@ -1,6 +1,6 @@
 const start = new Date().getTime()
 console.log('Migration is now progress.\nIt may takes few minutes.')
-
+require('../maintenance/remove-empty-folder')
 const fs = require('fs')
 const util = require('../src/util')
 
