@@ -10,14 +10,18 @@ Promise.all(user_files.map(e => {
   users.push(`${__dirname}/../data/users/${e}/config.json`)
 }))
 users.forEach(user => {
-  const data = util.readJSONSync(user)
-  if (typeof data.multipliers === 'undefined') data.multipliers = []
-  data.multipliers.forEach(multiplier => {
-    if (multiplier.multiplier === 2) {
-      multiplier.multiplier = 100
-    }
-  })
-  util.writeJSONSync(user, data)
+  try {
+    const data = util.readJSONSync(user)
+    if (typeof data.multipliers === 'undefined') data.multipliers = []
+    data.multipliers.forEach(multiplier => {
+      if (multiplier.multiplier === 2) {
+        multiplier.multiplier = 100
+      }
+    })
+    util.writeJSONSync(user, data)
+  } catch(err) {
+    fs.unlinkSync(user.replace('/config.json', ''))
+  }
 })
 const end = new Date().getTime()
-console.log(`Done in ${Math.round((end-start)/10)/100}s.`) // Done in 123.45s.
+console.log(`Done in ${Math.round((end - start) / 10) / 100}s.`) // Done in 123.45s.
