@@ -25,13 +25,13 @@ module.exports = class extends Command {
       msg.channel.send(embed)
     } else if (args[1] === 'list' && args[2] === 'server') {
       const embed = new Discord.RichEmbed()
-        .setTitle('Your unused point multipliers')
+        .setTitle('Activated point multipliers in this server')
         .setTimestamp()
         .setColor([0,255,0])
-        .setDescription(lang.not_has_multiplier)
-      user.data.multipliers.forEach((e, i) => {
+        .setDescription(lang.no_activated_multiplier)
+      settings.data.multipliers.forEach((e, i) => {
         embed.setDescription('')
-        embed.addField(`#${i+1}`, `Point Multiplier (+${e['multiplier']}%)`)
+        embed.addField(`Point Multiplier (+${e['multiplier']}%) [Expires ${moment(e.expires).fromNow()}]`, `by ${msg.client.users.get(e.author)}`)
       })
       msg.channel.send(embed)
     } else if (args[1] === 'activate') {
