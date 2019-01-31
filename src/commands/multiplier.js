@@ -12,17 +12,6 @@ module.exports = class extends Command {
       if (!this.confirms[msg.author.id]) return msg.channel.send(lang.no_confirm)
       const data = await this.confirms[msg.author.id]()
       msg.channel.send(f(lang.bought_multiplier, 2, 'sr!', data.multipliers.length))
-    } else if (args[1] === 'list') {
-      const embed = new Discord.RichEmbed()
-        .setTitle('Your unused point multipliers')
-        .setTimestamp()
-        .setColor([0,255,0])
-        .setDescription(lang.not_has_multiplier)
-      user.data.multipliers.forEach((e, i) => {
-        embed.setDescription('')
-        embed.addField(`#${i+1}`, `Point Multiplier (+${e['multiplier']}%)`)
-      })
-      msg.channel.send(embed)
     } else if (args[1] === 'list' && args[2] === 'server') {
       const embed = new Discord.RichEmbed()
         .setTitle('Activated point multipliers in this server')
@@ -32,6 +21,17 @@ module.exports = class extends Command {
       settings.data.multipliers.forEach((e, i) => {
         embed.setDescription('')
         embed.addField(`Point Multiplier (+${e['multiplier']}%) [Expires ${moment(e.expires).fromNow()}]`, `by ${msg.client.users.get(e.author)}`)
+      })
+      return msg.channel.send(embed)
+    } else if (args[1] === 'list') {
+      const embed = new Discord.RichEmbed()
+        .setTitle('Your unused point multipliers')
+        .setTimestamp()
+        .setColor([0,255,0])
+        .setDescription(lang.not_has_multiplier)
+      user.data.multipliers.forEach((e, i) => {
+        embed.setDescription('')
+        embed.addField(`#${i+1}`, `Point Multiplier (+${e['multiplier']}%)`)
       })
       msg.channel.send(embed)
     } else if (args[1] === 'activate') {
