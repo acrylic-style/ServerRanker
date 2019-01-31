@@ -1,4 +1,5 @@
 const { commons: { f }, Command, Discord } = require('../server-ranker')
+const moment = require('moment')
 
 module.exports = class extends Command {
   constructor() {
@@ -15,10 +16,11 @@ module.exports = class extends Command {
       const embed = new Discord.RichEmbed()
         .setTitle('Your unused point multipliers')
         .setTimestamp()
+        .setColor([0,255,0])
         .setDescription(lang.not_has_multiplier)
       user.data.multipliers.forEach((e, i) => {
         embed.setDescription('')
-        embed.addField(`#${i}`, `Point Multiplier (${e['multiplier']}x)`)
+        embed.addField(`#${i+1}`, `Point Multiplier (${e['multiplier']}x)`)
       })
       msg.channel.send(embed)
     } else if (args[1] === 'activate') {
@@ -29,6 +31,7 @@ module.exports = class extends Command {
       settings.data.multipliers.push({
         author: msg.author.id,
         multiplier: parseInt(args[2]),
+        expires: moment().add(1, 'days').toDate().getTime(),
       })
       await settings.data.write(settings.data)
     } else {
