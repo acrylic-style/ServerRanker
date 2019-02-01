@@ -1,4 +1,4 @@
-const initTime = new Date()
+const initTime = Date.now()
 const ServerRanker = require('./src/server-ranker')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
@@ -27,8 +27,8 @@ client.on('ready', async () => {
   client.setTimeout(() => {
     logger.info('I got ' + ServerRanker.commons.temp.commands + ' commands today!')
     ServerRanker.commons.temp.commands = 0
-  }, moment().endOf('day').toDate().getTime() - new Date().getTime())
-  logger.info(`ServerRanker is ready! (${client.readyAt.getTime()-initTime.getTime()}ms)`)
+  }, moment().endOf('day').toDate().getTime() - Date.now())
+  logger.info(`ServerRanker is ready! (${client.readyAt.getTime()-initTime}ms)`)
 })
 
 client.on('message', async msg => {

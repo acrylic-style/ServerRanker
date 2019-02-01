@@ -5,7 +5,7 @@ module.exports = async (settings, user) => {
   const max = 300
   const random = Math.floor(Math.random() * (max + 1 - min)) + min
   settings.data.multipliers.forEach((multiplier, index) => {
-    if (!multiplier.expires || multiplier.expires < new Date().getTime()) {
+    if (!multiplier.expires || multiplier.expires < Date.now()) {
       settings.data.multipliers.splice(index, 1) // don't use "delete"
     }
   });

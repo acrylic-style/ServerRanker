@@ -1,4 +1,4 @@
-const start = new Date().getTime()
+const start = Date.now()
 console.log('Migration is now progress.\nIt may takes few minutes.')
 require('../maintenance/remove-empty-folder')
 const fs = require('fs')
@@ -23,5 +23,5 @@ users.forEach(user => {
     fs.unlinkSync(user.replace('/config.json', ''))
   }
 })
-const end = new Date().getTime()
+const end = Date.now()
 console.log(`Done in ${Math.round((end - start) / 10) / 100}s.`) // Done in 123.45s.
