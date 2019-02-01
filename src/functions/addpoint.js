@@ -9,10 +9,9 @@ module.exports = async (settings, user) => {
       settings.data.multipliers.splice(index, 1) // don't use "delete"
     }
   });
-  await util.repeat(async () => {
-    settings.data.point = settings.data.point + random
-    user.data.point = user.data.point + random
-  }, settings.data.multipliers.length+1)
+  const times = settings.data.multipliers.length + 1
+  settings.data.point += random * times
+  user.data.point += random * times
   await settings.write(settings.data)
   await user.write(user.data)
 }
