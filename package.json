@@ -15,5 +15,8 @@
     "object-assign-deep": "^0.4.0",
     "string-format": "^2.0.0",
     "yaml": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0"
   }
 }
