@@ -27,5 +27,6 @@ module.exports = {
       selector: 'TryStatement',
       message: 'try...catch statement is not allowed',
     }],
+    'no-control-regex': 0,
   }
 }

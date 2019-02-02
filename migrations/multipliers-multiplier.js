@@ -10,7 +10,7 @@ Promise.all(user_files.map(e => {
   users.push(`${__dirname}/../data/users/${e}/config.json`)
 }))
 users.forEach(user => {
-  try {
+  try { // eslint-disable-line
     const data = util.readJSONSync(user)
     if (typeof data.multipliers === 'undefined') data.multipliers = []
     data.multipliers.forEach(multiplier => {

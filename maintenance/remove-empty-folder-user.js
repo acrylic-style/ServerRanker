@@ -3,7 +3,7 @@ console.log('[User] Migration is now progress.\n[User] It may takes few minutes.
 
 const fs = require('fs')
 const exists = path => {
-  try {
+  try { // eslint-disable-line
     fs.accessSync(path)
     return true
   } catch (err) {

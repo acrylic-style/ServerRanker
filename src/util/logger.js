@@ -4,7 +4,7 @@ const moment = require('moment')
 const args = require('./parser')(process.argv.slice(2))
 const util = {
   existsSync(path) {
-    try {
+    try { // eslint-disable-line
       fs.accessSync(path)
       return true
     } catch(err) {
@@ -127,7 +127,7 @@ class Logger {
   /**
    * Outputs debug level message.
    * Just debug message.
-   * 
+   *
    * @example logger.debug('foo')
    *
    *
