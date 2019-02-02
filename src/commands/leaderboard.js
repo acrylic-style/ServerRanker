@@ -32,11 +32,11 @@ module.exports = class extends Command {
       msg.channel.send(embed)
     } else {
       const user_files = await fs.readdir(__dirname + '/../../data/users')
-      const users = new Discord.Collection(await Promise.all(user_files.map(async e =>
+      const users = new Discord.Collection((await Promise.all(user_files.map(async e =>
         util.exists(`${__dirname}/../../data/users/${e}/config.json`)
           ? [e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point]
           : null // don't do anything
-      )).filter(e => e))
+      ))).filter(e => e))
       const u_points = Array.from(users.sort().values()).slice(-5).reverse()
       const u_ids = Array.from(users.sort().keys()).slice(-5).reverse()
       const getUser = id => {
