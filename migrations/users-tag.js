@@ -4,11 +4,9 @@ require('../maintenance/remove-empty-folder')
 const fs = require('fs')
 const util = require('../src/util')
 
-const users = []
 const user_files = fs.readdirSync(__dirname + '/../data/users')
-user_files.map(e => {
-  users.push(`${__dirname}/../data/users/${e}/config.json`)
-})
+const users = user_files.map(e => `${__dirname}/../data/users/${e}/config.json`)
+
 users.forEach(user => {
   const data = util.readJSONSync(user)
   if (!data.tag) {

@@ -11,11 +11,9 @@ const exists = path => {
   }
 }
 
-const servers = []
 const server_files = fs.readdirSync(__dirname + '/../data/servers')
-server_files.map(e => {
-  servers.push(`${__dirname}/../data/servers/${e}/config.json`)
-})
+const servers = server_files.map(e => `${__dirname}/../data/servers/${e}/config.json`)
+
 servers.forEach(server => {
   if (!exists(server)) {
     fs.unlinkSync(server.replace('/config.json', '/messages.log'))

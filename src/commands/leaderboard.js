@@ -9,11 +9,10 @@ module.exports = class extends Command {
 
   async run(msg, settings, user, lang, args) {
     if (args[1] === 'server') {
-      const servers = new Discord.Collection()
       const server_files = await fs.readdir(__dirname + '/../../data/servers')
-      await Promise.all(server_files.map(async e => {
-        servers.set(e, JSON.parse(await fs.readFile(`${__dirname}/../../data/servers/${e}/config.json`)).point)
-      }))
+      const servers = new Discord.Collection(await Promise.all(server_files.map(async e => [
+        e, JSON.parse(await fs.readFile(`${__dirname}/../../data/servers/${e}/config.json`)).point,
+      ])))
       const s_points = Array.from(servers.sort().values()).slice(-5).reverse()
       const s_ids = Array.from(servers.sort().keys()).slice(-5).reverse()
       const getServer = id => {
@@ -32,13 +31,12 @@ module.exports = class extends Command {
       embed.setFooter('https://server-ranker.ga/leaderboard/server')
       msg.channel.send(embed)
     } else {
-      const users = new Discord.Collection()
       const user_files = await fs.readdir(__dirname + '/../../data/users')
-      await Promise.all(user_files.map(async e => {
+      const users = new Discord.Collection(await Promise.all(user_files.map(async e =>
         util.exists(`${__dirname}/../../data/users/${e}/config.json`)
-          ? users.set(e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point)
-          : true // don't do anything
-      }))
+          ? [e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point]
+          : null // don't do anything
+      )).filter(e => e))
       const u_points = Array.from(users.sort().values()).slice(-5).reverse()
       const u_ids = Array.from(users.sort().keys()).slice(-5).reverse()
       const getUser = id => {

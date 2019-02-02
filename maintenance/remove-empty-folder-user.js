@@ -11,11 +11,9 @@ const exists = path => {
   }
 }
 
-const users = []
 const user_files = fs.readdirSync(__dirname + '/../data/users')
-user_files.map(e => {
-  users.push(`${__dirname}/../data/users/${e}/config.json`)
-})
+const users = user_files.map(e => `${__dirname}/../data/users/${e}/config.json`)
+
 users.forEach(user => {
   if (!exists(user)) {
     fs.unlinkSync(user.replace('/config.json', '/messages.log'))
