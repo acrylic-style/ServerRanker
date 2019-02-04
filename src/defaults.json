@@ -10,7 +10,8 @@
     "language": null,
     "point": 0,
     "banned": false,
-    "multipliers": []
+    "multipliers": [],
+    "tag": "Unknown User#0000"
   },
   "validLanguages": [
     "en",

@@ -2,6 +2,19 @@ const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
 const args = require('./parser')(process.argv.slice(2))
+const util = {
+  existsSync(path) {
+    try { // eslint-disable-line
+      fs.accessSync(path)
+      return true
+    } catch(err) {
+      return false
+    }
+  },
+  removeColor(str) {
+    return str.replace(/\[..m/g, '').replace(/ /g, ' ').replace(/ /g, ' ').replace(//g, '')
+  },
+}
 
 class Logger {
   /**
@@ -11,6 +24,9 @@ class Logger {
    */
   initLog() {
     this.initialized = true
+    if (util.existsSync('latest.2.log')) fs.copyFileSync('latest.2.log', 'latest.3.log')
+    if (util.existsSync('latest.1.log')) fs.copyFileSync('latest.1.log', 'latest.2.log')
+    if (util.existsSync('latest.log')) fs.copyFileSync('latest.log', 'latest.1.log')
     fs.writeFileSync('latest.log', `--- The log begin at ${new Date().toLocaleString()} ---\n`)
     this.debug('The log file has initialized.', true)
     return this
@@ -87,7 +103,7 @@ class Logger {
     const coloredlevel = chalk`{${color} ${level}}`
     if (isLogger) { this.thread_raw = 'logger'; thread = chalk.hex('#800080')(this.thread_raw) }
     const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message)}${chalk.reset()}`
-    fs.appendFileSync('latest.log', `${data}\n`)
+    fs.appendFileSync('latest.log', `${util.removeColor(data)}\n`)
     console.info(data)
   }
   /**
@@ -111,7 +127,7 @@ class Logger {
   /**
    * Outputs debug level message.
    * Just debug message.
-   * 
+   *
    * @example logger.debug('foo')
    *
    *
