@@ -11,10 +11,15 @@ async function runCommand(command, settings, user, msg, lang) {
   logger.info(f(lang.issuedcmd, msg.author.tag, msg.content))
   const args = msg.content.replace(settings.data.prefix, '').split(/\s{1,}/g)
   const opts = argsresolver(args.slice(1))
+  const start = new Date().getTime()
   await command.start(msg, settings, user, lang, args.filter(a => !opts.args.includes(a)), opts).catch(e => {
     msg.channel.send(f(lang.error_occurred, command.name))
     logger.error(f(lang.error, e.stack || e))
   })
+  const end = new Date().getTime()
+  if (end-start > 1000) {
+    logger.warn(`${args[0]} took ${end-start}ms`)
+  }
 }
 
 module.exports = async function(data, msg, lang) {
