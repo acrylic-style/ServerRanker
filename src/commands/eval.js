@@ -14,7 +14,6 @@ module.exports = class extends Command {
   }
 
   async run(msg, settings, user, lang, args) {
-    if (msg.content.includes('token')) return msg.channel.send(lang.udonthaveperm)
     if (!args[1]) return msg.channel.send(lang.invalid_args)
     !(async () => {
       if (args[1].includes('async:')) {
