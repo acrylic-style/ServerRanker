@@ -38,7 +38,7 @@ class Logger {
    * @returns {Logger} A Logger instance
    */
   config(debug = false) {
-    this.debug = debug
+    this.debugging = debug
     return this
   }
 
