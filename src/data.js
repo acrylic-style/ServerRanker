@@ -6,7 +6,7 @@ const config = require('./config.yml')
 const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
   dialect: config.database.type,
-  storage: '../data/database.sqlite',
+  storage: `${__dirname}/../data/database.sqlite`,
   operatorsAliases: false,
   logging: false,
 })
