@@ -19,6 +19,10 @@ sequelize.authenticate()
     process.exit(1)
   })
 const Server = sequelize.define('servers', {
+  server_id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
   prefix: {
     type: Sequelize.STRING,
     defaultValue: 'sr!',
@@ -37,6 +41,10 @@ const Server = sequelize.define('servers', {
   },
 })
 const User = sequelize.define('users', {
+  user_id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
   language: {
     type: Sequelize.STRING,
     defaultValue: null,
@@ -56,6 +64,11 @@ const User = sequelize.define('users', {
   },
 })
 const Multipliers = sequelize.define('multipliers', {
+  multiplier_id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   guild_id: {
     type: Sequelize.STRING,
   },
