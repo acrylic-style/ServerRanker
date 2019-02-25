@@ -1,5 +1,10 @@
-token: "NTM0MDU0ODgwMjUyMzk1NTQw.Dx0UAg.uBDaErGtDjttKDiFgUrbNdTE3G4"
+token: ""
 prefix: "sr!"
 dbl: null # Grab DBL token here https://discordbots.org/api/docs#mybots
 owners:
   - "User ID"
+database:
+  type: sqlite # sqlite, mysql
+  name:
+  user:
+  pass:

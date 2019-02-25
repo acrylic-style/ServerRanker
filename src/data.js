@@ -1,48 +1,73 @@
-const util = require('./util')
-const mkdirp = require('mkdirp-promise')
-const fs = require('fs').promises
-const {
-  defaultServer,
-  defaultUser,
-} = require('./defaults.json')
-//Object.freeze(defaultServer)
-//Object.freeze(defaultUser)
-const path = {
-  user: id => `${__dirname}/../data/users/${id}/config.json`,
-  server: id => `${__dirname}/../data/servers/${id}/config.json`,
-}
+const { Logger, commons: { args: { args } } } = require('./server-ranker')
+const logger = Logger.getLogger('db', 'purple')
+logger.info('Connecting...')
+const Sequelize = require('sequelize')
+const config = require('./config.yml')
+const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
+  host: 'localhost',
+  dialect: config.database.type,
+  storage: '../data/database.sqlite',
+  operatorsAliases: false,
+  logging: false,
+})
+sequelize.authenticate()
+  .then(() => {
+    logger.info('Connection has been established successfully.')
+  })
+  .catch(err => {
+    logger.emerg('Unable to connect to the database: ' + err)
+    process.exit(1)
+  })
+const Server = sequelize.define('servers', {
+  prefix: Sequelize.STRING,
+  language: Sequelize.STRING,
+  banned: Sequelize.BOOLEAN,
+  point: Sequelize.INTEGER,
+})
+const User = sequelize.define('users', {
+  language: Sequelize.STRING,
+  banned: Sequelize.BOOLEAN,
+  point: Sequelize.INTEGER,
+  tag: Sequelize.STRING,
+})
+const Multipliers = sequelize.define('multipliers', {
+  guild_id: Sequelize.STRING,
+  user_id: Sequelize.STRING,
+  multiplier: Sequelize.INTEGER,
+  expires: Sequelize.INTEGER,
+})
+if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!')
 
-async function dataStore(id, type, _default) {
-  if (id !== '') {
-    if (type === 'user') await mkdirp(`${__dirname}/../data/users/${id}`)
-    if (type === 'server') await mkdirp(`${__dirname}/../data/servers/${id}`)
-  }
-  const json = await util.readJSON(path[type](id), {})
-  const clonedDefault = JSON.parse(JSON.stringify(_default))
-  const data = Object.assign(clonedDefault, json)
-  return {data, write: async settings => {
-    await fs.writeFile(path[type](id), JSON.stringify(settings), 'utf8')
-    return await settings
-  }}
-}
+sequelize.sync({ force: args.includes('forceSync') })
 
 module.exports = {
   async data(serverId, userId) {
     return {
-      server: await dataStore(serverId, 'server', defaultServer),
-      user: await dataStore(userId, 'user', defaultUser),
+      server: { data: await Server.findByPk(serverId), write: async settings => { Server.upsert(settings); return await Server.findByPk(serverId) } },
+      user: { data: await User.findByPk(userId), write: async settings => { User.upsert(settings); return await User.findByPk(userId) } },
+      /*multipliers: {
+        data: {
+          server: await Multipliers.findAll(),
+          user: await Multipliers.findById
+        },
+        write: {
+          server: settings => { Multipliers.upsert(settings); Multipliers.findByPk(serverId) },
+        },
+      },*/
     }
   },
   async server(serverId) {
     return {
-      server: await dataStore(serverId, 'server', defaultServer),
-      user: {},
+      server: { data: await Server.findByPk(serverId), write: settings => { Server.upsert(settings); return Server.findByPk(serverId) } } ,
+      //multipliers: { data: { user: {}, server: await Multipliers.findById(serverId, { where: ['guild_id'] }) }, write: settings => Multipliers.upsert(settings) },
+      user: { data: {}, write: () => true},
     }
   },
   async user(userId) {
     return {
-      server: {},
-      user: await dataStore(userId, 'user', defaultUser),
+      server: { data: {}, write: () => true},
+      user: { data: await User.findByPk(userId), write: settings => { User.upsert(settings); return User.findByPk(userId) } },
+      //multipliers: { data: { user: await Multipliers.findById(userId, { where: ['user_id'] }), server: {} }, write: settings => Multipliers.upsert(settings) },
     }
   },
 }

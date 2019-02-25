@@ -5,6 +5,7 @@ const { config } = ServerRanker
 const DBL = require('dblapi.js')
 const logger = ServerRanker.Logger.getLogger('main', 'blue')
 logger.info('Initializing')
+const defaults = require('./src/defaults.json')
 const moment = require('moment')
 const dispatcher = require('./src/dispatcher')
 const args = ServerRanker.commons.parser(process.argv.slice(2))
@@ -35,9 +36,13 @@ client.on('message', async msg => {
   if (msg.author.bot || msg.system) return
   log.messageLog(msg)
   const serveruser = msg.guild ? await data.data(msg.guild.id, msg.author.id) : await data.user(msg.author.id)
+  console.log(await serveruser.server.write(defaults.defaultServer))
+  serveruser.server.data || (serveruser.server.data = await serveruser.server.write(defaults.defaultServer))
+  serveruser.user.data || (serveruser.user.data = await serveruser.user.write(defaults.defaultUser))
+  console.log(serveruser.user.data)
   const settings = serveruser.server
-  const prefix = settings.data.prefix || config['prefix'] || 'sr!'
-  const user = serveruser.user
+  const prefix = (settings.data || {}).prefix || config['prefix'] || 'sr!'
+  const user = serveruser.user || {}
   user.data.tag = msg.author.tag
   user.write(user.data)
   const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')

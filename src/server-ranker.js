@@ -18,6 +18,7 @@ module.exports = {
   Logger,
   Command,
   commons: {
+    args: parser(process.argv.slice(2)),
     parser,
     language,
     f,

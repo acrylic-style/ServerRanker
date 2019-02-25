@@ -12,7 +12,10 @@
     "fast-levenshtein": "^2.0.6",
     "mkdirp-promise": "^5.0.1",
     "moment": "^2.23.0",
+    "mysql2": "^1.6.4",
     "object-assign-deep": "^0.4.0",
+    "sequelize": "^4.42.0",
+    "sqlite3": "^4.0.6",
     "string-format": "^2.0.0",
     "yaml": "^1.2.0"
   },

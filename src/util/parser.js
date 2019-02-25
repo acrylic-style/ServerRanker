@@ -20,6 +20,9 @@ module.exports = (argv) => {
       args.args.push(arg)
       arg = arg.replace(/--debug=/gm, '')
       arg.split(',').forEach(a => Object.assign(args.debug, {[a]: true}))
+    } else if (arg.startsWith('--') && !arg.includes('=')) {
+      arg = arg.replace(/--/gm, '')
+      args.args.push(arg)
     } else if (arg.startsWith('-')) { // flags
       args.args.push(arg)
       const flags = arg.replace('-', '').split('')
