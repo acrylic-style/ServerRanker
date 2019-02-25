@@ -19,22 +19,55 @@ sequelize.authenticate()
     process.exit(1)
   })
 const Server = sequelize.define('servers', {
-  prefix: Sequelize.STRING,
-  language: Sequelize.STRING,
-  banned: Sequelize.BOOLEAN,
-  point: Sequelize.INTEGER,
+  prefix: {
+    type: Sequelize.STRING,
+    defaultValue: 'sr!',
+  },
+  language: {
+    type: Sequelize.STRING,
+    defaultValue: 'en',
+  },
+  banned: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  point: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
 })
 const User = sequelize.define('users', {
-  language: Sequelize.STRING,
-  banned: Sequelize.BOOLEAN,
-  point: Sequelize.INTEGER,
-  tag: Sequelize.STRING,
+  language: {
+    type: Sequelize.STRING,
+    defaultValue: null,
+    allowNull: true,
+  },
+  banned: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  point: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
+  tag: {
+    type: Sequelize.STRING,
+    defaultValue: 'Unknown User#0000',
+  },
 })
 const Multipliers = sequelize.define('multipliers', {
-  guild_id: Sequelize.STRING,
-  user_id: Sequelize.STRING,
-  multiplier: Sequelize.INTEGER,
-  expires: Sequelize.INTEGER,
+  guild_id: {
+    type: Sequelize.STRING,
+  },
+  user_id: {
+    type: Sequelize.STRING,
+  },
+  multiplier: {
+    type: Sequelize.INTEGER,
+  },
+  expires: {
+    type: Sequelize.INTEGER,
+  },
 })
 if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!')
 
