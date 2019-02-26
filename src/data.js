@@ -69,7 +69,7 @@ const Multipliers = sequelize.define('multipliers', {
     primaryKey: true,
     autoIncrement: true,
   },
-  guild_id: {
+  server_id: {
     type: Sequelize.STRING,
   },
   user_id: {
@@ -89,8 +89,8 @@ sequelize.sync({ force: args.includes('forceSync') })
 module.exports = {
   async data(serverId, userId) {
     return {
-      server: { data: await Server.findByPk(serverId), write: async settings => { Server.upsert(settings); return await Server.findByPk(serverId) } },
-      user: { data: await User.findByPk(userId), write: async settings => { User.upsert(settings); return await User.findByPk(userId) } },
+      server: { data: await Server.findByPk(serverId), write: async settings => { Server.upsert(settings); return await Server.findByPk(serverId) }, model: Server },
+      user: { data: await User.findByPk(userId), write: async settings => { User.upsert(settings); return await User.findByPk(userId) }, model: User },
       /*multipliers: {
         data: {
           server: await Multipliers.findAll(),
@@ -104,15 +104,15 @@ module.exports = {
   },
   async server(serverId) {
     return {
-      server: { data: await Server.findByPk(serverId), write: settings => { Server.upsert(settings); return Server.findByPk(serverId) } } ,
+      server: { data: await Server.findByPk(serverId), write: settings => { Server.upsert(settings); return Server.findByPk(serverId) }, model: Server } ,
       //multipliers: { data: { user: {}, server: await Multipliers.findById(serverId, { where: ['guild_id'] }) }, write: settings => Multipliers.upsert(settings) },
-      user: { data: {}, write: () => true},
+      user: { data: {}, write: () => true, model: User },
     }
   },
   async user(userId) {
     return {
-      server: { data: {}, write: () => true},
-      user: { data: await User.findByPk(userId), write: settings => { User.upsert(settings); return User.findByPk(userId) } },
+      server: { data: {}, write: () => true, model: Server},
+      user: { data: await User.findByPk(userId), write: settings => { User.upsert(settings); return User.findByPk(userId) }, model: User },
       //multipliers: { data: { user: await Multipliers.findById(userId, { where: ['user_id'] }), server: {} }, write: settings => Multipliers.upsert(settings) },
     }
   },

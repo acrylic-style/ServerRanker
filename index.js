@@ -36,10 +36,17 @@ client.on('message', async msg => {
   log.messageLog(msg)
   const serveruser = msg.guild ? await data.data(msg.guild.id, msg.author.id) : await data.user(msg.author.id)
   const settings = serveruser.server
+  if (!settings.data) {
+    await settings.model.create({ server_id: msg.guild.id, prefix: 'sr!', language: null, banned: false, point: 0 })
+    await settings.model.sync()
+  }
   const prefix = settings.data.prefix || config['prefix'] || 'sr!'
   const user = serveruser.user
+  if (!user.data) {
+    await user.model.create({ user_id: msg.author.id, language: null, banned: false, point: 0, tag: 'Unknown User#0000' })
+    await user.model.sync()
+  }
   user.data.tag = msg.author.tag
-  user.write(user.data)
   const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')
   if (!ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
