@@ -12,7 +12,7 @@ module.exports = class extends Command {
     const server = await data.getServer(msg.guild.id)
     const user = await data.getUser(msg.author.id)
     if (args[1] === 'server') {
-      const servers = new Discord.Collection((await data.getLeaderboard()).map(server => [server.server_id, server.point]))
+      const servers = new Discord.Collection((await data.getServerLeaderboard()).map(server => [server.server_id, server.point]))
       const s_points = Array.from(servers.sort().values()).slice(-5).reverse()
       const s_ids = Array.from(servers.sort().keys()).slice(-5).reverse()
       const getServer = id => {
@@ -31,12 +31,7 @@ module.exports = class extends Command {
       embed.setFooter('https://server-ranker.ga/leaderboard/server')
       msg.channel.send(embed)
     } else {
-      const user_files = await fs.readdir(__dirname + '/../../data/users')
-      const users = new Discord.Collection((await Promise.all(user_files.map(async e =>
-        util.exists(`${__dirname}/../../data/users/${e}/config.json`)
-          ? [e, JSON.parse(await fs.readFile(`${__dirname}/../../data/users/${e}/config.json`)).point]
-          : null // don't do anything
-      ))).filter(e => e))
+      const users = new Discord.Collection((await data.getUserLeaderboard()).map(user => [user.user_id, user.point]))
       const u_points = Array.from(users.sort().values()).slice(-5).reverse()
       const u_ids = Array.from(users.sort().keys()).slice(-5).reverse()
       const getUser = id => {

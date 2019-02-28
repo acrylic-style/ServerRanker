@@ -125,9 +125,14 @@ module.exports = {
       where: { user_id },
     })
   },
-  getLeaderboard() {
+  getServerLeaderboard() {
     return Server.findAll({
       attributes: ['server_id', 'point'],
+    })
+  },
+  getUserLeaderboard() {
+    return User.findAll({
+      attributes: ['user_id', 'point'],
     })
   },
   getMultiplier(multiplier_id) {
