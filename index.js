@@ -34,30 +34,21 @@ client.on('ready', async () => {
 client.on('message', async msg => {
   if (msg.author.bot || msg.system) return
   log.messageLog(msg)
-  const serveruser = msg.guild ? await data.data(msg.guild.id, msg.author.id) : await data.user(msg.author.id)
-  const settings = serveruser.server
-  if (!settings.data) {
-    await settings.model.create({ server_id: msg.guild.id, prefix: 'sr!', language: null, banned: false, point: 0 })
-    await settings.model.sync()
-  }
-  const prefix = settings.data.prefix || config['prefix'] || 'sr!'
-  const user = serveruser.user
-  if (!user.data) {
-    await user.model.create({ user_id: msg.author.id, language: null, banned: false, point: 0, tag: 'Unknown User#0000' })
-    await user.model.sync()
-  }
-  user.data.tag = msg.author.tag
-  const lang = ServerRanker.commons.language.get(user.data.language || settings.data.language || 'en')
+  const server = await data.getServer(msg.guild.id)
+  const user = await data.getUser(msg.author.id)
+  const prefix = server.prefix || config['prefix'] || 'sr!'
+  await data.updateUserTag(msg.author.id, msg.author.tag)
+  const lang = ServerRanker.commons.language.get(user.language || server.language || 'en')
   if (!ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
-    await ServerRanker['functions']['addpoint'](settings, user)
+    await ServerRanker['functions']['addpoint'](msg)
   }
   setTimeout(() => {
     ratelimited.delete(msg.author.id)
   }, 60 * 1000)
   if (msg.content.startsWith(prefix)) {
     ServerRanker.commons.temp.commands++
-    dispatcher(serveruser, msg, lang)
+    dispatcher(msg, lang)
   }
 })
 

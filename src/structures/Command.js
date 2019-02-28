@@ -22,7 +22,7 @@ class Command {
   constructor(name, options = {}) {
     if (!name) throw new TypeError('You must specify command name.')
     this.name = name
-    
+
     this.options = Object.assign({
       alias: [],
       args: [],
@@ -43,9 +43,9 @@ class Command {
    */
   async run() {}
 
-  async start(msg, settings, user, lang, ...args) {
+  async start(msg, lang, ...args) {
     if (!this.allowedIn.includes(msg.channel.constructor.name)) return msg.channel.send(require('string-format')(lang.not_allowed_in_here, this.allowedIn.join(', ')))
-    return await this.run(msg, settings, user, lang, ...args)
+    return await this.run(msg, lang, ...args)
   }
 
   /**

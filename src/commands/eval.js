@@ -13,7 +13,7 @@ module.exports = class extends Command {
     return owners.includes(msg.author.id)
   }
 
-  async run(msg, settings, user, lang, args) {
+  async run(msg, lang, args) {
     if (!args[1]) return msg.channel.send(lang.invalid_args)
     !(async () => {
       if (args[1].includes('async:')) {

@@ -1,18 +1,18 @@
 const { commons: { f }, Command, Discord } = require('../server-ranker')
 const fs = require('fs').promises
 const util = require('../util')
+const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
     super('leaderboard', { allowedIn: ['TextChannel'] })
   }
 
-  async run(msg, settings, user, lang, args) {
+  async run(msg, lang, args) {
+    const server = await data.getServer(msg.guild.id)
+    const user = await data.getUser(msg.author.id)
     if (args[1] === 'server') {
-      const server_files = await fs.readdir(__dirname + '/../../data/servers')
-      const servers = new Discord.Collection(await Promise.all(server_files.map(async e => [
-        e, JSON.parse(await fs.readFile(`${__dirname}/../../data/servers/${e}/config.json`)).point,
-      ])))
+      const servers = new Discord.Collection((await data.getLeaderboard()).map(server => [server.server_id, server.point]))
       const s_points = Array.from(servers.sort().values()).slice(-5).reverse()
       const s_ids = Array.from(servers.sort().keys()).slice(-5).reverse()
       const getServer = id => {
@@ -22,7 +22,7 @@ module.exports = class extends Command {
         .setTimestamp()
         .setColor([0,255,0])
         .setTitle('Leaderboard')
-        .setDescription(f(lang.points, user.data.point.toLocaleString(), settings.data.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.data.point/1000)-1), Math.floor(Math.sqrt(4 + settings.data.point/3000)-1)))
+        .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
       if (s_points[0]) embed.addField(':first_place:', `${parseInt(s_points[0]).toLocaleString()} points (${getServer(s_ids[0])})`)
       if (s_points[1]) embed.addField(':second_place:', `${parseInt(s_points[1]).toLocaleString()} points (${getServer(s_ids[1])})`)
       if (s_points[2]) embed.addField(':third_place:', `${parseInt(s_points[2]).toLocaleString()} points (${getServer(s_ids[2])})`)
@@ -46,8 +46,8 @@ module.exports = class extends Command {
         .setTimestamp()
         .setColor([0,255,0])
         .setTitle('Leaderboard')
-        .setDescription(f(lang.points, user.data.point.toLocaleString(), settings.data.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.data.point/1000)-1), Math.floor(Math.sqrt(4 + settings.data.point/3000)-1)))
-        .setFooter(`Want to see server leaderboard? Type \`${settings.data.prefix || 'sr!'}leaderboard server\``)
+        .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
+        .setFooter(`Want to see server leaderboard? Type \`${server.prefix || 'sr!'}leaderboard server\``)
       if (u_points[0]) embed.addField(':first_place:', `${parseInt(u_points[0]).toLocaleString()} points (${getUser(u_ids[0])})`)
       if (u_points[1]) embed.addField(':second_place:', `${parseInt(u_points[1]).toLocaleString()} points (${getUser(u_ids[1])})`)
       if (u_points[2]) embed.addField(':third_place:', `${parseInt(u_points[2]).toLocaleString()} points (${getUser(u_ids[2])})`)

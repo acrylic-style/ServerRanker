@@ -1,7 +1,10 @@
-const { Logger, commons: { args: { args } } } = require('./server-ranker')
+const Logger = require('./util/logger')
+const parser = require('./util/parser')
+const { args } = parser(process.argv.slice(2))
 const logger = Logger.getLogger('db', 'purple')
 logger.info('Connecting...')
 const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const config = require('./config.yml')
 const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
@@ -71,6 +74,7 @@ const Multipliers = sequelize.define('multipliers', {
   },
   server_id: {
     type: Sequelize.STRING,
+    allowNull: true,
   },
   user_id: {
     type: Sequelize.STRING,
@@ -80,6 +84,7 @@ const Multipliers = sequelize.define('multipliers', {
   },
   expires: {
     type: Sequelize.INTEGER,
+    allowNull: true,
   },
 })
 if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!')
@@ -87,33 +92,73 @@ if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!'
 sequelize.sync({ force: args.includes('forceSync') })
 
 module.exports = {
-  async data(serverId, userId) {
-    return {
-      server: { data: await Server.findByPk(serverId), write: async settings => { Server.upsert(settings); return await Server.findByPk(serverId) }, model: Server },
-      user: { data: await User.findByPk(userId), write: async settings => { User.upsert(settings); return await User.findByPk(userId) }, model: User },
-      /*multipliers: {
-        data: {
-          server: await Multipliers.findAll(),
-          user: await Multipliers.findById
-        },
-        write: {
-          server: settings => { Multipliers.upsert(settings); Multipliers.findByPk(serverId) },
-        },
-      },*/
-    }
+  async getServer(server_id) {
+    return (await Server.findOrCreate({
+      where: { server_id },
+      defaults: { server_id },
+    }))[0]
   },
-  async server(serverId) {
-    return {
-      server: { data: await Server.findByPk(serverId), write: settings => { Server.upsert(settings); return Server.findByPk(serverId) }, model: Server } ,
-      //multipliers: { data: { user: {}, server: await Multipliers.findById(serverId, { where: ['guild_id'] }) }, write: settings => Multipliers.upsert(settings) },
-      user: { data: {}, write: () => true, model: User },
-    }
+  async getUser(user_id) {
+    return (await User.findOrCreate({
+      where: { user_id },
+      defaults: { user_id },
+    }))[0]
   },
-  async user(userId) {
-    return {
-      server: { data: {}, write: () => true, model: Server},
-      user: { data: await User.findByPk(userId), write: settings => { User.upsert(settings); return User.findByPk(userId) }, model: User },
-      //multipliers: { data: { user: await Multipliers.findById(userId, { where: ['user_id'] }), server: {} }, write: settings => Multipliers.upsert(settings) },
-    }
+  updateUserTag(user_id, tag) {
+    return User.update({ tag }, { where: { user_id } })
+  },
+  addServerPoint(server_id, point) {
+    return Server.increment(['point'], {
+      by: point,
+      where: { server_id },
+    })
+  },
+  addUserPoint(user_id, point) {
+    return User.increment(['point'], {
+      by: point,
+      where: { user_id },
+    })
+  },
+  subtractUserPoint(user_id, point) {
+    return User.decrement(['point'], {
+      by: point,
+      where: { user_id },
+    })
+  },
+  getLeaderboard() {
+    return Server.findAll({
+      attributes: ['server_id', 'point'],
+    })
+  },
+  getMultiplier(multiplier_id) {
+    return Multipliers.findOne({
+      where: { multiplier_id },
+    })
+  },
+  getUserMultipliers(user_id) {
+    return Multipliers.findAll({
+      where: {
+        user_id,
+        server_id: null,
+      },
+    })
+  },
+  getServerMultipliers(server_id) {
+    return Multipliers.findAll({
+      where: {
+        server_id,
+        [Op.not]: { server_id: null },
+      },
+    })
+  },
+  addMultiplier(user_id, multiplier) {
+    return Multipliers.create({ user_id, multiplier })
+  },
+  activateMultiplier(multiplier_id, server_id, expires) {
+    return Multipliers.update({
+      server_id, expires,
+    }, {
+      multiplier_id,
+    })
   },
 }

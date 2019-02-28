@@ -9,6 +9,7 @@ const parser = require('./util/parser')
 const language = require('./language')
 const f = require('string-format')
 const temp = require('./temp')
+const data = require('./data')
 
 const addpoint = require('./functions/addpoint')
 
@@ -23,6 +24,7 @@ module.exports = {
     language,
     f,
     temp,
+    data,
   },
   functions: {
     addpoint,

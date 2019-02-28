@@ -6,7 +6,7 @@ module.exports = class extends Command {
     super('commands')
   }
 
-  async run(msg, settings, user, lang) {
+  async run(msg, lang) {
     msg.channel.send(f(lang.today_commands, ServerRanker.commons.temp.commands))
   }
 }

@@ -5,7 +5,7 @@ module.exports = class extends Command {
     super('help')
   }
 
-  async run(msg, settings, user, lang) {
+  async run(msg, lang) {
     const embed = new Discord.RichEmbed()
       .setTitle('List of commands')
       .addField('points', lang['commands']['points'])

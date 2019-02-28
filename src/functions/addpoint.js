@@ -1,4 +1,6 @@
-module.exports = async (settings, user) => {
+const data = require('../data')
+
+module.exports = async msg => {
   const min = 100
   const max = 300
   const random = Math.floor(Math.random() * (max + 1 - min)) + min
@@ -11,8 +13,6 @@ module.exports = async (settings, user) => {
   const times = settings.data.multipliers.length + 1
   */
   const times = 1
-  settings.data.point += random * times
-  user.data.point += random * times
-  await settings.write(settings.data)
-  await user.write(user.data)
+  await data.addUserPoint(msg.author.id, random * times)
+  await data.addServerPoint(msg.guild.id, random * times)
 }
