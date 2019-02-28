@@ -1,6 +1,4 @@
 const { commons: { f }, Command, Discord } = require('../server-ranker')
-const fs = require('fs').promises
-const util = require('../util')
 const data = require('../data')
 
 module.exports = class extends Command {
