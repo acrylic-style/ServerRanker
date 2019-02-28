@@ -128,11 +128,15 @@ module.exports = {
   getServerLeaderboard() {
     return Server.findAll({
       attributes: ['server_id', 'point'],
+      order: [['point', 'DESC']],
+      limit: 5,
     })
   },
   getUserLeaderboard() {
     return User.findAll({
       attributes: ['user_id', 'point'],
+      order: [['point', 'DESC']],
+      limit: 5,
     })
   },
   getMultiplier(multiplier_id) {

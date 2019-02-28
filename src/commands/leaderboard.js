@@ -10,9 +10,7 @@ module.exports = class extends Command {
     const server = await data.getServer(msg.guild.id)
     const user = await data.getUser(msg.author.id)
     if (args[1] === 'server') {
-      const servers = new Discord.Collection((await data.getServerLeaderboard()).map(server => [server.server_id, server.point]))
-      const s_points = Array.from(servers.sort().values()).slice(-5).reverse()
-      const s_ids = Array.from(servers.sort().keys()).slice(-5).reverse()
+      const servers = await data.getServerLeaderboard()
       const getServer = id => {
         return msg.client.guilds.has(id) ? msg.client.guilds.get(id).name : 'Unknown Server'
       }
@@ -21,17 +19,15 @@ module.exports = class extends Command {
         .setColor([0,255,0])
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
-      if (s_points[0]) embed.addField(':first_place:', `${parseInt(s_points[0]).toLocaleString()} points (${getServer(s_ids[0])})`)
-      if (s_points[1]) embed.addField(':second_place:', `${parseInt(s_points[1]).toLocaleString()} points (${getServer(s_ids[1])})`)
-      if (s_points[2]) embed.addField(':third_place:', `${parseInt(s_points[2]).toLocaleString()} points (${getServer(s_ids[2])})`)
-      if (s_points[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(s_points[3]).toLocaleString()} points (${getServer(s_ids[3])})`)
-      if (s_points[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(s_points[4]).toLocaleString()} points (${getServer(s_ids[4])})`)
+      if (servers[0]) embed.addField(':first_place:', `${parseInt(servers[0].point).toLocaleString()} points (${getServer(servers[0].server_id)})`)
+      if (servers[1]) embed.addField(':second_place:', `${parseInt(servers[1].point).toLocaleString()} points (${getServer(servers[1].server_id)})`)
+      if (servers[2]) embed.addField(':third_place:', `${parseInt(servers[2].point).toLocaleString()} points (${getServer(servers[2].server_id)})`)
+      if (servers[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(servers[3].point).toLocaleString()} points (${getServer(servers[3].server_id)})`)
+      if (servers[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(servers[4].point).toLocaleString()} points (${getServer(servers[4].server_id)})`)
       embed.setFooter('https://server-ranker.ga/leaderboard/server')
       msg.channel.send(embed)
     } else {
-      const users = new Discord.Collection((await data.getUserLeaderboard()).map(user => [user.user_id, user.point]))
-      const u_points = Array.from(users.sort().values()).slice(-5).reverse()
-      const u_ids = Array.from(users.sort().keys()).slice(-5).reverse()
+      const users = await data.getUserLeaderboard()
       const getUser = id => {
         return msg.client.users.has(id) ? msg.client.users.get(id).username : 'Unknown User'
       }
@@ -41,11 +37,11 @@ module.exports = class extends Command {
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
         .setFooter(`Want to see server leaderboard? Type \`${server.prefix || 'sr!'}leaderboard server\``)
-      if (u_points[0]) embed.addField(':first_place:', `${parseInt(u_points[0]).toLocaleString()} points (${getUser(u_ids[0])})`)
-      if (u_points[1]) embed.addField(':second_place:', `${parseInt(u_points[1]).toLocaleString()} points (${getUser(u_ids[1])})`)
-      if (u_points[2]) embed.addField(':third_place:', `${parseInt(u_points[2]).toLocaleString()} points (${getUser(u_ids[2])})`)
-      if (u_points[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(u_points[3]).toLocaleString()} points (${getUser(u_ids[3])})`)
-      if (u_points[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(u_points[4]).toLocaleString()} points (${getUser(u_ids[4])})`)
+      if (users[0]) embed.addField(':first_place:', `${parseInt(users[0].point).toLocaleString()} points (${getUser(users[0].users_id)})`)
+      if (users[1]) embed.addField(':second_place:', `${parseInt(users[1].point).toLocaleString()} points (${getUser(users[1].users_id)})`)
+      if (users[2]) embed.addField(':third_place:', `${parseInt(users[2].point).toLocaleString()} points (${getUser(users[2].users_id)})`)
+      if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3].point).toLocaleString()} points (${getUser(users[3].users_id)})`)
+      if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4].point).toLocaleString()} points (${getUser(users[4].users_id)})`)
       msg.channel.send(embed)
     }
   }
