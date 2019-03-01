@@ -37,11 +37,11 @@ module.exports = class extends Command {
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
         .setFooter(`Want to see server leaderboard? Type \`${server.prefix || 'sr!'}leaderboard server\``)
-      if (users[0]) embed.addField(':first_place:', `${parseInt(users[0].point).toLocaleString()} points (${getUser(users[0].users_id)})`)
-      if (users[1]) embed.addField(':second_place:', `${parseInt(users[1].point).toLocaleString()} points (${getUser(users[1].users_id)})`)
-      if (users[2]) embed.addField(':third_place:', `${parseInt(users[2].point).toLocaleString()} points (${getUser(users[2].users_id)})`)
-      if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3].point).toLocaleString()} points (${getUser(users[3].users_id)})`)
-      if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4].point).toLocaleString()} points (${getUser(users[4].users_id)})`)
+      if (users[0]) embed.addField(':first_place:', `${parseInt(users[0].point).toLocaleString()} points (${getUser(users[0].user_id)})`)
+      if (users[1]) embed.addField(':second_place:', `${parseInt(users[1].point).toLocaleString()} points (${getUser(users[1].user_id)})`)
+      if (users[2]) embed.addField(':third_place:', `${parseInt(users[2].point).toLocaleString()} points (${getUser(users[2].user_id)})`)
+      if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3].point).toLocaleString()} points (${getUser(users[3].user_id)})`)
+      if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4].point).toLocaleString()} points (${getUser(users[4].user_id)})`)
       msg.channel.send(embed)
     }
   }
