@@ -15,6 +15,18 @@ const util = {
     return str.replace(/\[..m/g, '').replace(/ /g, ' ').replace(/ /g, ' ').replace(//g, '')
   },
 }
+const colors = {
+  yellow: chalk.bold.yellow,
+  darkgray: chalk.gray,
+  red: chalk.red,
+  lightred: chalk.bold.red,
+  green: chalk.green,
+  lightpurple: chalk.bold.hex('#800080'),
+  white: chalk.white,
+  cyan: chalk.cyan,
+  purple: chalk.hex('#800080'),
+  blue: chalk.blue,
+}
 
 class Logger {
   /**
@@ -54,36 +66,9 @@ class Logger {
     if (!init) this.initLog = () => { }
     if (!this.initialized && init) this.initLog()
     const self = new Logger()
-    self.thread = thread
-    self.thread_raw = thread
-    switch (color) {
-      case 'yellow': self.thread = chalk.bold.yellow(thread); break
-      case 'darkgray': self.thread = chalk.gray(thread); break
-      case 'red': self.thread = chalk.red(thread); break
-      case 'lightred': self.thread = chalk.bold.red(thread); break
-      case 'green': self.thread = chalk.green(thread); break
-      case 'lightpurple': self.thread = chalk.bold.hex('#800080')(thread); break
-      case 'white': self.thread = chalk.white(thread); break
-      case 'cyan': self.thread = chalk.cyan(thread); break
-      case 'purple': self.thread = chalk.hex('#800080')(thread); break
-      case 'blue': self.thread = chalk.blue(thread); break
-      default: {
-        const colors = [
-          chalk.bold.yellow(thread),
-          chalk.gray(thread),
-          chalk.red(thread),
-          chalk.bold.red(thread),
-          chalk.green(thread),
-          chalk.bold.hex('#800080')(thread),
-          chalk.white(thread),
-          chalk.cyan(thread),
-          chalk.hex('#800080')(thread),
-          chalk.blue(thread),
-        ]
-        self.thread = colors[Math.floor(Math.random() * colors.length)]
-        break
-      }
-    }
+    self.thread = colors[color]
+      ? colors[color](thread)
+      : Object.values(colors)[Math.floor(Math.random() * colors.length)](thread)
     this.debugging = args['debugg']
     this.debug(`Registered logger for: ${thread}`, true)
     return self
@@ -99,9 +84,8 @@ class Logger {
    */
   out(message, level, color, isLogger) {
     const date = chalk.white.bgCyan(`[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}]`) + chalk.reset()
-    let thread = this.thread
+    const thread = isLogger ? chalk.hex('#800080')('logger') : this.thread
     const coloredlevel = chalk`{${color} ${level}}`
-    if (isLogger) { this.thread_raw = 'logger'; thread = chalk.hex('#800080')(this.thread_raw) }
     const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message)}${chalk.reset()}`
     fs.appendFileSync('latest.log', `${util.removeColor(data)}\n`)
     console.info(data)

@@ -13,12 +13,12 @@ async function runCommand(command, msg, lang) {
   logger.info(f(lang.issuedcmd, msg.author.tag, msg.content))
   const args = msg.content.replace(server.prefix, '').split(/\s{1,}/g)
   const opts = argsresolver(args.slice(1))
-  const start = new Date().getTime()
+  const start = Date.now()
   await command.start(msg, lang, args.filter(a => !opts.args.includes(a)), opts).catch(e => {
     msg.channel.send(f(lang.error_occurred, command.name))
     logger.error(f(lang.error, e.stack || e))
   })
-  const end = new Date().getTime()
+  const end = Date.now()
   if (end-start > 1000) {
     logger.warn(`${args[0]} took ${end-start}ms`)
   }
