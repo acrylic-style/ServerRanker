@@ -83,7 +83,7 @@ const Multipliers = sequelize.define('multipliers', {
     type: Sequelize.INTEGER,
   },
   expires: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DATE,
     allowNull: true,
   },
 })
@@ -160,6 +160,17 @@ module.exports = {
       },
     })
   },
+  getActivatedMultipliers(server_id) {
+    return Multipliers.findAll({
+      where: {
+        server_id,
+        expires: {
+          [Op.not]: null,
+          [Op.gte]: Date.now(),
+        },
+      },
+    })
+  },
   addMultiplier(user_id, multiplier) {
     return Multipliers.create({ user_id, multiplier })
   },
@@ -167,7 +178,7 @@ module.exports = {
     return Multipliers.update({
       server_id, expires,
     }, {
-      multiplier_id,
+      where: { multiplier_id },
     })
   },
 }
