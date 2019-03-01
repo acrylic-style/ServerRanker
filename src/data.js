@@ -28,7 +28,7 @@ const Server = sequelize.define('servers', {
   },
   prefix: {
     type: Sequelize.STRING,
-    defaultValue: 'sr!',
+    defaultValue: config.prefix,
   },
   language: {
     type: Sequelize.STRING,
