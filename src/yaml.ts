@@ -1,9 +1,8 @@
-import yaml = require('yaml')
-const YAML = yaml.default
 import fs = require('fs')
+import yaml = require('yaml')
 
-require.extensions['.yml'] = function(module, filename) {
-  module.exports = YAML.parse(fs.readFileSync(filename, 'utf8'))
+export = {
+  readYAMLSync(filename) {
+    return yaml.parse(fs.readFileSync(filename, 'utf8'))
+  }
 }
-
-export = YAML

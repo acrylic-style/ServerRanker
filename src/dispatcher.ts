@@ -5,7 +5,8 @@ import _commands = require('./commands')
 const commands = _commands.commands
 import _levenshtein = require('fast-levenshtein')
 const levenshtein = _levenshtein.get
-const c = require('./config.yml')
+import yaml = require('./yaml')
+const c = yaml.readYAMLSync('./config.yml')
 import argsresolver = require('./util/parser')
 import data = require('./data')
 

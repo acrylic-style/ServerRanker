@@ -1,5 +1,3 @@
-require('./yaml')
-
 import Discord = require('discord.js')
 import Resolver = require('./util/resolver')
 import Logger = require('./util/logger')
@@ -10,6 +8,7 @@ import language = require('./language')
 import f = require('string-format')
 import temp = require('./temp')
 import data = require('./data')
+import yaml = require('./yaml')
 
 import addpoint = require('./functions/addpoint')
 
@@ -29,5 +28,5 @@ export = {
   functions: {
     addpoint,
   },
-  config: require('./config.yml'),
+  config: yaml.readYAMLSync('./config.yml'),
 }

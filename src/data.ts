@@ -5,7 +5,8 @@ const logger = Logger.getLogger('db', 'purple')
 logger.info('Connecting...')
 import Sequelize = require('sequelize')
 const Op = Sequelize.Op
-const config = require('./config.yml')
+import yaml = require('./yaml')
+const config = yaml.readYAMLSync('./config.yml')
 const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
   dialect: config.database.type,
