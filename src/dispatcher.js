@@ -26,20 +26,16 @@ async function runCommand(command, msg, lang) {
 
 module.exports = async function(msg, lang) {
   const server = await data.getServer(msg.guild.id)
-  if ((msg.content === `<@${msg.client.user.id}> ` || msg.content === `<@!${msg.client.user.id}> `) && msg.attachments.length === 0)
-    return msg.channel.send(f(lang.prefixis, server.prefix))
-  if (msg.content.startsWith(server.prefix)) {
-    const [cmd] = msg.content.replace(server.prefix, '').replace(/\s{1,}/gm, ' ').split(' ')
-    if (server.banned) return msg.channel.send(f(lang.error, 'Your server is banned.\nPlease contact to the this server -> https://discord.gg/xQQXp4B'))
-    if (commands[cmd]) {
-      await runCommand(commands[cmd], msg, lang)
-    } else {
-      const commandList = Object.keys(commands).map(cmd => ({ cmd, args: commands[cmd].args }))
-      const similarCommand = commandList.map(item => ({ ...item, no: levenshtein(cmd, item.cmd) }))
-      const cmds = similarCommand.sort((a, b) => a.no - b.no).filter(item => item.no <= 2)
-      const list = cmds.map(item => `・\`${server.prefix}${item.cmd} ${item.args || ''}\``)
-      const nocmd = f(lang.no_command, server.prefix, cmd)+'\n'
-      if (list.length) msg.channel.send(nocmd + f(lang.didyoumean, list.join('\n')))
-    }
+  const [cmd] = msg.content.replace(server.prefix, '').replace(/\s{1,}/gm, ' ').split(' ')
+  if (server.banned) return msg.channel.send(f(lang.error, 'Your server is banned.\nPlease contact to the this server -> https://discord.gg/xQQXp4B'))
+  if (commands[cmd]) {
+    await runCommand(commands[cmd], msg, lang)
+  } else {
+    const commandList = Object.keys(commands).map(cmd => ({ cmd, args: commands[cmd].args }))
+    const similarCommand = commandList.map(item => ({ ...item, no: levenshtein(cmd, item.cmd) }))
+    const cmds = similarCommand.sort((a, b) => a.no - b.no).filter(item => item.no <= 2)
+    const list = cmds.map(item => `・\`${server.prefix}${item.cmd} ${item.args || ''}\``)
+    const nocmd = f(lang.no_command, server.prefix, cmd)+'\n'
+    if (list.length) msg.channel.send(nocmd + f(lang.didyoumean, list.join('\n')))
   }
 }

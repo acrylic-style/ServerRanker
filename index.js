@@ -12,6 +12,7 @@ const ratelimited = new Set()
 const log = require('./src/log')
 const globalprefix = args['prefix'] || config['prefix']
 const data = require('./src/data')
+const f = ServerRanker.commons.f
 
 client.on('reconnecting', () => {
   logger.warn('Disconnected from WebSocket, reconnecting!')
@@ -46,6 +47,8 @@ client.on('message', async msg => {
   setTimeout(() => {
     ratelimited.delete(msg.author.id)
   }, 60 * 1000)
+  if ((msg.content === `<@${msg.client.user.id}>` || msg.content === `<@!${msg.client.user.id}>`) && msg.attachments.size === 0)
+    return msg.channel.send(f(lang.prefixis, server.prefix))
   if (msg.content.startsWith(prefix)) {
     ServerRanker.commons.temp.commands++
     dispatcher(msg, lang)
