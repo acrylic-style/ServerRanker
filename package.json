@@ -2,6 +2,9 @@
   "name": "server-ranker",
   "version": "0.0.1",
   "main": "index.js",
+  "scripts": {
+    "start": "ts-node index"
+  },
   "repository": "https://github.com/acrylic-style/ServerRanker",
   "author": "acrylic-style <rht0910@rht0910.tk>",
   "license": "MIT",
@@ -20,6 +23,9 @@
     "yaml": "^1.2.0"
   },
   "devDependencies": {
-    "eslint": "^5.13.0"
+    "@types/node": "^11.9.6",
+    "eslint": "^5.13.0",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3333"
   }
 }
