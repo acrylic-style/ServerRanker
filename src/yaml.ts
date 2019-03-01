@@ -3,6 +3,6 @@ import yaml = require('yaml')
 
 export = {
   readYAMLSync(filename) {
-    return yaml.parse(fs.readFileSync(filename, 'utf8'))
+    return yaml.parse(fs.readFileSync(`${__dirname}/${filename}`, 'utf8'))
   }
 }
