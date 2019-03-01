@@ -171,6 +171,25 @@ module.exports = {
       },
     })
   },
+  countUserMultipliers(user_id) {
+    return Multipliers.count({
+      where: {
+        user_id,
+        server_id: null,
+      },
+    })
+  },
+  countActivatedMultipliers(server_id) {
+    return Multipliers.count({
+      where: {
+        server_id,
+        expires: {
+          [Op.not]: null,
+          [Op.gte]: Date.now(),
+        },
+      },
+    })
+  },
   addMultiplier(user_id, multiplier) {
     return Multipliers.create({ user_id, multiplier })
   },

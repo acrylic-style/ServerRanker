@@ -14,8 +14,8 @@ module.exports = class extends Command {
       if (!this.confirms[msg.author.id]) return msg.channel.send(lang.no_confirm)
       await this.confirms[msg.author.id]()
       delete this.confirms[msg.author.id]
-      const multipliers = await data.getUserMultipliers(msg.author.id)
-      msg.channel.send(f(lang.bought_multiplier, 2, 'sr!', multipliers.length))
+      const multiplierCount = await data.countUserMultipliers(msg.author.id)
+      msg.channel.send(f(lang.bought_multiplier, 2, 'sr!', multiplierCount))
     } else if (args[1] === 'list' && args[2] === 'server') {
       const embed = new Discord.RichEmbed()
         .setTitle('Activated point multipliers in this server')
@@ -48,8 +48,8 @@ module.exports = class extends Command {
       const multiplier = await data.getMultiplier(multiplier_id)
       await msg.channel.send(f(lang.activated_multiplier, msg.author.tag, multiplier.multiplier))
     } else {
-      const multipliers = await data.getUserMultipliers(msg.author.id)
-      if (multipliers.length >= 10) return msg.channel.send(lang.only10)
+      const multiplierCount = await data.countUserMultipliers(msg.author.id)
+      if (multiplierCount >= 10) return msg.channel.send(lang.only10)
       setTimeout(() => {
         delete this.confirms[msg.author.id]
       }, 10000)
