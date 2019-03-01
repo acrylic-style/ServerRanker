@@ -1,6 +1,7 @@
 const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
+const Discord = require('discord.js')
 const args = require('./parser')(process.argv.slice(2))
 const util = {
   existsSync(path) {
@@ -15,7 +16,7 @@ const util = {
     return str.replace(/\[..m/g, '').replace(/ /g, ' ').replace(/ /g, ' ').replace(//g, '')
   },
 }
-const colors = {
+const colors = new Discord.Collection(Object.entries({
   yellow: chalk.bold.yellow,
   darkgray: chalk.gray,
   red: chalk.red,
@@ -26,7 +27,7 @@ const colors = {
   cyan: chalk.cyan,
   purple: chalk.hex('#800080'),
   blue: chalk.blue,
-}
+}))
 
 class Logger {
   /**
@@ -66,9 +67,9 @@ class Logger {
     if (!init) this.initLog = () => { }
     if (!this.initialized && init) this.initLog()
     const self = new Logger()
-    self.thread = colors[color]
-      ? colors[color](thread)
-      : Object.values(colors)[Math.floor(Math.random() * colors.length)](thread)
+    self.thread = colors.has(color)
+      ? colors.get(color)(thread)
+      : colors.random()(thread)
     this.debugging = args['debugg']
     this.debug(`Registered logger for: ${thread}`, true)
     return self
