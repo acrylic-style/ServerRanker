@@ -1,3 +1,3 @@
-module.exports = {
+export = {
   commands: 0,
 }

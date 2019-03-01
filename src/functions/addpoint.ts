@@ -1,6 +1,6 @@
-const data = require('../data')
+import data = require('../data')
 
-module.exports = async msg => {
+export = async msg => {
   const min = 100
   const max = 300
   const random = Math.floor(Math.random() * (max + 1 - min)) + min

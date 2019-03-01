@@ -1,7 +1,8 @@
-const { commons: { f }, Command } = require('../server-ranker')
-const data = require('../data')
+import ServerRanker = require('../server-ranker')
+const { commons: { f }, Command } = ServerRanker
+import data = require('../data')
 
-module.exports = class extends Command {
+export = class extends Command {
   constructor() {
     super('points', { allowedIn: ['TextChannel'] })
   }

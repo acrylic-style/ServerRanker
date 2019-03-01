@@ -1,10 +1,13 @@
-const f = require('string-format')
-const logger = require('./util/logger').getLogger('commands', 'yellow')
-const { commands } = require('./commands')
-const levenshtein = require('fast-levenshtein').get
+import f = require('string-format')
+import Logger = require('./util/logger')
+const logger = Logger.getLogger('commands', 'yellow')
+import _commands = require('./commands')
+const commands = _commands.commands
+import _levenshtein = require('fast-levenshtein')
+const levenshtein = _levenshtein.get
 const c = require('./config.yml')
-const argsresolver = require('./util/parser')
-const data = require('./data')
+import argsresolver = require('./util/parser')
+import data = require('./data')
 
 async function runCommand(command, msg, lang) {
   const server = await data.getServer(msg.guild.id)
@@ -24,7 +27,7 @@ async function runCommand(command, msg, lang) {
   }
 }
 
-module.exports = async function(msg, lang) {
+export = async function(msg, lang) {
   const server = await data.getServer(msg.guild.id)
   const [cmd] = msg.content.replace(server.prefix, '').replace(/\s{1,}/gm, ' ').split(' ')
   if (server.banned) return msg.channel.send(f(lang.error, 'Your server is banned.\nPlease contact to the this server -> https://discord.gg/xQQXp4B'))

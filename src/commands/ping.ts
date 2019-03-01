@@ -1,6 +1,7 @@
-const { commons: { f }, Command } = require('../server-ranker')
+import ServerRanker = require('../server-ranker')
+const { commons: { f }, Command } = ServerRanker
 
-module.exports = class extends Command {
+export = class extends Command {
   constructor() {
     super('ping')
   }

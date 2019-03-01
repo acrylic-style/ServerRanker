@@ -1,4 +1,4 @@
-const Discord = require('discord.js')
+import Discord = require('discord.js')
 
 /**
  * Represents Resolver.
@@ -159,4 +159,4 @@ class Resolver {
 
 }
 
-module.exports = Resolver
+export = Resolver

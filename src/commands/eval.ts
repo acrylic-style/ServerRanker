@@ -1,7 +1,8 @@
-const { commons: { f }, Logger, Command } = require('../server-ranker')
+import ServerRanker = require('../server-ranker')
+const { commons: { f }, Logger, Command } = ServerRanker
 const logger = Logger.getLogger('commands:eval', 'lightpurple')
 
-module.exports = class extends Command {
+export = class extends Command {
   constructor() {
     const opts = {
       args: ['<Code>'],

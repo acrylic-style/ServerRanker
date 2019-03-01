@@ -1,17 +1,17 @@
 const initTime = Date.now()
-const ServerRanker = require('./src/server-ranker')
+import ServerRanker = require('./src/server-ranker')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
-const DBL = require('dblapi.js')
+import DBL = require('dblapi.js')
 const logger = ServerRanker.Logger.getLogger('main', 'blue')
 logger.info('Initializing')
-const moment = require('moment')
-const dispatcher = require('./src/dispatcher')
+import moment = require('moment')
+import dispatcher = require('./src/dispatcher')
 const args = ServerRanker.commons.parser(process.argv.slice(2))
 const ratelimited = new Set()
-const log = require('./src/log')
+import log = require('./src/log')
 const globalprefix = args['prefix'] || config['prefix']
-const data = require('./src/data')
+import data = require('./src/data')
 const f = ServerRanker.commons.f
 
 client.on('reconnecting', () => {

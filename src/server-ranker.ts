@@ -1,19 +1,19 @@
 require('./yaml')
 
-const Discord = require('discord.js')
-const Resolver = require('./util/resolver')
-const Logger = require('./util/logger')
-const Command = require('./structures/Command')
+import Discord = require('discord.js')
+import Resolver = require('./util/resolver')
+import Logger = require('./util/logger')
+import Command = require('./structures/Command')
 
-const parser = require('./util/parser')
-const language = require('./language')
-const f = require('string-format')
-const temp = require('./temp')
-const data = require('./data')
+import parser = require('./util/parser')
+import language = require('./language')
+import f = require('string-format')
+import temp = require('./temp')
+import data = require('./data')
 
-const addpoint = require('./functions/addpoint')
+import addpoint = require('./functions/addpoint')
 
-module.exports = {
+export = {
   Discord,
   Resolver,
   Logger,

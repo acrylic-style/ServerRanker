@@ -1,9 +1,9 @@
-const Logger = require('./util/logger')
-const parser = require('./util/parser')
+import Logger = require('./util/logger')
+import parser = require('./util/parser')
 const { args } = parser(process.argv.slice(2))
 const logger = Logger.getLogger('db', 'purple')
 logger.info('Connecting...')
-const Sequelize = require('sequelize')
+import Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const config = require('./config.yml')
 const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
@@ -91,7 +91,7 @@ if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!'
 
 sequelize.sync({ force: args.includes('forceSync') })
 
-module.exports = {
+export = {
   async getServer(server_id) {
     return (await Server.findOrCreate({
       where: { server_id },

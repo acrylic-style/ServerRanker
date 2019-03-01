@@ -1,8 +1,9 @@
-const { commons: { f }, Command, Discord } = require('../server-ranker')
-const moment = require('moment')
-const data = require('../data')
+import ServerRanker = require('../server-ranker')
+const { commons: { f }, Command, Discord } = ServerRanker
+import moment = require('moment')
+import data = require('../data')
 
-module.exports = class extends Command {
+export = class extends Command {
   constructor() {
     super('multiplier', { allowedIn: ['TextChannel'] })
     this.confirms = {}

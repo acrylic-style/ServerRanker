@@ -1,6 +1,7 @@
-const fs = require('fs').promises
-const moment = require('moment')
-const mkdirp = require('mkdirp-promise')
+import _fs = require('fs')
+const fs = _fs.promises
+import moment = require('moment')
+import mkdirp = require('mkdirp-promise')
 
 const getDateTime = () => moment().format('YYYY/MM/DD HH:mm:ss')
 const path = {
@@ -10,7 +11,7 @@ const path = {
   editServerMessages: guildID => `${__dirname}/../data/servers/${guildID}/editedMessages.log`,
 }
 
-module.exports = {
+export = {
   async messageLog(msg) {
     await mkdirp(`${__dirname}/../data/users/${msg.author.id}`)
     !msg.guild || await mkdirp(`${__dirname}/../data/servers/${msg.guild.id}`)

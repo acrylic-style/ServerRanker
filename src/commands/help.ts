@@ -1,6 +1,7 @@
-const { Command, Discord } = require('../server-ranker')
+import ServerRanker = require('../server-ranker')
+const { Command, Discord } = ServerRankers
 
-module.exports = class extends Command {
+export = class extends Command {
   constructor() {
     super('help')
   }

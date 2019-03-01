@@ -1,4 +1,5 @@
-const { Permissions } = require('discord.js')
+import Discord = require('discord.js')
+const { Permissions } = Discord
 
 class Command {
   /**
@@ -57,4 +58,4 @@ class Command {
   }
 }
 
-module.exports = Command
+export = Command

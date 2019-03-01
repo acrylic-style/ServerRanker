@@ -1,4 +1,4 @@
-module.exports = (argv) => {
+export = (argv) => {
   const args = { debug: {}, flags: new Set(), args: [] }
   argv.forEach(arg => {
     if (arg.includes('--') && arg.includes('=') && !arg.startsWith('--debug=')) {

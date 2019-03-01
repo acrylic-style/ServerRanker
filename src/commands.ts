@@ -1,8 +1,9 @@
-const fs = require('fs')
+import fs = require('fs')
 const commands = {}
 
 const files = fs.readdirSync(__dirname + '/commands/')
-const logger = require('./util/logger').getLogger('plugins', 'cyan')
+import Logger = require('./util/logger')
+const logger = Logger.getLogger('plugins', 'cyan')
 function setCommand(file, reload) {
   if (reload) delete require.cache[require.resolve(`${__dirname}/commands/${file.replace(/\.\./gm, '')}`)]
   const rawcommand = require(`${__dirname}/commands/${file}`)
@@ -19,7 +20,7 @@ function setCommand(file, reload) {
 
 for (const file of files) if (file.endsWith('.js')) setCommand(file)
 
-module.exports = {
+export = {
   commands,
   async load(file) {
     setCommand(file, true)

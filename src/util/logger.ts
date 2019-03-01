@@ -1,8 +1,9 @@
-const fs = require('fs')
-const chalk = require('chalk')
-const moment = require('moment')
-const Discord = require('discord.js')
-const args = require('./parser')(process.argv.slice(2))
+import fs = require('fs')
+import chalk = require('chalk')
+import moment = require('moment')
+import parser = require('./parser')
+import Discord = require('discord.js')
+const args = parser(process.argv.slice(2))
 const util = {
   existsSync(path) {
     try { // eslint-disable-line
@@ -58,7 +59,7 @@ class Logger {
   /**
    * Set thread name and color.
    *
-   * @example const logger = require('./logger').getLogger('example', 'red')
+   * @example const logger = Logger.getLogger('example', 'red')
    * @param {string} thread Thread name
    * @param {string} color Default: Random color, yellow, darkgray, red, lightred, green, lightpurple, white, cyan, purple, blue
    * @returns {Logger} A Logger instance
@@ -205,4 +206,4 @@ class Logger {
   }
 }
 
-module.exports = new Logger()
+export = new Logger()
