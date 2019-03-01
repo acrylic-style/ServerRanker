@@ -2,6 +2,19 @@ import Discord = require('discord.js')
 const { Permissions } = Discord
 
 class Command {
+  name: string;
+  options: {
+    alias: any[];
+    args: any[];
+    permission: number;
+    allowedIn: string[];
+    enabled: boolean;
+  };
+  allowedIn: string[];
+  enabled: boolean;
+  alias: string[];
+  args: any[];
+  permission: Discord.Permissions;
   /**
    * Command options
    * @typedef CommandOptions
@@ -42,18 +55,18 @@ class Command {
   /**
    * @abstract
    */
-  async run() {}
+  async run(msg, lang, args, opts) {}
 
-  async start(msg, lang, ...args) {
+  async start(msg, lang, args, opts) {
     if (!this.allowedIn.includes(msg.channel.constructor.name)) return msg.channel.send(require('string-format')(lang.not_allowed_in_here, this.allowedIn.join(', ')))
-    return await this.run(msg, lang, ...args)
+    return await this.run(msg, lang, args, opts)
   }
 
   /**
    * @abstract
    * @param {Discord.Message} msg
    */
-  isAllowed(msg) {
+  isAllowed(msg, owners) {
     return !msg.guild || msg.member.hasPermission(this.permission.bitfield)
   }
 }

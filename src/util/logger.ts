@@ -1,5 +1,5 @@
 import fs = require('fs')
-import chalk = require('chalk')
+const chalk = require('chalk')
 import moment = require('moment')
 import parser = require('./parser')
 import Discord = require('discord.js')
@@ -17,7 +17,7 @@ const util = {
     return str.replace(/\[..m/g, '').replace(/ /g, ' ').replace(/ /g, ' ').replace(//g, '')
   },
 }
-const colors = new Discord.Collection(Object.entries({
+const colors = new Discord.Collection<string, any>(Object.entries({
   yellow: chalk.bold.yellow,
   darkgray: chalk.gray,
   red: chalk.red,
@@ -31,6 +31,9 @@ const colors = new Discord.Collection(Object.entries({
 }))
 
 class Logger {
+  initialized: boolean;
+  debugging: boolean;
+  thread: string;
   /**
    * Do not call this method twice.
    *
@@ -65,7 +68,7 @@ class Logger {
    * @returns {Logger} A Logger instance
    */
   getLogger(thread, color = null, init = true) {
-    if (!init) this.initLog = () => { }
+    if (!init) this.initLog = () => this
     if (!this.initialized && init) this.initLog()
     const self = new Logger()
     self.thread = colors.has(color)
