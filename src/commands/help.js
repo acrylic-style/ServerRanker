@@ -10,7 +10,7 @@ module.exports = class extends Command {
       .setTitle('List of commands')
       .addField('points', lang['commands']['points'])
       .addField('leaderboard', lang['commands']['leaderboard'])
-      .addField('leaderboard_server', lang['commands']['leaderboard_server'])
+      .addField('leaderboard server', lang['commands']['leaderboard_server'])
       .addField('ping', lang['commands']['ping'])
       .addField('help', lang['commands']['help'])
       .addField('commands', lang['commands']['commands'])
