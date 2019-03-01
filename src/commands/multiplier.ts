@@ -4,6 +4,10 @@ import moment = require('moment')
 import data = require('../data')
 
 export = class extends Command {
+  confirms: {
+    [id: string]: () => void
+  };
+
   constructor() {
     super('multiplier', { allowedIn: ['TextChannel'] })
     this.confirms = {}
