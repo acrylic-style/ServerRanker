@@ -18,7 +18,7 @@ function setCommand(file, reload?) {
   }
 }
 
-for (const file of files) if (file.endsWith('.js')) setCommand(file)
+for (const file of files) if (file.endsWith('.ts')) setCommand(file)
 
 export = {
   commands,
