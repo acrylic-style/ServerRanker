@@ -1,5 +1,5 @@
 import ServerRanker = require('../server-ranker')
-const { Command, Discord } = ServerRankers
+const { Command, Discord } = ServerRanker
 
 export = class extends Command {
   constructor() {
