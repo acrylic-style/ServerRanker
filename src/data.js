@@ -1,6 +1,5 @@
 const Logger = require('./util/logger')
-const parser = require('./util/parser')
-const { args } = parser(process.argv.slice(2))
+const args = require('minimist')(process.argv.slice(2))
 const logger = Logger.getLogger('db', 'purple')
 logger.info('Connecting...')
 const Sequelize = require('sequelize')
@@ -87,9 +86,9 @@ const Multipliers = sequelize.define('multipliers', {
     allowNull: true,
   },
 })
-if (args.includes('forceSync')) logger.warn('Forced sync, it will drop table!!!')
+if (args.forceSync) logger.warn('Forced sync, it will drop table!!!')
 
-sequelize.sync({ force: args.includes('forceSync') })
+sequelize.sync({ force: args.forceSync })
 
 module.exports = {
   async getServer(server_id) {

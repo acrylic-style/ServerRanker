@@ -3,7 +3,7 @@ const logger = require('./util/logger').getLogger('commands', 'yellow')
 const { commands } = require('./commands')
 const levenshtein = require('fast-levenshtein').get
 const c = require('./config.yml')
-const argsresolver = require('./util/parser')
+const parser = require('minimist')
 const data = require('./data')
 
 async function runCommand(command, msg, lang) {
@@ -11,10 +11,9 @@ async function runCommand(command, msg, lang) {
   if (!command.enabled) return msg.channel.send(f(lang.disabled_command, command.name))
   if (!command.isAllowed(msg, c.owners)) return msg.channel.send(lang.youdonthaveperm)
   logger.info(f(lang.issuedcmd, msg.author.tag, msg.content))
-  const args = msg.content.replace(server.prefix, '').split(/\s{1,}/g)
-  const opts = argsresolver(args.slice(1))
+  const args = parser(msg.content.replace(server.prefix, '').split(/\s{1,}/g))
   const start = Date.now()
-  await command.start(msg, lang, args.filter(a => !opts.args.includes(a)), opts).catch(e => {
+  await command.start(msg, lang, args._, args).catch(e => {
     msg.channel.send(f(lang.error_occurred, command.name))
     logger.error(f(lang.error, e.stack || e))
   })

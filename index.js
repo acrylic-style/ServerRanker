@@ -7,7 +7,7 @@ const logger = ServerRanker.Logger.getLogger('main', 'blue')
 logger.info('Initializing')
 const moment = require('moment')
 const dispatcher = require('./src/dispatcher')
-const args = ServerRanker.commons.parser(process.argv.slice(2))
+const args = require('minimist')(process.argv.slice(2))
 const ratelimited = new Set()
 const log = require('./src/log')
 const globalprefix = args['prefix'] || config['prefix']

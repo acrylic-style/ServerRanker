@@ -5,7 +5,7 @@ const Resolver = require('./util/resolver')
 const Logger = require('./util/logger')
 const Command = require('./structures/Command')
 
-const parser = require('./util/parser')
+const parser = require('minimist')
 const language = require('./language')
 const f = require('string-format')
 const temp = require('./temp')
@@ -20,7 +20,6 @@ module.exports = {
   Command,
   commons: {
     args: parser(process.argv.slice(2)),
-    parser,
     language,
     f,
     temp,

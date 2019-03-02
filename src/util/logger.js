@@ -2,7 +2,7 @@ const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
 const Discord = require('discord.js')
-const args = require('./parser')(process.argv.slice(2))
+const args = require('minimist')(process.argv.slice(2))
 const stripAnsi = require('strip-ansi')
 const util = {
   existsSync(path) {
@@ -68,7 +68,7 @@ class Logger {
     self.thread = colors.has(color)
       ? colors.get(color)(thread)
       : colors.random()(thread)
-    this.debugging = args['debugg']
+    this.debugging = args['debug']
     this.debug(`Registered logger for: ${thread}`, true)
     return self
   }
