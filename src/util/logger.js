@@ -3,6 +3,7 @@ const chalk = require('chalk')
 const moment = require('moment')
 const Discord = require('discord.js')
 const args = require('./parser')(process.argv.slice(2))
+const stripAnsi = require('strip-ansi')
 const util = {
   existsSync(path) {
     try { // eslint-disable-line
@@ -11,9 +12,6 @@ const util = {
     } catch(err) {
       return false
     }
-  },
-  removeColor(str) {
-    return str.replace(/\[..m/g, '').replace(/ /g, ' ').replace(/ /g, ' ').replace(//g, '')
   },
 }
 const colors = new Discord.Collection(Object.entries({
@@ -88,7 +86,7 @@ class Logger {
     const thread = isLogger ? chalk.hex('#800080')('logger') : this.thread
     const coloredlevel = chalk`{${color} ${level}}`
     const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message)}${chalk.reset()}`
-    fs.appendFileSync('latest.log', `${util.removeColor(data)}\n`)
+    fs.appendFileSync('latest.log', `${stripAnsi(data)}\n`)
     console.info(data)
   }
   /**
