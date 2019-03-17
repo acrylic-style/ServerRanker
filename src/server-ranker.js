@@ -2,7 +2,7 @@ require('./yaml')
 
 const Discord = require('discord.js')
 const Resolver = require('./util/resolver')
-const Logger = require('./util/logger')
+const Logger = require('./util/LoggerFactory')
 const Command = require('./structures/Command')
 
 const parser = require('minimist')

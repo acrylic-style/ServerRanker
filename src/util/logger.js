@@ -1,49 +1,24 @@
 const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
-const args = require('minimist')(process.argv.slice(2))
 const stripAnsi = require('strip-ansi')
-const util = {
-  existsSync(path) {
-    try { // eslint-disable-line
-      fs.accessSync(path)
-      return true
-    } catch(err) {
-      return false
-    }
-  },
-  randomObject(obj) {
-    const keys = Object.keys(obj)
-    return obj[keys[ keys.length * Math.random() << 0]]
-  },
-}
-const colors = {
-  yellow: chalk.bold.yellow,
-  darkgray: chalk.gray,
-  red: chalk.red,
-  lightred: chalk.bold.red,
-  green: chalk.green,
-  lightpurple: chalk.bold.hex('#800080'),
-  white: chalk.white,
-  cyan: chalk.cyan,
-  purple: chalk.hex('#800080'),
-  blue: chalk.blue,
+const existsSync = path => {
+  try { // eslint-disable-line
+    fs.accessSync(path)
+    return true
+  } catch(err) {
+    return false
+  }
 }
 
 class Logger {
-  /**
-   * Do not call this method twice.
-   *
-   * @returns {Logger} A Logger instance
-   */
-  initLog() {
-    this.initialized = true
-    if (util.existsSync('latest.2.log')) fs.copyFileSync('latest.2.log', 'latest.3.log')
-    if (util.existsSync('latest.1.log')) fs.copyFileSync('latest.1.log', 'latest.2.log')
-    if (util.existsSync('latest.log')) fs.copyFileSync('latest.log', 'latest.1.log')
+  constructor(init) {
+    if (init) return
+    if (existsSync('latest.2.log')) fs.copyFileSync('latest.2.log', 'latest.3.log')
+    if (existsSync('latest.1.log')) fs.copyFileSync('latest.1.log', 'latest.2.log')
+    if (existsSync('latest.log')) fs.copyFileSync('latest.log', 'latest.1.log')
     fs.writeFileSync('latest.log', `--- The log begin at ${new Date().toLocaleString()} ---\n`)
     this.debug('The log file has initialized.', true)
-    return this
   }
 
   /**
@@ -56,25 +31,6 @@ class Logger {
     return this
   }
 
-  /**
-   * Set thread name and color.
-   *
-   * @example const logger = require('./logger').getLogger('example', 'red')
-   * @param {string} thread Thread name
-   * @param {string} color Default: Random color, yellow, darkgray, red, lightred, green, lightpurple, white, cyan, purple, blue
-   * @returns {Logger} A Logger instance
-   */
-  getLogger(thread, color = null, init = true) {
-    if (!init) this.initLog = () => { }
-    if (!this.initialized && init) this.initLog()
-    const self = new Logger()
-    self.thread = Object.keys(colors).includes(color)
-      ? colors[color](thread)
-      : util.randomObject(colors)(thread)
-    this.debugging = args['debug']
-    this.debug(`Registered logger for: ${thread}`, true)
-    return self
-  }
   /**
    *
    * @param {*} message Message of this log
@@ -206,4 +162,4 @@ class Logger {
   }
 }
 
-module.exports = new Logger()
+module.exports = Logger

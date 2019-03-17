@@ -1,4 +1,4 @@
-const Logger = require('./util/logger')
+const Logger = require('./util/LoggerFactory')
 const args = require('minimist')(process.argv.slice(2))
 const logger = Logger.getLogger('db', 'purple')
 logger.info('Connecting...')
