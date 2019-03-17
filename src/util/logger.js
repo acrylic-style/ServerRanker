@@ -40,8 +40,9 @@ class Logger {
     const date = chalk.white.bgCyan(`[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}]`) + chalk.reset()
     const thread = isLogger ? chalk.hex('#800080')('logger') : this.thread
     const coloredlevel = chalk`{${color} ${level}}`
-    const spaces = ' '.repeat(stripAnsi(`${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} `).length)
-    const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message.includes('\n') ? message.replace(/\n/g, `\n${spaces}`) : message)}${chalk.reset()}`
+    const datethreadlevel = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} `
+    const spaces = ' '.repeat(stripAnsi(datethreadlevel).length)
+    const data = `${datethreadlevel}${chalk.green(message.includes('\n') ? message.replace(/\n/g, `\n${spaces}`) : message)}${chalk.reset()}`
     fs.appendFileSync(this.file, `${stripAnsi(data)}\n`)
     console.info(data)
   }
