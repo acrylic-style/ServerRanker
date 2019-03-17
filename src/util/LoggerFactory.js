@@ -1,5 +1,7 @@
 const Logger = require('./Logger')
 const chalk = require('chalk')
+const moment = require('moment')
+const fs = require('fs')
 let init = false
 
 const randomObject = obj => {
@@ -20,6 +22,14 @@ const colors = {
   blue: chalk.blue,
 }
 
+const date = moment().format('YYYY-MM-DD-HH-mm-ss')
+
+process.on('uncaughtException', err => {
+  fs.appendFileSync(`logs/latest.${date}.log`, (err && err.stack) ? err.stack : err)
+  console.error((err && err.stack) ? err.stack : err)
+  process.exit()
+})
+
 /**
  * Set thread name and color.
  *
@@ -29,7 +39,8 @@ const colors = {
  * @returns {Logger} A Logger instance
  */
 const getLogger = (thread, color = null) => {
-  const self = new Logger(init)
+  const self = new Logger(init, date)
+  self.file = `logs/latest.${date}.log`
   init = true
   self.thread = Object.keys(colors).includes(color)
     ? colors[color](thread)
