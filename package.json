@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "repository": "https://github.com/acrylic-style/ServerRanker",
-  "author": "acrylic-style <rht0910@rht0910.tk>",
+  "author": "acrylic-style <me@acrylicstyle.xyz>",
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
