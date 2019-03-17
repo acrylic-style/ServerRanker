@@ -70,7 +70,7 @@ class Logger {
     const self = new Logger()
     self.thread = Object.keys(colors).includes(color)
       ? colors[color](thread)
-      : util.randomObject(color)(thread)
+      : util.randomObject(colors)(thread)
     this.debugging = args['debug']
     this.debug(`Registered logger for: ${thread}`, true)
     return self
