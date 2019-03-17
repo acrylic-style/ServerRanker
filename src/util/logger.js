@@ -2,22 +2,18 @@ const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
 const stripAnsi = require('strip-ansi')
-const existsSync = path => {
-  try { // eslint-disable-line
-    fs.accessSync(path)
-    return true
-  } catch(err) {
-    return false
-  }
-}
 
 class Logger {
-  constructor(init) {
+  constructor(init, date) {
     if (init) return
-    if (existsSync('latest.2.log')) fs.copyFileSync('latest.2.log', 'latest.3.log')
-    if (existsSync('latest.1.log')) fs.copyFileSync('latest.1.log', 'latest.2.log')
-    if (existsSync('latest.log')) fs.copyFileSync('latest.log', 'latest.1.log')
-    fs.writeFileSync('latest.log', `--- The log begin at ${new Date().toLocaleString()} ---\n`)
+    const regex = /latest\.(.+?)\.log/
+    const files = fs.readdirSync(__dirname + '/../../logs/')
+    files.filter(file => regex.test(file)).forEach(file => {
+      const [ name, date ] = regex.exec(file)
+      fs.renameSync(`logs/${name}`, `logs/${date}.log`)
+    })
+    this.file = `logs/latest.${date}.log`
+    fs.writeFileSync(this.file, `--- The log begin at ${new Date().toLocaleString()} ---\n`)
     this.debug('The log file has initialized.', true)
   }
 
@@ -44,8 +40,9 @@ class Logger {
     const date = chalk.white.bgCyan(`[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}]`) + chalk.reset()
     const thread = isLogger ? chalk.hex('#800080')('logger') : this.thread
     const coloredlevel = chalk`{${color} ${level}}`
-    const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message)}${chalk.reset()}`
-    fs.appendFileSync('latest.log', `${stripAnsi(data)}\n`)
+    const spaces = ' '.repeat(stripAnsi(`${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} `).length)
+    const data = `${date} ${thread}${chalk.reset()} ${coloredlevel}${chalk.reset()} ${chalk.green(message.includes('\n') ? message.replace(/\n/g, `\n${spaces}`) : message)}${chalk.reset()}`
+    fs.appendFileSync(this.file, `${stripAnsi(data)}\n`)
     console.info(data)
   }
   /**
