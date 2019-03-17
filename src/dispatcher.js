@@ -1,5 +1,5 @@
 const f = require('string-format')
-const logger = require('./util/logger').getLogger('commands', 'yellow')
+const logger = require('./util/LoggerFactory').getLogger('commands', 'yellow')
 const { commands } = require('./commands')
 const levenshtein = require('fast-levenshtein').get
 const c = require('./config.yml')
