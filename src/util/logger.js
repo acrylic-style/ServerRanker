@@ -1,7 +1,6 @@
 const fs = require('fs')
 const chalk = require('chalk')
 const moment = require('moment')
-const Discord = require('discord.js')
 const args = require('minimist')(process.argv.slice(2))
 const stripAnsi = require('strip-ansi')
 const util = {
@@ -13,8 +12,12 @@ const util = {
       return false
     }
   },
+  randomObject(obj) {
+    const keys = Object.keys(obj)
+    return obj[keys[ keys.length * Math.random() << 0]]
+  },
 }
-const colors = new Discord.Collection(Object.entries({
+const colors = {
   yellow: chalk.bold.yellow,
   darkgray: chalk.gray,
   red: chalk.red,
@@ -25,7 +28,7 @@ const colors = new Discord.Collection(Object.entries({
   cyan: chalk.cyan,
   purple: chalk.hex('#800080'),
   blue: chalk.blue,
-}))
+}
 
 class Logger {
   /**
@@ -65,9 +68,9 @@ class Logger {
     if (!init) this.initLog = () => { }
     if (!this.initialized && init) this.initLog()
     const self = new Logger()
-    self.thread = colors.has(color)
-      ? colors.get(color)(thread)
-      : colors.random()(thread)
+    self.thread = Object.keys(colors).includes(color)
+      ? colors[color](thread)
+      : util.randomObject(color)(thread)
     this.debugging = args['debug']
     this.debug(`Registered logger for: ${thread}`, true)
     return self
