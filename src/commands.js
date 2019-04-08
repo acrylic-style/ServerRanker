@@ -2,7 +2,7 @@ const fs = require('fs')
 const commands = {}
 
 const files = fs.readdirSync(__dirname + '/commands/')
-const logger = require('./util/LoggerFactory').getLogger('plugins', 'cyan')
+const logger = require('logger.js').LoggerFactory.getLogger('plugins', 'cyan')
 function setCommand(file, reload) {
   if (reload) delete require.cache[require.resolve(`${__dirname}/commands/${file.replace(/\.\./gm, '')}`)]
   const rawcommand = require(`${__dirname}/commands/${file}`)
