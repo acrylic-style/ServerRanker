@@ -7,7 +7,7 @@ const parser = require('minimist')
 const data = require('./data')
 
 async function runCommand(command, msg, lang) {
-  const server = await data.getServer(msg.guild.id)
+  const server = msg.guild ? await data.getServer(msg.guild.id) : Object.freeze({ prefix: 'sr!', language: 'en' })
   if (!command.enabled) return msg.channel.send(f(lang.disabled_command, command.name))
   if (!command.isAllowed(msg, c.owners)) return msg.channel.send(lang.youdonthaveperm)
   logger.info(f(lang.issuedcmd, msg.author.tag, msg.content))
@@ -24,7 +24,7 @@ async function runCommand(command, msg, lang) {
 }
 
 module.exports = async function(msg, lang) {
-  const server = await data.getServer(msg.guild.id)
+  const server = msg.guild ? await data.getServer(msg.guild.id) : Object.freeze({ prefix: 'sr!', language: 'en' })
   const [cmd] = msg.content.replace(server.prefix, '').replace(/\s{1,}/gm, ' ').split(' ')
   if (server.banned) return msg.channel.send(f(lang.error, 'Your server is banned.\nPlease contact to the this server -> https://discord.gg/xQQXp4B'))
   if (commands[cmd]) {
