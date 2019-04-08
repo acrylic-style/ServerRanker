@@ -2,9 +2,8 @@ require('./yaml')
 
 const Discord = require('discord.js')
 const Resolver = require('./util/resolver')
-const Logger = require('./util/LoggerFactory')
+const Logger = require('logger.js').LoggerFactory
 const Command = require('./structures/Command')
-
 const parser = require('minimist')
 const language = require('./language')
 const f = require('string-format')
