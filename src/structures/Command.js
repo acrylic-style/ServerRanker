@@ -53,7 +53,7 @@ class Command {
    * @param {Discord.Message} msg
    */
   isAllowed(msg) {
-    return !msg.guild || msg.member.hasPermission(this.permission.bitfield)
+    return msg.member.hasPermission(this.permission.bitfield)
   }
 }
 
