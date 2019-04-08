@@ -35,12 +35,12 @@ client.on('ready', async () => {
 client.on('message', async msg => {
   if (msg.author.bot || msg.system) return
   log.messageLog(msg)
-  const server = await data.getServer(msg.guild.id)
+  const server = msg.guild ? await data.getServer(msg.guild.id) : { prefix: 'sr!', language: 'en' }
   const user = await data.getUser(msg.author.id)
   const prefix = server.prefix || config['prefix'] || 'sr!'
   await data.updateUserTag(msg.author.id, msg.author.tag)
   const lang = ServerRanker.commons.language.get(user.language || server.language || 'en')
-  if (!ratelimited.has(msg.author.id)) {
+  if (msg.guild && !ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
     await ServerRanker['functions']['addpoint'](msg)
   }
