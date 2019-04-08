@@ -1,6 +1,7 @@
 const data = require('../data')
 
 module.exports = async msg => {
+  if (!msg.guild) return
   const min = 100
   const max = 300
   const random = Math.floor(Math.random() * (max + 1 - min)) + min
