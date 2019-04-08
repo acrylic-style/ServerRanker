@@ -3,7 +3,7 @@ const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
-    super('points', { allowedIn: ['TextChannel'] })
+    super('points')
   }
 
   async run(msg, lang) {
