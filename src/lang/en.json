@@ -5,7 +5,8 @@
     "leaderboard": "Leaderboard of user, shows only top 5.",
     "leaderboard_server": "Leaderboard of server, shows only top 5.",
     "ping": "Check latency.",
-    "help": "Just shows help / commands."
+    "help": "Just shows help / commands.",
+    "recalc": "Recalculuate all points. May not apply multiplier(s), and calculated all points will be reduced to 0.95x."
   },
   "error_occurred": "An error occurred in `{0}`, Oh no!",
   "disabled_command": "This({0}) command is disabled.",
