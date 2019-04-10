@@ -25,14 +25,15 @@ module.exports = class extends Command {
       }
       lastrun = Date.now()
       running = msg.guild.id
-      msg.channel.send('Fetching all messages. Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
+      msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
       let messages = []
       let lastmsg = { id: msg.id }
       const min = 100
       const max = 300
       let points = 0
+      let maxpoints = 0
       let finished = false
-      await asyncForEach(msg.guild.channels.filter(c => c.type === 'text'), async (c, i, a) => {
+      await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i, a) => {
         const interval = await setIntervalAsync(async () => {
           const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
           lastmsg = fetchedMessages.last() || msg.id
@@ -40,9 +41,10 @@ module.exports = class extends Command {
           if (fetchedMessages.size <= 99 || messages.length >= 1000000) {
             messages.forEach(() => {
               points = points + Math.round((Math.floor(Math.random() * (max + 1 - min)) + min) * 0.95)
+              maxpoints = maxpoints + (300 * 0.95)
             })
             if (messages.length >= 1000000) {
-              msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages.length} messages.\nExpected random points: ${points}`)
+              msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages.length} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               running = null
             }
             clearIntervalAsync(interval)
@@ -52,7 +54,7 @@ module.exports = class extends Command {
       })
       const f = setInterval(() => {
         if (!finished) return
-        msg.channel.send(`Collected ${messages.length} messages.\nExpected random points: ${points}`)
+        msg.channel.send(`Collected ${messages.length} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
         running = null
         clearInterval(f)
       }, 1000 * 10)
