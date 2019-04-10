@@ -1,4 +1,5 @@
 const { Permissions } = require('discord.js')
+const config = require('../config.yml')
 
 class Command {
   /**
@@ -53,7 +54,13 @@ class Command {
    * @param {Discord.Message} msg
    */
   isAllowed(msg) {
-    return (msg.member || { hasPermission: () => true }).hasPermission(this.permission.bitfield)
+    if ((msg.member || { hasPermission: () => true }).hasPermission(this.permission.bitfield)) {
+      return true
+    } else if (config.owners.includes(msg.author.id)) {
+      msg.channel.send('Note: You\'re overriding permission because you\'re listed as bot owner.')
+    } else {
+      return false
+    }
   }
 }
 

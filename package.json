@@ -17,6 +17,7 @@
     "mysql2": "^1.6.4",
     "object-assign-deep": "^0.4.0",
     "sequelize": "^4.42.0",
+    "set-interval-async": "^1.0.23",
     "sqlite3": "^4.0.6",
     "string-format": "^2.0.0",
     "strip-ansi": "^5.0.0",

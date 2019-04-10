@@ -118,6 +118,18 @@ module.exports = {
       where: { user_id },
     })
   },
+  setServerPoint(user_id, point) {
+    return Server.update(['point'], {
+      by: point,
+      where: { user_id },
+    })
+  },
+  setUserPoint(user_id, point) {
+    return User.update(['point'], {
+      by: point,
+      where: { user_id },
+    })
+  },
   subtractUserPoint(user_id, point) {
     return User.decrement(['point'], {
       by: point,
