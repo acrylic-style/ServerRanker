@@ -14,8 +14,8 @@ module.exports = class extends Command {
   }
 
   async run(msg, lang, args) {
-    args[1] = args[1].toString()
     if (!args[1]) return msg.channel.send(lang.invalid_args)
+    args[1] = args[1].toString()
     !(async () => {
       if (args[1].includes('async:')) {
         args[1] = args[1].replace(/async:/g, '')
