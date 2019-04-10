@@ -58,6 +58,7 @@ class Command {
       return true
     } else if (config.owners.includes(msg.author.id)) {
       msg.channel.send('Note: You\'re overriding permission because you\'re listed as bot owner.')
+      return true
     } else {
       return false
     }
