@@ -33,6 +33,12 @@ module.exports = class extends Command {
       let points = 0
       let maxpoints = 0
       let finished = false
+      const f = setInterval(() => {
+        if (!finished) return
+        msg.channel.send(`Collected ${messages.length} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
+        running = null
+        clearInterval(f)
+      }, 1000 * 10)
       await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i, a) => {
         const interval = await setIntervalAsync(async () => {
           const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
@@ -47,17 +53,12 @@ module.exports = class extends Command {
               msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages.length} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               running = null
             }
+            clearInterval(f)
             clearIntervalAsync(interval)
             if (i >= a.size) finished = true
           }
         }, 1000 * 10)
       })
-      const f = setInterval(() => {
-        if (!finished) return
-        msg.channel.send(`Collected ${messages.length} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
-        running = null
-        clearInterval(f)
-      }, 1000 * 10)
     }
     if (running === msg.guild.id) msg.channel.send('Already running recalculation in this server!')
     if (running) {
