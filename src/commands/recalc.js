@@ -32,7 +32,7 @@ module.exports = class extends Command {
   }
 
   async execute(msg) {
-    msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
+    this.msg = await msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
     data.updateLastRecalc(msg.guild.id, Date.now())
     const channels = msg.guild.channels.filter(c => c.type === 'text' && c.memberPermissions(msg.guild.me).has(1024))
     const messages = await this.series(Array.from(channels.values()))
@@ -55,6 +55,7 @@ module.exports = class extends Command {
     return new Promise(async resolve => {
       const messages = await channel.fetchMessages({ limit: 100, before })
       const sum = size + messages.filter(m => !m.author.bot).size
+      this.msg.edit(`Fetching all messages... [${sum} messages]`)
       if (messages.size <= 99 || sum >= 1000000) return resolve(sum)
       setTimeout(() => resolve(this.fetch(channel, messages.last().id, sum)), 10e3)
     })
