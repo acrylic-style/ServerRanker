@@ -40,10 +40,6 @@ const Server = sequelize.define('servers', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
   },
-  lastRecalc: {
-    type: Sequelize.INTEGER,
-    defaultValue: null,
-  },
 })
 const User = sequelize.define('users', {
   user_id: {
@@ -133,12 +129,6 @@ module.exports = {
       where: { user_id },
     })
   },
-  updateLastRecalc(server_id, date) {
-    return Server.update(['lastRecalc'], {
-      by: date,
-      where: { server_id },
-    })
-  },
   subtractUserPoint(user_id, point) {
     return User.decrement(['point'], {
       by: point,
@@ -162,11 +152,6 @@ module.exports = {
   getMultiplier(multiplier_id) {
     return Multipliers.findOne({
       where: { multiplier_id },
-    })
-  },
-  getLastRecalc(server_id) {
-    return Server.findOne({
-      where: { server_id },
     })
   },
   getUserMultipliers(user_id) {
