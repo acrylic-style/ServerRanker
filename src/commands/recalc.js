@@ -1,5 +1,5 @@
 const { Command, functions: { genpoint } } = require('../server-ranker')
-//const data = require('../data')
+const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
@@ -33,6 +33,7 @@ module.exports = class extends Command {
 
   async execute(msg) {
     msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
+    data.updateLastRecalc(msg.guild.id, Date.now())
     const channels = msg.guild.channels.filter(c => c.type === 'text' && c.memberPermissions(msg.guild.me).has(1024))
     const messages = await this.series(Array.from(channels.values()))
     const maxpoints = messages * 300 * 0.95
