@@ -1,84 +1,60 @@
-const {
-  Command,
-  functions: { genpoint },
-} = require('../server-ranker')
-const {
-  setIntervalAsync,
-  clearIntervalAsync,
-} = require('set-interval-async/fixed')
+const { Command, functions: { genpoint } } = require('../server-ranker')
 //const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
     super('recalc', { allowedIn: ['TextChannel'], permission: 8, requiredOwner: true })
-    this.running = null
+    this.running = false
     this.queue = []
-    this.lastrun = null
+    this.lastRun = 0
   }
 
   async run(msg) {
-    if (this.running === msg.guild.id) return msg.channel.send('Already running recalculation in this server!')
-    const callback = async () => {
-      const asyncForEach = async (array, callback) => {
-        const ids = array.map(c => c.id)
-        const size = array.size-1
-        for (let index = 0; index <= size; index++) {
-          if (!array.has(ids[index])) {continue}
-          await callback(array.get(ids[index]), index, {...array, size: size})
-        }
-      }
-      this.lastrun = Date.now()
-      this.running = msg.guild.id
-      msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
-      let messages = 0
-      let lastmsg = msg
-      const finished = []
-      const f = setInterval(() => {
-        if (finished.some(f => !f)) return
-        const maxpoints = messages * 300 * 0.95
-        const points = Array.from({ length: messages }, () => Math.round(genpoint() * 0.95)).reduce((p, c) => p + c)
-        msg.channel.send(`Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
-        this.running = null
-        clearInterval(f)
-      }, 1000 * 10)
-      await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i) => {
-        finished[i] = false
-        const interval = await setIntervalAsync(async () => {
-          const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
-          lastmsg = fetchedMessages.last()
-          messages = messages + fetchedMessages.filter(m => !m.author.bot).size
-          if (fetchedMessages.size <= 99 || messages >= 1000000) {
-            if (messages >= 1000000) {
-              const maxpoints = messages * 300 * 0.95
-              const points = Array.from({ length: messages }, () => Math.round(genpoint() * 0.95)).reduce((p, c) => p + c)
-              msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
-              this.running = null
-            }
-            clearIntervalAsync(interval)
-            finished[i] = true
-          }
-        }, 1000 * 10)
-      })
-    }
-    if (this.running) {
-      if (this.queue.includes(msg.guild.id)) return msg.channel.send('This server is already in queue!')
-      this.queue.push(msg.guild.id)
-      const queueInterval = setInterval(async () => {
-        if (!this.running && this.queue[0] === msg.guild.id) {
-          clearInterval(queueInterval)
-          this.queue = this.queue.slice(1)
-          msg.channel.send('Starting in 5 minutes')
-          this.running = msg.guild.id
-          setTimeout(() => { callback() }, 300000)
-        }
-      }, 1000 * 5)
-      msg.channel.send('Waiting for queue...')
-      return
-    }
-    const time = Date.now()
-    if (!this.lastrun) return callback()
-    if (time-this.lastrun < 300000) {
-      setTimeout(() => { callback() }, 300000 - (time-this.lastrun))
-    } else callback()
+    if (this.running === msg.guild.id)
+      return msg.channel.send('Already running recalculation in this server!')
+    if (this.queue.some(message => message.guild.id === msg.guild.id))
+      return msg.channel.send('This server is already in queue!')
+    this.queue.push(msg)
+    if (!this.running) this.loop()
+    else msg.channel.send('Waiting for queue...')
+  }
+
+  async loop() {
+    if (!this.queue.length) return
+    const elapsed = Date.now() - this.lastRun
+    if (elapsed < 300000)
+      return setTimeout(() => this.loop(), 300000 - elapsed)
+    this.lastRun = Date.now()
+    const msg = this.queue.shift()
+    this.running = msg.guild.id
+    await this.execute(msg)
+    setTimeout(() => this.execute(), 300000)
+  }
+
+  async execute(msg) {
+    msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
+    const channels = msg.guild.channels.filter(c => c.type === 'text' && c.memberPermissions(msg.guild.me).has(1024))
+    const messages = await this.series(Array.from(channels))
+    const maxpoints = messages * 300 * 0.95
+    const points = Array.from({ length: messages }, () => Math.round(genpoint() * 0.95)).reduce((p, c) => p + c)
+    const warning = messages >= 1000000 ? ':warning: You\'ve reached fetch limit.\n' : ''
+    msg.channel.send(warning + `Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
+    this.running = null
+  }
+
+  async series(channels, before, total = 0) {
+    const channel = channels.shift()
+    const sum = total + await this.fetch(channel, before)
+    if (sum >= 1000000) return sum
+    return await this.series(channels)
+  }
+
+  fetch(channel, before, size = 0) {
+    return new Promise(async resolve => {
+      const messages = await channel.fetchMessages({ limit: 100, before })
+      const sum = size + messages.filter(m => !m.author.bot).size
+      if (messages.size <= 99 || sum >= 1000000) return resolve(sum)
+      setTimeout(() => resolve(this.fetch(channel, messages.last().id, sum)), 10e3)
+    })
   }
 }
