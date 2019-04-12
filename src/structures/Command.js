@@ -1,5 +1,4 @@
 const { Permissions } = require('discord.js')
-const config = require('../config.yml')
 
 class Command {
   /**
@@ -29,6 +28,7 @@ class Command {
       args: [],
       permission: 0,
       allowedIn: ['TextChannel', 'DMChannel', 'GroupDMChannel'],
+      requiredOwner: false,
       enabled: true,
     }, options)
 
@@ -36,6 +36,7 @@ class Command {
     this.enabled = this.options.enabled
     this.alias = this.options.alias
     this.args = this.options.args
+    this.requiredOwner = this.options.requiredOwner
     this.permission = new Permissions(this.options.permission).freeze()
   }
 
@@ -53,10 +54,12 @@ class Command {
    * @abstract
    * @param {Discord.Message} msg
    */
-  isAllowed(msg) {
-    if ((msg.member || { hasPermission: () => true }).hasPermission(this.permission.bitfield)) {
+  isAllowed(msg, owners) {
+    if (this.requiredOwner) {
+      return owners.includes(msg.author.id)
+    } else if ((msg.member || { hasPermission: () => true }).hasPermission(this.permission.bitfield)) {
       return true
-    } else if (config.owners.includes(msg.author.id)) {
+    } else if (owners.includes(msg.author.id)) {
       msg.channel.send('Note: You\'re bypassing permission because you\'re listed as bot owner.')
       return true
     } else {
