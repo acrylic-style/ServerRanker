@@ -28,7 +28,7 @@ module.exports = class extends Command {
       this.running = msg.guild.id
       msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
       let messages = 0
-      let lastmsg = msg.id
+      let lastmsg = msg
       const min = 100
       const max = 300
       const finished = []
@@ -44,8 +44,8 @@ module.exports = class extends Command {
       await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i) => {
         finished[i] = false
         const interval = await setIntervalAsync(async () => {
-          const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg })
-          lastmsg = fetchedMessages.last().id
+          const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
+          lastmsg = fetchedMessages.last()
           messages = messages + fetchedMessages.filter(m => !m.author.bot).size
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
             if (messages >= 1000000) {
