@@ -14,6 +14,7 @@ module.exports = class extends Command {
   }
 
   async run(msg) {
+    if (running === msg.guild.id) return msg.channel.send('Already running recalculation in this server!')
     const callback = async () => {
       const asyncForEach = async (array, callback) => {
         const ids = array.map(c => c.id)
@@ -45,8 +46,8 @@ module.exports = class extends Command {
       await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i) => {
         finished[i] = false
         const interval = await setIntervalAsync(async () => {
-          const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
-          lastmsg = fetchedMessages.last() || msg.id
+          const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg })
+          lastmsg = fetchedMessages.last().id
           messages = messages + fetchedMessages.filter(m => !m.author.bot).size
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
             if (messages >= 1000000) {
@@ -62,7 +63,6 @@ module.exports = class extends Command {
         }, 1000 * 10)
       })
     }
-    if (running === msg.guild.id) msg.channel.send('Already running recalculation in this server!')
     if (running) {
       if (queue.includes(msg.guild.id)) return msg.channel.send('This server is already in queue!')
       queue.push(msg.guild.id)
@@ -81,7 +81,7 @@ module.exports = class extends Command {
     const time = Date.now()
     if (!lastrun) return callback()
     if (time-lastrun < 300000) {
-      setTimeout(() => { callback() }, 300000 - time-lastrun)
+      setTimeout(() => { callback() }, 300000 - (time-lastrun))
     } else callback()
   }
 }
