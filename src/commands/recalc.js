@@ -28,7 +28,7 @@ module.exports = class extends Command {
       this.running = msg.guild.id
       msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
       let messages = 0
-      let lastmsg = { id: msg.id }
+      let lastmsg = msg.id
       const min = 100
       const max = 300
       const finished = []
