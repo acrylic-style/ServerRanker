@@ -9,7 +9,6 @@ const sequelize = new Sequelize(config.database.name, config.database.user, conf
   host: 'localhost',
   dialect: config.database.type,
   storage: `${__dirname}/../data/database.sqlite`,
-  operatorsAliases: false,
   logging: false,
 })
 sequelize.authenticate()
