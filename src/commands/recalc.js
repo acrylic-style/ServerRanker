@@ -54,7 +54,7 @@ module.exports = class extends Command {
     return new Promise(async resolve => {
       const messages = await channel.fetchMessages({ limit: 100, before })
       const sum = size + messages.filter(m => !m.author.bot).size
-      if (messages.size <= 99 || sum >= 200) return resolve(sum)
+      if (messages.size <= 99 || sum >= 1000000) return resolve(sum)
       setTimeout(() => resolve(this.fetch(channel, messages.last().id, sum)), 10e3)
     })
   }
