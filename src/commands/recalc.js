@@ -15,7 +15,6 @@ module.exports = class extends Command {
 
   async run(msg) {
     const callback = async () => {
-      const repeat = async (callback, count) => { for (let i = 0;i <= count; i++ ) { await callback() } }
       const asyncForEach = async (array, callback) => {
         const ids = array.map(c => c.id)
         const size = array.size-1
@@ -47,10 +46,9 @@ module.exports = class extends Command {
           lastmsg = fetchedMessages.last() || msg.id
           messages = messages + fetchedMessages.filter(m => !m.author.bot).size
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
-            await repeat(() => {
-              points = points + Math.round((Math.floor(Math.random() * (max + 1 - min)) + min) * 0.95)
-              maxpoints = maxpoints + (300 * 0.95)
-            }, messages)
+            maxpoints = maxpoints + (messages * 300 * 0.95)
+            points = Array.from({ length: messages }, () => 
+              Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
             if (messages >= 1000000) {
               msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               running = null
