@@ -35,19 +35,19 @@ module.exports = class extends Command {
       let points = 0
       let maxpoints = 0
       const f = setInterval(() => {
-        if (finished.filter(f => !f).length) return
+        if (finished.some(f => !f)) return
         msg.channel.send(`Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
         running = null
         clearInterval(f)
       }, 1000 * 10)
-      await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i, a) => {
+      await asyncForEach(msg.guild.channels.filter(c => c.type === 'text').filter(c => c.memberPermissions(msg.guild.me).has(1024)), async (c, i) => {
         finished[i] = false
         const interval = await setIntervalAsync(async () => {
           const fetchedMessages = await c.fetchMessages({ limit: 100, before: lastmsg.id })
           lastmsg = fetchedMessages.last() || msg.id
           messages = messages + fetchedMessages.filter(m => !m.author.bot).size
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
-            repeat(() => {
+            await repeat(() => {
               points = points + Math.round((Math.floor(Math.random() * (max + 1 - min)) + min) * 0.95)
               maxpoints = maxpoints + (300 * 0.95)
             }, messages)
@@ -55,9 +55,8 @@ module.exports = class extends Command {
               msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               running = null
             }
-            clearInterval(f)
             clearIntervalAsync(interval)
-            if (i >= a.size) finished[i] = true
+            finished[i] = true
           }
         }, 1000 * 10)
       })
