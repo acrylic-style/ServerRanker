@@ -57,7 +57,9 @@ class Command {
   isAllowed(msg, owners) {
     if (this.requiredOwner) {
       return owners.includes(msg.author.id)
-    } else if ((msg.member || { hasPermission: () => true }).hasPermission(this.permission.bitfield)) {
+    } else if (!msg.guild) {
+      return true
+    } else if (msg.member.hasPermission(this.permission.bitfield)) {
       return true
     } else if (owners.includes(msg.author.id)) {
       msg.channel.send('Note: You\'re bypassing permission because you\'re listed as bot owner.')
