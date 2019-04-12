@@ -11,6 +11,7 @@ const temp = require('./temp')
 const data = require('./data')
 
 const addpoint = require('./functions/addpoint')
+const genpoint = require('./functions/genpoint')
 
 module.exports = {
   Discord,
@@ -26,6 +27,7 @@ module.exports = {
   },
   functions: {
     addpoint,
+    genpoint,
   },
   config: require('./config.yml'),
 }
