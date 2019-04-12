@@ -35,6 +35,9 @@ module.exports = class extends Command {
       let maxpoints = 0
       const f = setInterval(() => {
         if (finished.some(f => !f)) return
+        maxpoints = messages * 300 * 0.95
+        points = Array.from({ length: messages }, () => 
+          Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
         msg.channel.send(`Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
         running = null
         clearInterval(f)
@@ -46,10 +49,10 @@ module.exports = class extends Command {
           lastmsg = fetchedMessages.last() || msg.id
           messages = messages + fetchedMessages.filter(m => !m.author.bot).size
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
-            maxpoints = maxpoints + (messages * 300 * 0.95)
-            points = Array.from({ length: messages }, () => 
-              Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
             if (messages >= 1000000) {
+              maxpoints = messages * 300 * 0.95
+              points = Array.from({ length: messages }, () => 
+                Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
               msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               running = null
             }
