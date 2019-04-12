@@ -10,7 +10,7 @@ let lastrun
 
 module.exports = class extends Command {
   constructor() {
-    super('recalc', { allowedIn: ['TextChannel'], permission: 8 })
+    super('recalc', { allowedIn: ['TextChannel'], permission: 8, requiredOwner: true })
   }
 
   async run(msg) {

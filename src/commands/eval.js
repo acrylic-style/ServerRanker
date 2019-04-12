@@ -5,12 +5,9 @@ module.exports = class extends Command {
   constructor() {
     const opts = {
       args: ['<Code>'],
+      requiredOwner: true,
     }
     super('eval', opts)
-  }
-
-  isAllowed(msg, owners) {
-    return owners.includes(msg.author.id)
   }
 
   async run(msg, lang, args) {
