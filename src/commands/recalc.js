@@ -1,4 +1,7 @@
-const { Command } = require('../server-ranker')
+const {
+  Command,
+  functions: { genpoint },
+} = require('../server-ranker')
 const {
   setIntervalAsync,
   clearIntervalAsync,
@@ -29,14 +32,11 @@ module.exports = class extends Command {
       msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
       let messages = 0
       let lastmsg = msg
-      const min = 100
-      const max = 300
       const finished = []
       const f = setInterval(() => {
         if (finished.some(f => !f)) return
         const maxpoints = messages * 300 * 0.95
-        const points = Array.from({ length: messages }, () => 
-          Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
+        const points = Array.from({ length: messages }, () => Math.round(genpoint() * 0.95)).reduce((p, c) => p + c)
         msg.channel.send(`Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
         this.running = null
         clearInterval(f)
@@ -50,8 +50,7 @@ module.exports = class extends Command {
           if (fetchedMessages.size <= 99 || messages >= 1000000) {
             if (messages >= 1000000) {
               const maxpoints = messages * 300 * 0.95
-              const points = Array.from({ length: messages }, () => 
-                Math.round((Math.floor(Math.random() * (max + 1 - min)) + max) * 0.95)).reduce((p, c) => p + c)
+              const points = Array.from({ length: messages }, () => Math.round(genpoint() * 0.95)).reduce((p, c) => p + c)
               msg.channel.send(`:warning: You've reached fetch limit.\nCollected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
               this.running = null
             }

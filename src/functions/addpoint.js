@@ -1,10 +1,9 @@
 const data = require('../data')
+const generate = require('./genpoint.js')
 
 module.exports = async msg => {
   if (!msg.guild) return
-  const min = 100
-  const max = 300
-  const random = Math.floor(Math.random() * (max + 1 - min)) + min
+  const random = generate()
   const multiplierCount = await data.countActivatedMultipliers(msg.guild.id)
   const times = multiplierCount + 1
   await data.addUserPoint(msg.author.id, random * times)
