@@ -11,15 +11,15 @@ module.exports = class extends Command {
     const message = await msg.channel.send(':stopwatch: Checking for version...')
     await git.fetch()
     const status = await git.status()
+    if (!status.isClean()) return message.edit(':x: Workspace is not clean.')
     if (!status.tracking) return message.edit(`:x: Unknown branch in remote: \`${(await git.branch()).current}\``)
     if (status.behind === 0) return message.edit(':white_check_mark: Already up to date.')
-    if (!status.isClean()) return message.edit(':x: Workspace is not clean.')
     await message.edit(':recycle: Updating...')
     await git.pull().catch(e => {
       message.edit(f(lang.error, e))
       logger.error(e)
       return false
     })
-    message.edit(':white_check_mark: Updated to latest version: ' + await git.revparse(['HEAD']) + ' (You need to restart bot for apply changes)')
+    message.edit(':white_check_mark: Updated to latest version: `' + await git.revparse(['HEAD']) + '` (You need to restart bot for apply changes)')
   }
 }
