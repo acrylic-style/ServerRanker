@@ -28,5 +28,6 @@ module.exports = {
       message: 'try...catch statement is not allowed',
     }],
     'no-control-regex': 0,
+    'no-useless-escape': 0,
   }
 }
