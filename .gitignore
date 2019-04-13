@@ -60,3 +60,6 @@ typings/
 
 # Configuration file
 src/config.yml
+
+# Log files
+latest.*.log
