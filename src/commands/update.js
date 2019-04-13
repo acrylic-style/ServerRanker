@@ -1,6 +1,6 @@
 const git = require('simple-git/promise')()
-const { commons: { f }, Command, LoggerFactory } = require('../server-ranker')
-const logger = LoggerFactory.getLogger('commands:update', 'purple')
+const { commons: { f }, Command, Logger } = require('../server-ranker')
+const logger = Logger.getLogger('commands:update', 'purple')
 
 module.exports = class extends Command {
   constructor() {
