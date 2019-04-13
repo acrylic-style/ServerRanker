@@ -8,6 +8,6 @@ module.exports = class extends Command {
   }
 
   async run(msg) {
-    msg.channel.send(`ServerRanker v${pkg.version} @ ${(await git().revparse(['HEAD'])).slice(0, 7)}\n - Source Code: ${pkg.repository}\n - Bot owners: ${config.owners.map(u => ` \* ${msg.client.users.get(u).tag}`).join('\n')}`)
+    msg.channel.send(`ServerRanker v${pkg.version} @ ${(await git().revparse(['HEAD'])).slice(0, 7)}\n - Source Code: ${pkg.repository}\n - Bot owners:\n${config.owners.map(u => ` - \* \`${msg.client.users.get(u).tag}\` (ID: \`${u}\`)`).join('\n')}\n - Contact to Acrylic Style directly: Use DM or send mail to \`acrylicstyle@acrylicstyle.xyz\``)
   }
 }
