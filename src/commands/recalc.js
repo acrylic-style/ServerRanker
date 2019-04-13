@@ -47,7 +47,7 @@ module.exports = class extends Command {
     const channel = channels.shift()
     const sum = total + await this.fetch(channel, before)
     if (sum >= 1000000) return sum
-    this.msg.edit(`Fetching all messages... [${sum} messages]`)
+    this.msg.edit(`Fetching all messages... [Collected ${sum} messages]`)
     return await this.series(channels, before, sum)
   }
 
