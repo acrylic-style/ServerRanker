@@ -9,6 +9,7 @@ class Command {
    * @property {["TextChannel", "DMChannel", "GroupDMChannel"]} allowedIn
    * @property {number} permission
    * @property {boolean} enabled
+   * @property {boolean} requiredOwner
    */
 
   /**
