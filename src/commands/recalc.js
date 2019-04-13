@@ -32,8 +32,8 @@ module.exports = class extends Command {
   }
 
   async execute(msg) {
-    const sigkillcb = () => {
-      msg.channel.send('We\'ve got SIGKILL signal, please try again later, sorry!')
+    const sigkillcb = async () => {
+      await msg.channel.send('We\'ve got SIGKILL signal, please try again later, sorry!')
     }
     process.on('SIGKILL', sigkillcb)
     this.msg = await msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
