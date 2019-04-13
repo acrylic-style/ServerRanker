@@ -32,6 +32,10 @@ module.exports = class extends Command {
   }
 
   async execute(msg) {
+    const sigkillcb = () => {
+      msg.channel.send('We\'ve got SIGKILL signal, please try again later, sorry!')
+    }
+    process.on('SIGKILL', sigkillcb)
     this.msg = await msg.channel.send('Fetching all messages. It may up to 28 hours.\n:warning: This is an ALPHA feature.\nBugs can happen often(Also queue system is may not work)!')
     const channels = msg.guild.channels.filter(c => c.type === 'text' && c.memberPermissions(msg.guild.me).has(1024))
     const messages = await this.series(Array.from(channels.values()))
@@ -40,6 +44,7 @@ module.exports = class extends Command {
     const warning = messages >= 1000000 ? ':warning: You\'ve reached fetch limit.\n' : ''
     msg.channel.send(warning + `Collected ${messages} messages.\nExpected random points: ${points} (Max points: ${maxpoints})`)
     this.running = null
+    process.off('SIGKILL', sigkillcb)
   }
 
   async series(channels, before, total = 0) {
