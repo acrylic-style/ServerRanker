@@ -63,3 +63,4 @@ src/config.yml
 
 # Log files
 latest.*.log
+latest.log
