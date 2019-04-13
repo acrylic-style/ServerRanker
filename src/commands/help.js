@@ -14,6 +14,8 @@ module.exports = class extends Command {
       .addField('ping', lang['commands']['ping'])
       .addField('help', lang['commands']['help'])
       .addField('commands', lang['commands']['commands'])
+      .addField('recalc', lang['commands']['recalc'])
+      .addField('version', lang['commands']['version'])
       .setColor([0,255,0])
     msg.channel.send(embed)
   }
