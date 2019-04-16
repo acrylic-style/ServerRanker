@@ -63,6 +63,10 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     defaultValue: 'Unknown User#0000',
   },
+  pp: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
 })
 const Multipliers = sequelize.define('multipliers', {
   multiplier_id: {
@@ -146,6 +150,13 @@ module.exports = {
     return User.findAll({
       attributes: ['user_id', 'point'],
       order: [['point', 'DESC']],
+      limit: 5,
+    })
+  },
+  getppUserLeaderboard() {
+    return User.findAll({
+      attributes: ['user_id', 'pp'],
+      order: [['pp', 'DESC']],
       limit: 5,
     })
   },
