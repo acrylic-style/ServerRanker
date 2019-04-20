@@ -6,7 +6,7 @@ module.exports = class extends Command {
     super('commands')
   }
 
-  async run(msg, lang) {
-    msg.channel.send(f(lang.today_commands, ServerRanker.commons.temp.commands))
+  async run(msg, lang, args, sendDeletable) {
+    sendDeletable(f(lang.today_commands, ServerRanker.commons.temp.commands))
   }
 }
