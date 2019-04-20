@@ -121,6 +121,12 @@ module.exports = {
       where: { user_id },
     })
   },
+  addUserpp(user_id, point) {
+    return User.increment(['pp'], {
+      by: point,
+      where: { user_id },
+    })
+  },
   setServerPoint(user_id, point) {
     return Server.update(['point'], {
       by: point,
