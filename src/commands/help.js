@@ -30,7 +30,7 @@ module.exports = class extends Command {
       .addField('commands', lang['commands']['commands'])
       .addField('recalc', lang['commands']['recalc'])
       .addField('version', lang['commands']['version'])
-      .addField('Note!', `${args[0]}${args[1]} [Command] for more help!`)
+      .addField('Note!', `${(await data.getServer(msg.guild.id)).prefix}help [Command] for more help!`)
       .setColor([0,255,0])
     sendDeletable(embed)
   }
