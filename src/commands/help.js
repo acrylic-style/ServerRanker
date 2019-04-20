@@ -14,8 +14,8 @@ module.exports = class extends Command {
         .setTitle('About this command')
         .setDescription(
           (lang.commands[args[1]] || ' - Not available information - ')
-          + `\n\nUsage: ${(await data.getServer(msg.guild.id)).prefix}${args[1]} ${command.args ? command.args.join('\n') : ''}`
-          + `\nAlias: ${command.alias ? command.alias.join('\n') : lang.no}`)
+          + `\n\nUsage: ${(await data.getServer(msg.guild.id)).prefix}${args[1]} ${command.args !== [] ? command.args.join('\n') : ''}`
+          + `\nAlias: ${command.alias !== [] ? command.alias.join('\n') : lang.no}`)
         .setTimestamp()
         .setColor([0,255,0])
       return sendDeletable(embed)
@@ -30,7 +30,7 @@ module.exports = class extends Command {
       .addField('commands', lang['commands']['commands'])
       .addField('recalc', lang['commands']['recalc'])
       .addField('version', lang['commands']['version'])
-      .addField('Note!', `${(await data.getServer(msg.guild.id)).prefix}help [Command] for more help!`)
+      .addField('Note!', `\`${(await data.getServer(msg.guild.id)).prefix}help [Command]\` for more help!`)
       .setColor([0,255,0])
     sendDeletable(embed)
   }
