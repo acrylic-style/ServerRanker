@@ -5,7 +5,7 @@ const levenshtein = require('fast-levenshtein').get
 const c = require('./config.yml')
 const parser = require('minimist')
 const data = require('./data')
-const { get } = require('emoji-name-map')
+const { x: { char } } = require('emojilib')
 
 async function runCommand(command, msg, lang) {
   const server = msg.guild ? await data.getServer(msg.guild.id) : Object.freeze({ prefix: 'sr!', language: 'en' })
@@ -37,6 +37,6 @@ module.exports = async function(msg, lang) {
     const list = cmds.map(item => `・\`${server.prefix}${item.cmd} ${item.args || ''}\``)
     const nocmd = f(lang.no_command, server.prefix, cmd)+'\n'
     if (list.length) msg.channel.send(nocmd + f(lang.didyoumean, list.join('\n')))
-    else msg.react(get('x'))
+    else msg.react(char)
   }
 }
