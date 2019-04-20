@@ -24,4 +24,8 @@ module.exports = {
   async load(file) {
     setCommand(file, true)
   },
+  async reloadAll() {
+    const newfiles = fs.readdirSync(__dirname + '/commands/')
+    for (const file of newfiles) if (file.endsWith('.js')) setCommand(file, true)
+  },
 }
