@@ -18,7 +18,7 @@ try { // eslint-disable-line no-restricted-syntax
   moment = require('moment')
   args = require('minimist')(process.argv.slice(2))
   DBL = require('dblapi.js')
-  emojis = require('emojilib')
+  emojis = require('emojilib/emojis')
 } catch(e) {
   if (!/Cannot find module '(.*?)'$/.test(e)) throw e
   console.error(`Missing module: ${/Cannot find module '(.*?)'$/.exec(e)[1]}`)
