@@ -1,4 +1,5 @@
 const { Permissions } = require('discord.js')
+const { get } = require('emoji-name-map')
 
 class Command {
   /**
@@ -46,9 +47,19 @@ class Command {
    */
   async run() {}
 
-  async start(msg, lang, ...args) {
+  async start(msg, lang, args) {
     if (!this.allowedIn.includes(msg.channel.constructor.name)) return msg.channel.send(require('string-format')(lang.not_allowed_in_here, this.allowedIn.join(', ')))
-    return await this.run(msg, lang, ...args)
+    const sendDeletable = async (...args) => {
+      const message = await msg.channel.send(...args)
+      message.react(get('floppy_disk'))
+      const filter = (reaction, user) => reaction.emoji.name === get('floppy_disk') && !user.bot
+      message.awaitReactions(filter, { time: 10000 })
+        .then(collected => {
+          if (!collected.size) message.delete()
+          else message.clearReactions().catch(()=>{})
+        })
+    }
+    return await this.run(msg, lang, args, sendDeletable)
   }
 
   /**
