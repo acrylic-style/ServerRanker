@@ -1,4 +1,4 @@
-const { Command, Discord, commons: { f } } = require('../server-ranker')
+const { Command, Discord, commons: { f, data } } = require('../server-ranker')
 
 module.exports = class extends Command {
   constructor() {
@@ -14,7 +14,7 @@ module.exports = class extends Command {
         .setTitle('About this command')
         .setDescription(
           (lang.commands[args[1]] || ' - Not available information - ')
-          + `\n\nUsage: ${args[0]}${args[1]} ${command.args ? command.args.join('\n') : ''}`
+          + `\n\nUsage: ${(await data.getServer(msg.guild.id)).prefix}${args[1]} ${command.args ? command.args.join('\n') : ''}`
           + `\nAlias: ${command.alias ? command.alias.join('\n') : lang.no}`)
         .setTimestamp()
         .setColor([0,255,0])
