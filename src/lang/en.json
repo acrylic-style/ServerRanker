@@ -32,5 +32,7 @@
   "not_has_multiplier": "You don't have any point multipliers yet!",
   "not_enough_points": "You don't have enough points(Required {0} points).",
   "invalid_args": ":x: Invalid arguments.",
-  "no_activated_multiplier": "Not activated any point multipliers in this server."
+  "no_activated_multiplier": "Not activated any point multipliers in this server.",
+  "no": "No",
+  "yes": "Yes"
 }
