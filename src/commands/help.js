@@ -18,7 +18,7 @@ module.exports = class extends Command {
           + `\nAlias: ${command.alias ? command.alias.join('\n') : lang.no}`)
         .setTimestamp()
         .setColor([0,255,0])
-      return msg.channel.send(embed)
+      return sendDeletable(embed)
     }
     const embed = new Discord.RichEmbed()
       .setTitle('List of commands')
