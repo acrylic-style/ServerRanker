@@ -1,29 +1,14 @@
 const initTime = Date.now()
-let ServerRanker
-let data
-let log
-let dispatcher
-let moment
-let args
-let DBL
-let logger
-let emojis
-try { // eslint-disable-line no-restricted-syntax
-  ServerRanker = require('./src/server-ranker')
-  logger = ServerRanker.Logger.getLogger('main', 'blue')
-  logger.info('Initializing')
-  data = require('./src/data')
-  log = require('./src/log')
-  dispatcher = require('./src/dispatcher')
-  moment = require('moment')
-  args = require('minimist')(process.argv.slice(2))
-  DBL = require('dblapi.js')
-  emojis = require('emojilib/emojis')
-} catch(e) {
-  if (!/Cannot find module '(.*?)'$/.test(e)) throw e
-  console.error(`Missing module: ${/Cannot find module '(.*?)'$/.exec(e)[1]}`)
-  process.exit(1)
-}
+const ServerRanker = require('./src/server-ranker')
+const logger = ServerRanker.Logger.getLogger('main', 'blue')
+logger.info('Initializing')
+const data = require('./src/data')
+const log = require('./src/log')
+const dispatcher = require('./src/dispatcher')
+const moment = require('moment')
+const args = require('minimist')(process.argv.slice(2))
+const DBL = require('dblapi.js')
+const emojis = require('emojilib/emojis')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
 const ratelimited = new Set()
