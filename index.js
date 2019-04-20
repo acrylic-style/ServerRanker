@@ -20,6 +20,7 @@ try { // eslint-disable-line no-restricted-syntax
   DBL = require('dblapi.js')
   emojis = require('emojilib')
 } catch(e) {
+  if (!/Cannot find module '(.*?)'$/.test(e)) throw e
   console.error(`Missing module: ${/Cannot find module '(.*?)'$/.exec(e)[1]}`)
   process.exit(1)
 }
