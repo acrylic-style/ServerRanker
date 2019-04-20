@@ -5,7 +5,7 @@ const levenshtein = require('fast-levenshtein').get
 const c = require('./config.yml')
 const parser = require('minimist')
 const data = require('./data')
-const { x: { char } } = require('emojilib')
+const { x: { char } } = require('emojilib/emojis')
 
 async function runCommand(command, msg, lang) {
   const server = msg.guild ? await data.getServer(msg.guild.id) : Object.freeze({ prefix: 'sr!', language: 'en' })
