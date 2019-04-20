@@ -1,17 +1,32 @@
 const initTime = Date.now()
-const ServerRanker = require('./src/server-ranker')
+let ServerRanker
+let data
+let log
+let dispatcher
+let moment
+let args
+let DBL
+let logger
+let get
+try { // eslint-disable-line no-restricted-syntax
+  ServerRanker = require('./src/server-ranker')
+  logger = ServerRanker.Logger.getLogger('main', 'blue')
+  logger.info('Initializing')
+  data = require('./src/data')
+  log = require('./src/log')
+  dispatcher = require('./src/dispatcher')
+  moment = require('moment')
+  args = require('minimist')(process.argv.slice(2))
+  DBL = require('dblapi.js')
+  get = require('emoji-name-map').get
+} catch(e) {
+  console.error(`Missing module: ${/Cannot find module '(.*?)'$/.exec(e)[1]}`)
+  process.exit(1)
+}
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
-const DBL = require('dblapi.js')
-const logger = ServerRanker.Logger.getLogger('main', 'blue')
-logger.info('Initializing')
-const moment = require('moment')
-const dispatcher = require('./src/dispatcher')
-const args = require('minimist')(process.argv.slice(2))
 const ratelimited = new Set()
-const log = require('./src/log')
 const globalprefix = args['prefix'] || config['prefix']
-const data = require('./src/data')
 const f = ServerRanker.commons.f
 
 client.on('reconnecting', () => {
@@ -51,7 +66,7 @@ client.on('message', async msg => {
     return msg.channel.send(f(lang.prefixis, server.prefix))
   if (msg.content.startsWith(prefix)) {
     ServerRanker.commons.temp.commands++
-    dispatcher(msg, lang)
+    dispatcher(msg, lang).catch(() => msg.react(get('x')))
   }
 })
 
