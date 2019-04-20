@@ -7,7 +7,7 @@ let moment
 let args
 let DBL
 let logger
-let get
+let emojis
 try { // eslint-disable-line no-restricted-syntax
   ServerRanker = require('./src/server-ranker')
   logger = ServerRanker.Logger.getLogger('main', 'blue')
@@ -18,7 +18,7 @@ try { // eslint-disable-line no-restricted-syntax
   moment = require('moment')
   args = require('minimist')(process.argv.slice(2))
   DBL = require('dblapi.js')
-  get = require('emoji-name-map').get
+  emojis = require('emojilib')
 } catch(e) {
   console.error(`Missing module: ${/Cannot find module '(.*?)'$/.exec(e)[1]}`)
   process.exit(1)
@@ -66,7 +66,7 @@ client.on('message', async msg => {
     return msg.channel.send(f(lang.prefixis, server.prefix))
   if (msg.content.startsWith(prefix)) {
     ServerRanker.commons.temp.commands++
-    dispatcher(msg, lang).catch(() => msg.react(get('x')))
+    dispatcher(msg, lang).catch(() => msg.react(emojis['x']['char']))
   }
 })
 
