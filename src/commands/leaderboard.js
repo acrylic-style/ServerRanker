@@ -3,7 +3,7 @@ const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
-    super('leaderboard', { allowedIn: ['TextChannel'] })
+    super('leaderboard', { allowedIn: ['TextChannel'], args: ['[exp]', '[server]'] })
   }
 
   async run(msg, lang, args) {

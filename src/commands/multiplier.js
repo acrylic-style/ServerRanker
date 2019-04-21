@@ -4,7 +4,7 @@ const data = require('../data')
 
 module.exports = class extends Command {
   constructor() {
-    super('multiplier', { allowedIn: ['TextChannel'] })
+    super('multiplier', { allowedIn: ['TextChannel'], args: ['[confirm]', '[list server]', '[list]', '[activate]'] })
     this.confirms = {}
   }
 
