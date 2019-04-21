@@ -32,11 +32,11 @@ module.exports = class extends Command {
       let property = 'point'
       let div = 1000
       let langproperty = 'points'
-      if (args.includes('pp')) {
-        users = await data.getppUserLeaderboard()
-        str = 'pp'
-        property = 'pp'
-        langproperty = 'pp'
+      if (args.includes('exp')) {
+        users = await data.getexpUserLeaderboard()
+        str = 'exp'
+        property = 'exp'
+        langproperty = 'exp'
         div = 1
       } else {
         users = await data.getUserLeaderboard()
@@ -53,7 +53,7 @@ module.exports = class extends Command {
       if (users[2]) embed.addField(':third_place:', `${parseInt(users[2][property]).toLocaleString()} ${str} (${await getUser(users[2].user_id)})`)
       if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3][property]).toLocaleString()} ${str} (${await getUser(users[3].user_id)})`)
       if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4][property]).toLocaleString()} ${str} (${await getUser(users[4].user_id)})`)
-      if (args.includes('pp')) embed.setDescription(f(lang[langproperty], user[property].toLocaleString(), Math.floor(Math.sqrt(4 + user[property]/div)-1)))
+      if (args.includes('exp')) embed.setDescription(f(lang[langproperty], user[property].toLocaleString(), Math.floor(Math.sqrt(4 + user[property]/div)-1)))
       msg.channel.send(embed)
     }
   }

@@ -22,7 +22,7 @@
   "today_commands": "I got {0} commands today!",
   "not_allowed_in_here": ":x: This command can't run here. (Allowed types: {0})",
   "points": "You have {0} points(Lv {2})\nTotal points in this server: {1} points(Lv {3})",
-  "pp": "You have {0} pp(Lv {1}).",
+  "exp": "You have {0} experience(Lv {1}).",
   "user_points": "You have {0} points. After executed, you will have {1} points.",
   "areyousure": "Are you sure? This process cannot be undone after executed.\nRun `<command> confirm` for execute(10 seconds to expire).",
   "no_confirm": "There is no confirm required operation.",

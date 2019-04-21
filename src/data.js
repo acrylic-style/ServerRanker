@@ -63,7 +63,7 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     defaultValue: 'Unknown User#0000',
   },
-  pp: {
+  exp: {
     type: Sequelize.INTEGER,
     defaultValue: 0,
   },
@@ -121,8 +121,8 @@ module.exports = {
       where: { user_id },
     })
   },
-  addUserpp(user_id, point) {
-    return User.increment(['pp'], {
+  addUserexp(user_id, point) {
+    return User.increment(['exp'], {
       by: point,
       where: { user_id },
     })
@@ -159,10 +159,10 @@ module.exports = {
       limit: 5,
     })
   },
-  getppUserLeaderboard() {
+  getexpUserLeaderboard() {
     return User.findAll({
-      attributes: ['user_id', 'pp'],
-      order: [['pp', 'DESC']],
+      attributes: ['user_id', 'exp'],
+      order: [['exp', 'DESC']],
       limit: 5,
     })
   },
