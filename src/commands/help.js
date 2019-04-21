@@ -24,7 +24,7 @@ module.exports = class extends Command {
           + `\n\nUsage: ${(await data.getServer(msg.guild.id)).prefix}${args[1]} ${command.args !== [] ? command.args.join('\n') : ''}`
           + `\nAlias: ${command.alias !== [] ? command.alias.join('\n') : lang.no}`
           + `\nAllowed in: ${command.allowedIn.join(', ')}`
-          + `\nRequired permissions for you: ${flip(Discord.Permissions.FLAGS)[command.permission.toString()]}`
+          + `\nRequired permissions for you: ${command.permission ? flip(Discord.Permissions.FLAGS)[command.permission.toString()] : 'None'}`
           + `\nIs special command: ${command.requiredOwner ? lang.yes : lang.no}`
           + `\nIs enabled: ${command.enabled ? lang.yes : lang.no}`)
         .setTimestamp()
