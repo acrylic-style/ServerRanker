@@ -44,6 +44,7 @@ client.on('message', async msg => {
   if (msg.guild && !ratelimited.has(msg.author.id)) {
     ratelimited.add(msg.author.id)
     await ServerRanker['functions']['addpoint'](msg)
+    await ServerRanker['functions']['addexp'](msg)
   }
   setTimeout(() => {
     ratelimited.delete(msg.author.id)
