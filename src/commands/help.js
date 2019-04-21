@@ -5,7 +5,7 @@ module.exports = class extends Command {
     super('help', { args: ['[Command]'] })
   }
 
-  async run(msg, lang, args) {
+  async run(msg, lang, args, sendDeletable) {
     const flip = (obj) => {
       const ret = {}
       Object.keys(obj).forEach((key) => {
@@ -29,7 +29,7 @@ module.exports = class extends Command {
           + `\nIs enabled: ${command.enabled ? lang.yes : lang.no}`)
         .setTimestamp()
         .setColor([0,255,0])
-      msg.channel.send(embed)
+      sendDeletable(embed)
     }
     const embed = new Discord.RichEmbed()
       .setTitle('List of commands')
@@ -43,6 +43,6 @@ module.exports = class extends Command {
       .addField('version', lang['commands']['version'])
       .addField('Note!', `\`${(await data.getServer(msg.guild.id)).prefix}help [Command]\` for more help!`)
       .setColor([0,255,0])
-    msg.channel.send(embed)
+    sendDeletable(embed)
   }
 }

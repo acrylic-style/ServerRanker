@@ -21,6 +21,7 @@ module.exports = class extends Command {
       return false
     })
     require('../commands').reloadAll()
+    require('../server-ranker') // maybe need (re)load?
     message.edit(':white_check_mark: Updated to latest version: `' + await git.revparse(['HEAD']) + '` (You need to restart bot for apply changes except core files)')
   }
 }
