@@ -29,7 +29,7 @@ module.exports = class extends Command {
           + `\nIs enabled: ${command.enabled ? lang.yes : lang.no}`)
         .setTimestamp()
         .setColor([0,255,0])
-      sendDeletable(embed)
+      return sendDeletable(embed)
     }
     const embed = new Discord.RichEmbed()
       .setTitle('List of commands')
