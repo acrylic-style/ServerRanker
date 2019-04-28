@@ -136,7 +136,7 @@ module.exports = {
     })
   },
   async addUserexp(user_id, point) {
-    await Exps.create({ user_id, exp: point })
+    await Exps.create({ user_id, exp: point }).catch(() => {})
     await User.increment(['rawexp'], {
       by: point,
       where: { user_id },
@@ -151,7 +151,7 @@ module.exports = {
       attributes: ['user_id', 'exp'],
       order: [['exp', 'DESC']],
     })
-    return allPoints.map((a, i) => a * (100-Math.min(i, 100))/100).reduce((a,b)=>a+b)
+    return allPoints.map(exp => exp.getDataValue().exp).map((a, i) => a * (100-Math.min(i, 100))/100).reduce((a,b)=>a+b)
   },
   setServerPoint(user_id, point) {
     return Server.update(['point'], {
