@@ -5,7 +5,7 @@ logger.info('Connecting...')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const config = require('./config.yml')
-const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
+const sequelize = new Sequelize.Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
   dialect: config.database.type,
   storage: `${__dirname}/../data/database.sqlite`,
@@ -63,7 +63,11 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     defaultValue: 'Unknown User#0000',
   },
-  exp: {
+  rawexp: { // unweighted exp
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
+  exp: { // weighted exp
     type: Sequelize.INTEGER,
     defaultValue: 0,
   },
@@ -87,6 +91,16 @@ const Multipliers = sequelize.define('multipliers', {
   expires: {
     type: Sequelize.DATE,
     allowNull: true,
+  },
+})
+const Exps = sequelize.define('exps', {
+  user_id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+  },
+  exp: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
   },
 })
 if (args.forceSync) logger.warn('Forced sync, it will drop table!!!')
@@ -121,11 +135,23 @@ module.exports = {
       where: { user_id },
     })
   },
-  addUserexp(user_id, point) {
-    return User.increment(['exp'], {
+  async addUserexp(user_id, point) {
+    await Exps.create({ user_id, exp: point })
+    await User.increment(['rawexp'], {
       by: point,
       where: { user_id },
     })
+    return await User.update({ exp: await this.calcWeightedExp(user_id) }, {
+      where: { user_id },
+    })
+  },
+  async calcWeightedExp(user_id) {
+    const allPoints = await Exps.findAll({
+      where: { user_id },
+      attributes: ['user_id', 'exp'],
+      order: [['exp', 'DESC']],
+    })
+    return allPoints.map((a, i) => a * (100-Math.min(i, 100))/100).reduce((a,b)=>a+b)
   },
   setServerPoint(user_id, point) {
     return Server.update(['point'], {

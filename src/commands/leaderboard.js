@@ -37,7 +37,7 @@ module.exports = class extends Command {
         str = 'exp'
         property = 'exp'
         langproperty = 'exp'
-        div = 1
+        div = 2
       } else {
         users = await data.getUserLeaderboard()
       }
