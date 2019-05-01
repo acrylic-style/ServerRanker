@@ -94,9 +94,13 @@ const Multipliers = sequelize.define('multipliers', {
   },
 })
 const Exps = sequelize.define('exps', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   user_id: {
     type: Sequelize.STRING,
-    primaryKey: true,
   },
   exp: {
     type: Sequelize.INTEGER,
@@ -135,10 +139,10 @@ module.exports = {
       where: { user_id },
     })
   },
-  async addUserexp(user_id, point) {
-    await Exps.create({ user_id, exp: point }).catch(() => {})
+  async addUserexp(user_id, exp) {
+    await Exps.create({ user_id, exp })
     await User.increment(['rawexp'], {
-      by: point,
+      by: exp,
       where: { user_id },
     })
     return await User.update({ exp: await this.calcWeightedExp(user_id) }, {
@@ -146,12 +150,13 @@ module.exports = {
     })
   },
   async calcWeightedExp(user_id) {
-    const allPoints = await Exps.findAll({
+    const allExps = await Exps.findAll({
       where: { user_id },
-      attributes: ['user_id', 'exp'],
+      attributes: ['exp'],
       order: [['exp', 'DESC']],
+      limit: 100,
     })
-    return allPoints.map(exp => exp.dataValues.exp).map((a, i) => a * (100-Math.min(i, 100))/100).reduce((a,b)=>a+b)
+    return allExps.map((model, i) => model.exp * (100 - i) / 100).reduce((a , b) => a + b)
   },
   setServerPoint(user_id, point) {
     return Server.update(['point'], {
