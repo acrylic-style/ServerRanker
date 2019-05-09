@@ -6,6 +6,7 @@ const c = require('./config.yml')
 const parser = require('minimist')
 const data = require('./data')
 const { x: { char } } = require('emojilib/emojis')
+const temp = require('./temp')
 
 async function runCommand(command, msg, lang) {
   const server = msg.guild ? await data.getServer(msg.guild.id) : Object.freeze({ prefix: 'sr!', language: 'en' })
@@ -22,6 +23,7 @@ async function runCommand(command, msg, lang) {
   if (end-start > 1000) {
     logger.warn(`${args[0]} took ${end-start}ms`)
   }
+  temp.processing.delete(msg.id)
 }
 
 module.exports = async function(msg, lang) {

@@ -1,4 +1,4 @@
-const { Command } = require('../server-ranker')
+const { Command, commons: { temp } } = require('../server-ranker')
 
 module.exports = class extends Command {
   constructor() {
@@ -6,7 +6,12 @@ module.exports = class extends Command {
   }
 
   async run(msg) {
-    await msg.channel.send(':wave:')
-    process.kill(process.pid, 'SIGKILL')
+    const interval = setInterval(async () => {
+      if (!temp.processing.size) {
+        clearInterval(interval)
+        await msg.channel.send(':wave:')
+        process.kill(process.pid, 'SIGKILL')
+      }
+    }, 1000)
   }
 }

@@ -52,6 +52,7 @@ client.on('message', async msg => {
   if ((msg.content === `<@${msg.client.user.id}>` || msg.content === `<@!${msg.client.user.id}>`) && msg.attachments.size === 0)
     return msg.channel.send(f(lang.prefixis, server.prefix))
   if (msg.content.startsWith(prefix)) {
+    if (!msg.content.startsWith(`${prefix}stop`)) ServerRanker.commons.temp.processing.add(msg.id)
     ServerRanker.commons.temp.commands++
     dispatcher(msg, lang).catch(() => msg.react(emojis['x']['char']))
   }
