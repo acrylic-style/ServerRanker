@@ -25,7 +25,7 @@ module.exports = class extends Command {
       if (servers[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(servers[3].point).toLocaleString()} points (${getServer(servers[3].server_id)})`)
       if (servers[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(servers[4].point).toLocaleString()} points (${getServer(servers[4].server_id)})`)
       embed.setFooter('https://server-ranker.ga/leaderboard/server')
-      msg.channel.send(embed)
+      return await msg.channel.send(embed)
     } else {
       let users
       let str = 'points'
@@ -54,7 +54,7 @@ module.exports = class extends Command {
       if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[3][property]/div)-1)}) ${str} (${await getUser(users[3].user_id)})`)
       if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[4][property]/div)-1)}) ${str} (${await getUser(users[4].user_id)})`)
       if (args.includes('exp')) embed.setDescription(f(lang[langproperty], user[property].toLocaleString(), Math.floor(Math.sqrt(4 + user[property]/div)-1)))
-      msg.channel.send(embed)
+      return await msg.channel.send(embed)
     }
   }
 }
