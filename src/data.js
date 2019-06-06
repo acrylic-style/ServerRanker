@@ -14,6 +14,7 @@ const sequelize = new Sequelize.Sequelize(config.database.name, config.database.
 sequelize.authenticate()
   .then(() => {
     logger.info('Connection has been established successfully.')
+    process.emit('dbready')
   })
   .catch(err => {
     logger.emerg('Unable to connect to the database: ' + err)
@@ -70,6 +71,14 @@ const User = sequelize.define('users', {
   exp: { // weighted exp
     type: Sequelize.INTEGER,
     defaultValue: 0,
+  },
+  bp_tier: { // battle pass tier
+    type: Sequelize.INTEGER,
+    defaultValue: 1, // tier 0 is impossible
+  },
+  personal_expboost: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0, // +n% personal exp boost, you can get from battle pass rewards
   },
 })
 const Multipliers = sequelize.define('multipliers', {
@@ -138,6 +147,11 @@ module.exports = {
       by: point,
       where: { user_id },
     })
+  },
+  async addUserBattlePassTier(user_id, tier) {
+    const user = await this.getUser(user_id)
+    if (user.bp_tier === 100) return false
+    return await User.update({ bp_tier: tier }, { where: { user_id } })
   },
   async addUserexp(user_id, exp) {
     await Exps.create({ user_id, exp })

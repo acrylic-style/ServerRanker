@@ -34,5 +34,8 @@
   "invalid_args": ":x: Invalid arguments.",
   "no_activated_multiplier": "Not activated any point multipliers in this server.",
   "no": "No",
-  "yes": "Yes"
+  "yes": "Yes",
+  "battlepass": "Season {0} BattlePass",
+  "seasonEndsAt": "Season ends in: {0}",
+  "tier": "Tier"
 }

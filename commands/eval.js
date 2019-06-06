@@ -1,4 +1,4 @@
-const { commons: { f }, Logger, Command } = require('../server-ranker')
+const { commons: { f }, Logger, Command } = require('../src/server-ranker')
 const logger = Logger.getLogger('commands:eval', 'lightpurple')
 
 module.exports = class extends Command {

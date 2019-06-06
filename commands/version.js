@@ -1,5 +1,5 @@
-const { config, Command } = require('../server-ranker')
-const pkg = require('../../package.json')
+const { config, Command } = require('../src/server-ranker')
+const pkg = require('../package.json')
 const git = require('simple-git/promise')
 
 module.exports = class extends Command {

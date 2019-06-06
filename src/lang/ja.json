@@ -32,5 +32,8 @@
   "invalid_args": ":x: 無効な引数です。",
   "no_activated_multiplier": "このサーバーで有効なPoint Multiplierはありません。",
   "no": "いいえ",
-  "yes": "はい"
+  "yes": "はい",
+  "battlepass": "シーズン{0} バトルパス",
+  "seasonEndsAt": "終了まで: {0}",
+  "tier": "ティア"
 }

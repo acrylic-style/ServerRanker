@@ -1,0 +1,9 @@
+season1:
+  normal:
+  premium:
+    tier10:
+      type: expboost
+      boost: 10 # +10% personal exp boost
+    tier30:
+      type: multiplier
+      multiplier: 2 # 2x multiplier

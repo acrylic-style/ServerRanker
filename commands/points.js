@@ -1,5 +1,5 @@
-const { commons: { f }, Command } = require('../server-ranker')
-const data = require('../data')
+const { commons: { f }, Command } = require('../src/server-ranker')
+const data = require('../src/data')
 
 module.exports = class extends Command {
   constructor() {

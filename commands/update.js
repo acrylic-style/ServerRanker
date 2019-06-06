@@ -1,5 +1,5 @@
 const git = require('simple-git/promise')()
-const { commons: { f }, Command, Logger } = require('../server-ranker')
+const { commons: { f }, Command, Logger } = require('../src/server-ranker')
 const logger = Logger.getLogger('commands:update', 'purple')
 
 module.exports = class extends Command {
@@ -20,7 +20,7 @@ module.exports = class extends Command {
       logger.error(e)
       return false
     })
-    require('../commands').reloadAll()
+    require('../src/commands').reloadAll()
     message.edit(':white_check_mark: Updated to latest version: `' + await git.revparse(['HEAD']) + '` (You need to restart bot for apply changes except commands)')
   }
 }

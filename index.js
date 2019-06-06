@@ -4,7 +4,7 @@ const logger = ServerRanker.Logger.getLogger('main', 'blue')
 logger.info('Initializing')
 const data = require('./src/data')
 const log = require('./src/log')
-const dispatcher = require('./src/dispatcher')
+const dispatcher = require('bot-framework/dispatcher')
 const moment = require('moment')
 const args = require('minimist')(process.argv.slice(2))
 const DBL = require('dblapi.js')
@@ -13,7 +13,7 @@ const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
 const ratelimited = new Set()
 const globalprefix = args['prefix'] || config['prefix']
-const f = ServerRanker.commons.f
+const { f } = ServerRanker.commons
 
 client.on('reconnecting', () => {
   logger.warn('Disconnected from WebSocket, reconnecting!')
@@ -36,9 +36,9 @@ client.on('ready', async () => {
 client.on('message', async msg => {
   if (msg.author.bot || msg.system) return
   log.messageLog(msg)
-  const server = msg.guild ? await data.getServer(msg.guild.id) : { prefix: 'sr!', language: 'en' }
+  const server = msg.guild ? await data.getServer(msg.guild.id) : { prefix: globalprefix, language: 'en' }
   const user = await data.getUser(msg.author.id)
-  const prefix = server.prefix || config['prefix'] || 'sr!'
+  const prefix = server.prefix || globalprefix
   await data.updateUserTag(msg.author.id, msg.author.tag)
   const lang = ServerRanker.commons.language.get(user.language || server.language || 'en')
   if (msg.guild && !ratelimited.has(msg.author.id)) {
@@ -54,7 +54,7 @@ client.on('message', async msg => {
   if (msg.content.startsWith(prefix)) {
     if (!msg.content.startsWith(`${prefix}stop`)) ServerRanker.commons.temp.processing.add(msg.id)
     ServerRanker.commons.temp.commands++
-    dispatcher(msg, lang).catch(() => msg.react(emojis['x']['char']))
+    dispatcher(msg, lang, prefix, config.owners).catch(() => msg.react(emojis['x']['char']))
   }
 })
 
@@ -68,8 +68,11 @@ client.on('guildDelete', guild => {
   client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
 })
 
-logger.info('Logging in...')
-client.login(config['token'])
+logger.info('Waiting for db...')
+process.once('dbready', () => {
+  logger.info('Logging in...')
+  client.login(config['token'])
+})
 
 process.on('SIGINT', async () => {
   await client.destroy()

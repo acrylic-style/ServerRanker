@@ -1,9 +1,8 @@
 require('./yaml')
 
+const { Command } = require('bot-framework')
 const Discord = require('discord.js')
-const Resolver = require('./util/resolver')
 const Logger = require('logger.js').LoggerFactory
-const Command = require('./structures/Command')
 const parser = require('minimist')
 const language = require('./language')
 const f = require('string-format')
@@ -17,7 +16,6 @@ const genexp = require('./functions/genexp')
 
 module.exports = {
   Discord,
-  Resolver,
   Logger,
   Command,
   commons: {

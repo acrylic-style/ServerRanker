@@ -1,4 +1,4 @@
-const { Command, Discord, commons: { f, data } } = require('../server-ranker')
+const { Command, Discord, commons: { f, data } } = require('../src/server-ranker')
 
 module.exports = class extends Command {
   constructor() {
