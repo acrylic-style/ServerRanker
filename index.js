@@ -54,7 +54,10 @@ client.on('message', async msg => {
   if (msg.content.startsWith(prefix)) {
     if (!msg.content.startsWith(`${prefix}stop`)) ServerRanker.commons.temp.processing.add(msg.id)
     ServerRanker.commons.temp.commands++
-    dispatcher(msg, lang, prefix, config.owners).catch(() => msg.react(emojis['x']['char']))
+    dispatcher(msg, lang, prefix, config.owners).catch(e => {
+      logger.error(e.stack || e)
+      msg.react(emojis['x']['char'])
+    })
   }
 })
 
