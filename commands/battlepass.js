@@ -11,8 +11,9 @@ module.exports = class extends Command {
   async run(msg, lang, args, sendDeletable) {
     const user = await data.getUser(msg.author.id)
     const embed = new Discord.RichEmbed()
-      .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + ` - ${lang['tier']} ${user.bp_tier}`)
+      .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + ` - ${lang['tier']} ${user.bp_tier || Math.floor(Math.sqrt(4 + user.exp/2)-1)}`)
       .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)))
+      .setColor([0,255,0])
     sendDeletable(embed)
   }
 }
