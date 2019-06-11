@@ -18,7 +18,7 @@ module.exports = class extends Command {
       const t = rewards[`season${config.battlepass.currentSeason}`]['premium'][`tier${tier}`]
       return t ? t.name : '(None)'
     }
-    const val = tier => `${n(tier) || p(tier)}`
+    const val = tier => `${n(tier)} || ${p(tier)}`
     const user = await data.getUser(msg.author.id)
     const tier = user.bp_tier || Math.min(Math.floor(Math.sqrt(4 + user.exp/2)-1), 100)
     const embed = new Discord.RichEmbed()
