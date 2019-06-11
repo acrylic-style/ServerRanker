@@ -80,6 +80,10 @@ const User = sequelize.define('users', {
     type: Sequelize.INTEGER,
     defaultValue: 0, // +n% personal exp boost, you can get from battle pass rewards
   },
+  premium: { // BattlePass Premium State
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 })
 const Multipliers = sequelize.define('multipliers', {
   multiplier_id: {
@@ -135,6 +139,9 @@ module.exports = {
   },
   updateUserTag(user_id, tag) {
     return User.update({ tag }, { where: { user_id } })
+  },
+  setPremiumState(user_id, premium) {
+    return User.update({ premium }, { where: { user_id } })
   },
   addServerPoint(server_id, point) {
     return Server.increment(['point'], {

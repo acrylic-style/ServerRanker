@@ -20,8 +20,7 @@ module.exports = class extends Command {
       logger.error(e)
       return false
     })
-    await message.edit(':recycle: Reloading all commands...')
-    require('bot-framework/commands').reloadAll()
-    message.edit(':white_check_mark: Updated to latest version: `' + await git.revparse(['HEAD']) + '` (You need to restart bot for apply changes except commands)')
+    message.edit(':white_check_mark: Updated to latest version: `' + await git.revparse(['HEAD'])+'`, restarting.')
+    process.emit('restart')
   }
 }

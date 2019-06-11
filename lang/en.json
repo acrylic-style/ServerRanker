@@ -37,5 +37,7 @@
   "yes": "Yes",
   "battlepass": "Season {0} BattlePass",
   "seasonEndsAt": "Season ends in: {0}",
-  "tier": "Tier"
+  "tier": "Tier",
+  "alreadyPremium": "You already had Premium BattlePass.",
+  "bought_battlepass": "You have upgraded BattlePass!"
 }

@@ -35,5 +35,7 @@
   "yes": "はい",
   "battlepass": "シーズン{0} バトルパス",
   "seasonEndsAt": "終了まで: {0}",
-  "tier": "ティア"
+  "tier": "ティア",
+  "alreadyPremium": "すでにバトルパスを持っています。",
+  "bought_battlepass": "バトルパスのアップグレードが完了しました！"
 }
