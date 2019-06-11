@@ -9,14 +9,19 @@ const { battlepass: config } = require('../config.yml')
  * @type {SingleSeason}
  */
 const tierRewards = rewards[`season${config.season}`]
-const { normal: normalTierRewards, premium: premiumTierRewards } = tierRewards
 
 /**
+ * Get all rewards.
  * @param {number} tier
+ * @returns {{ normal: Array<Tiers>, premium: Array<Tiers> }}
  */
 module.exports = tier => {
   if (typeof tier !== 'number') throw new TypeError('Tier should be number.')
-  const array = new Array(tier)
-  array.forEach((_, i) => {
-  })
+  const normalRewards = []
+  const premiumRewards = []
+  for (let i = 0; i < tier; i++) {
+    normalRewards.push(tierRewards.normal[`tier${i+1}`])
+    premiumRewards.push(tierRewards.premium[`tier${i+1}`])
+  }
+  return { normal: normalRewards, premium: premiumRewards }
 }

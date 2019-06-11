@@ -1,9 +1,15 @@
 season1:
   normal:
+    tier1:
+      name: "+0.5% Exp Boost"
+      type: expboost
+      boost: 0.5
   premium:
     tier10:
+      name: "+10% Exp Boost"
       type: expboost
       boost: 10 # +10% personal exp boost
     tier30:
+      name: "2x Point Multiplier"
       type: multiplier
       multiplier: 2 # 2x multiplier
