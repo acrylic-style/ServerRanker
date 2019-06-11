@@ -10,25 +10,32 @@ module.exports = class extends Command {
   }
 
   async run(msg, lang, args, sendDeletable) {
-    const n = rewards[`season${config.battlepass.currentSeason}`]['normal']
-    const p = rewards[`season${config.battlepass.currentSeason}`]['premium']
+    const n = tier => {
+      const t = rewards[`season${config.battlepass.currentSeason}`]['normal'][`tier${tier}`]
+      return t ? t.name : '(None)'
+    }
+    const p = tier => {
+      const t = rewards[`season${config.battlepass.currentSeason}`]['premium'][`tier${tier}`]
+      return t ? t.name : '(None)'
+    }
+    const val = tier => `${n(tier) || p(tier)}`
     const user = await data.getUser(msg.author.id)
     const tier = user.bp_tier || Math.min(Math.floor(Math.sqrt(4 + user.exp/2)-1), 100)
     const embed = new Discord.RichEmbed()
       .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + `${msg.author.premium ? ' (Premium)' : ' (FreePass, buy Discord Nitro for upgrade!... not yet.)'} - ${lang['tier']} ${tier}`)
       .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)) + '\nTier Rewards:')
       .setColor([0,255,0])
-      .addField(`Tier ${tier-5}`, `${n[`tier${tier-5}`].name || '(None)'} | ${p[`tier${tier-5}`].name || '(None)'}`)
-      .addField(`Tier ${tier-4}`, `${n[`tier${tier-4}`].name || '(None)'} | ${p[`tier${tier-4}`].name || '(None)'}`)
-      .addField(`Tier ${tier-3}`, `${n[`tier${tier-3}`].name || '(None)'} | ${p[`tier${tier-3}`].name || '(None)'}`)
-      .addField(`Tier ${tier-2}`, `${n[`tier${tier-2}`].name || '(None)'} | ${p[`tier${tier-2}`].name || '(None)'}`)
-      .addField(`Tier ${tier-1}`, `${n[`tier${tier-1}`].name || '(None)'} | ${p[`tier${tier-1}`].name || '(None)'}`)
-      .addField(`Tier ${tier}`, `${n[`tier${tier}`].name || '(None)'} | ${p[`tier${tier}`].name || '(None)'}`)
-      .addField(`Tier ${tier+1}`, `${n[`tier${tier+1}`].name || '(None)'} | ${p[`tier${tier+1}`].name || '(None)'}`)
-      .addField(`Tier ${tier+2}`, `${n[`tier${tier+2}`].name || '(None)'} | ${p[`tier${tier+2}`].name || '(None)'}`)
-      .addField(`Tier ${tier+3}`, `${n[`tier${tier+3}`].name || '(None)'} | ${p[`tier${tier+3}`].name || '(None)'}`)
-      .addField(`Tier ${tier+4}`, `${n[`tier${tier+4}`].name || '(None)'} | ${p[`tier${tier+4}`].name || '(None)'}`)
-      .addField(`Tier ${tier+5}`, `${n[`tier${tier+5}`].name || '(None)'} | ${p[`tier${tier+5}`].name || '(None)'}`)
+      .addField(`Tier ${tier-5}`, val(tier-5))
+      .addField(`Tier ${tier-4}`, val(tier-4))
+      .addField(`Tier ${tier-3}`, val(tier-3))
+      .addField(`Tier ${tier-2}`, val(tier-2))
+      .addField(`Tier ${tier-1}`, val(tier-1))
+      .addField(`Tier ${tier}`, val(tier))
+      .addField(`Tier ${tier+1}`, val(tier+1))
+      .addField(`Tier ${tier+2}`, val(tier+2))
+      .addField(`Tier ${tier+3}`, val(tier+3))
+      .addField(`Tier ${tier+4}`, val(tier+4))
+      .addField(`Tier ${tier+5}`, val(tier+5))
     sendDeletable(embed)
   }
 }
