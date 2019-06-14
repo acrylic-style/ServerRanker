@@ -1,105 +1,110 @@
 /**
+ * @typedef Tier
+ * @property {"multiplier" | "expboost"} type
+ */
+
+/**
  * @typedef Tiers
- * @property {{ type: "multiplier" | "expboost" }} tier1
- * @property {{ type: "multiplier" | "expboost" }} tier2
- * @property {{ type: "multiplier" | "expboost" }} tier3
- * @property {{ type: "multiplier" | "expboost" }} tier4
- * @property {{ type: "multiplier" | "expboost" }} tier5
- * @property {{ type: "multiplier" | "expboost" }} tier6
- * @property {{ type: "multiplier" | "expboost" }} tier7
- * @property {{ type: "multiplier" | "expboost" }} tier8
- * @property {{ type: "multiplier" | "expboost" }} tier9
- * @property {{ type: "multiplier" | "expboost" }} tier10
- * @property {{ type: "multiplier" | "expboost" }} tier11
- * @property {{ type: "multiplier" | "expboost" }} tier12
- * @property {{ type: "multiplier" | "expboost" }} tier13
- * @property {{ type: "multiplier" | "expboost" }} tier14
- * @property {{ type: "multiplier" | "expboost" }} tier15
- * @property {{ type: "multiplier" | "expboost" }} tier16
- * @property {{ type: "multiplier" | "expboost" }} tier17
- * @property {{ type: "multiplier" | "expboost" }} tier18
- * @property {{ type: "multiplier" | "expboost" }} tier19
- * @property {{ type: "multiplier" | "expboost" }} tier20
- * @property {{ type: "multiplier" | "expboost" }} tier21
- * @property {{ type: "multiplier" | "expboost" }} tier22
- * @property {{ type: "multiplier" | "expboost" }} tier23
- * @property {{ type: "multiplier" | "expboost" }} tier24
- * @property {{ type: "multiplier" | "expboost" }} tier25
- * @property {{ type: "multiplier" | "expboost" }} tier26
- * @property {{ type: "multiplier" | "expboost" }} tier27
- * @property {{ type: "multiplier" | "expboost" }} tier28
- * @property {{ type: "multiplier" | "expboost" }} tier29
- * @property {{ type: "multiplier" | "expboost" }} tier30
- * @property {{ type: "multiplier" | "expboost" }} tier31
- * @property {{ type: "multiplier" | "expboost" }} tier32
- * @property {{ type: "multiplier" | "expboost" }} tier33
- * @property {{ type: "multiplier" | "expboost" }} tier34
- * @property {{ type: "multiplier" | "expboost" }} tier35
- * @property {{ type: "multiplier" | "expboost" }} tier36
- * @property {{ type: "multiplier" | "expboost" }} tier37
- * @property {{ type: "multiplier" | "expboost" }} tier38
- * @property {{ type: "multiplier" | "expboost" }} tier39
- * @property {{ type: "multiplier" | "expboost" }} tier40
- * @property {{ type: "multiplier" | "expboost" }} tier41
- * @property {{ type: "multiplier" | "expboost" }} tier42
- * @property {{ type: "multiplier" | "expboost" }} tier43
- * @property {{ type: "multiplier" | "expboost" }} tier44
- * @property {{ type: "multiplier" | "expboost" }} tier45
- * @property {{ type: "multiplier" | "expboost" }} tier46
- * @property {{ type: "multiplier" | "expboost" }} tier47
- * @property {{ type: "multiplier" | "expboost" }} tier48
- * @property {{ type: "multiplier" | "expboost" }} tier49
- * @property {{ type: "multiplier" | "expboost" }} tier50
- * @property {{ type: "multiplier" | "expboost" }} tier51
- * @property {{ type: "multiplier" | "expboost" }} tier52
- * @property {{ type: "multiplier" | "expboost" }} tier53
- * @property {{ type: "multiplier" | "expboost" }} tier54
- * @property {{ type: "multiplier" | "expboost" }} tier55
- * @property {{ type: "multiplier" | "expboost" }} tier56
- * @property {{ type: "multiplier" | "expboost" }} tier57
- * @property {{ type: "multiplier" | "expboost" }} tier58
- * @property {{ type: "multiplier" | "expboost" }} tier59
- * @property {{ type: "multiplier" | "expboost" }} tier60
- * @property {{ type: "multiplier" | "expboost" }} tier61
- * @property {{ type: "multiplier" | "expboost" }} tier62
- * @property {{ type: "multiplier" | "expboost" }} tier63
- * @property {{ type: "multiplier" | "expboost" }} tier64
- * @property {{ type: "multiplier" | "expboost" }} tier65
- * @property {{ type: "multiplier" | "expboost" }} tier66
- * @property {{ type: "multiplier" | "expboost" }} tier67
- * @property {{ type: "multiplier" | "expboost" }} tier68
- * @property {{ type: "multiplier" | "expboost" }} tier69
- * @property {{ type: "multiplier" | "expboost" }} tier70
- * @property {{ type: "multiplier" | "expboost" }} tier71
- * @property {{ type: "multiplier" | "expboost" }} tier72
- * @property {{ type: "multiplier" | "expboost" }} tier73
- * @property {{ type: "multiplier" | "expboost" }} tier74
- * @property {{ type: "multiplier" | "expboost" }} tier75
- * @property {{ type: "multiplier" | "expboost" }} tier76
- * @property {{ type: "multiplier" | "expboost" }} tier77
- * @property {{ type: "multiplier" | "expboost" }} tier78
- * @property {{ type: "multiplier" | "expboost" }} tier79
- * @property {{ type: "multiplier" | "expboost" }} tier80
- * @property {{ type: "multiplier" | "expboost" }} tier81
- * @property {{ type: "multiplier" | "expboost" }} tier82
- * @property {{ type: "multiplier" | "expboost" }} tier83
- * @property {{ type: "multiplier" | "expboost" }} tier84
- * @property {{ type: "multiplier" | "expboost" }} tier85
- * @property {{ type: "multiplier" | "expboost" }} tier86
- * @property {{ type: "multiplier" | "expboost" }} tier87
- * @property {{ type: "multiplier" | "expboost" }} tier88
- * @property {{ type: "multiplier" | "expboost" }} tier89
- * @property {{ type: "multiplier" | "expboost" }} tier90
- * @property {{ type: "multiplier" | "expboost" }} tier91
- * @property {{ type: "multiplier" | "expboost" }} tier92
- * @property {{ type: "multiplier" | "expboost" }} tier93
- * @property {{ type: "multiplier" | "expboost" }} tier94
- * @property {{ type: "multiplier" | "expboost" }} tier95
- * @property {{ type: "multiplier" | "expboost" }} tier96
- * @property {{ type: "multiplier" | "expboost" }} tier97
- * @property {{ type: "multiplier" | "expboost" }} tier98
- * @property {{ type: "multiplier" | "expboost" }} tier99
- * @property {{ type: "multiplier" | "expboost" }} tier100
+ * @property {Tier} tier1
+ * @property {Tier} tier2
+ * @property {Tier} tier3
+ * @property {Tier} tier4
+ * @property {Tier} tier5
+ * @property {Tier} tier6
+ * @property {Tier} tier7
+ * @property {Tier} tier8
+ * @property {Tier} tier9
+ * @property {Tier} tier10
+ * @property {Tier} tier11
+ * @property {Tier} tier12
+ * @property {Tier} tier13
+ * @property {Tier} tier14
+ * @property {Tier} tier15
+ * @property {Tier} tier16
+ * @property {Tier} tier17
+ * @property {Tier} tier18
+ * @property {Tier} tier19
+ * @property {Tier} tier20
+ * @property {Tier} tier21
+ * @property {Tier} tier22
+ * @property {Tier} tier23
+ * @property {Tier} tier24
+ * @property {Tier} tier25
+ * @property {Tier} tier26
+ * @property {Tier} tier27
+ * @property {Tier} tier28
+ * @property {Tier} tier29
+ * @property {Tier} tier30
+ * @property {Tier} tier31
+ * @property {Tier} tier32
+ * @property {Tier} tier33
+ * @property {Tier} tier34
+ * @property {Tier} tier35
+ * @property {Tier} tier36
+ * @property {Tier} tier37
+ * @property {Tier} tier38
+ * @property {Tier} tier39
+ * @property {Tier} tier40
+ * @property {Tier} tier41
+ * @property {Tier} tier42
+ * @property {Tier} tier43
+ * @property {Tier} tier44
+ * @property {Tier} tier45
+ * @property {Tier} tier46
+ * @property {Tier} tier47
+ * @property {Tier} tier48
+ * @property {Tier} tier49
+ * @property {Tier} tier50
+ * @property {Tier} tier51
+ * @property {Tier} tier52
+ * @property {Tier} tier53
+ * @property {Tier} tier54
+ * @property {Tier} tier55
+ * @property {Tier} tier56
+ * @property {Tier} tier57
+ * @property {Tier} tier58
+ * @property {Tier} tier59
+ * @property {Tier} tier60
+ * @property {Tier} tier61
+ * @property {Tier} tier62
+ * @property {Tier} tier63
+ * @property {Tier} tier64
+ * @property {Tier} tier65
+ * @property {Tier} tier66
+ * @property {Tier} tier67
+ * @property {Tier} tier68
+ * @property {Tier} tier69
+ * @property {Tier} tier70
+ * @property {Tier} tier71
+ * @property {Tier} tier72
+ * @property {Tier} tier73
+ * @property {Tier} tier74
+ * @property {Tier} tier75
+ * @property {Tier} tier76
+ * @property {Tier} tier77
+ * @property {Tier} tier78
+ * @property {Tier} tier79
+ * @property {Tier} tier80
+ * @property {Tier} tier81
+ * @property {Tier} tier82
+ * @property {Tier} tier83
+ * @property {Tier} tier84
+ * @property {Tier} tier85
+ * @property {Tier} tier86
+ * @property {Tier} tier87
+ * @property {Tier} tier88
+ * @property {Tier} tier89
+ * @property {Tier} tier90
+ * @property {Tier} tier91
+ * @property {Tier} tier92
+ * @property {Tier} tier93
+ * @property {Tier} tier94
+ * @property {Tier} tier95
+ * @property {Tier} tier96
+ * @property {Tier} tier97
+ * @property {Tier} tier98
+ * @property {Tier} tier99
+ * @property {Tier} tier100
  */
 
 /**
