@@ -5,13 +5,17 @@ logger.info('Initializing')
 const data = require('./src/data')
 const log = require('./src/log')
 const dispatcher = require('bot-framework/dispatcher')
+//const { commands } = require('bot-framework/commands')
 const moment = require('moment')
 const args = require('minimist')(process.argv.slice(2))
 const DBL = require('dblapi.js')
 const emojis = require('emojilib/emojis')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
-const ratelimited = new Set()
+const expRatelimit = new Set()
+const cmdRatelimit = new Set()
+const globalRatelimit = new Set()
+const ratelimit = {}
 const globalprefix = args['prefix'] || config['prefix']
 const { f } = ServerRanker.commons
 
@@ -46,23 +50,44 @@ client.on('message', async msg => {
   const prefix = server.prefix || globalprefix
   await data.updateUserTag(msg.author.id, msg.author.tag)
   const lang = ServerRanker.commons.language.get(user.language || server.language || 'en')
-  if (msg.guild && !ratelimited.has(msg.author.id)) {
-    ratelimited.add(msg.author.id)
+  if (msg.guild && !expRatelimit.has(msg.author.id)) {
+    expRatelimit.add(msg.author.id)
     await ServerRanker['functions']['addpoint'](msg)
     await ServerRanker['functions']['addexp'](msg)
   }
   setTimeout(() => {
-    ratelimited.delete(msg.author.id)
+    expRatelimit.delete(msg.author.id)
   }, 60 * 1000)
   if ((msg.content === `<@${msg.client.user.id}>` || msg.content === `<@!${msg.client.user.id}>`) && msg.attachments.size === 0)
     return msg.channel.send(f(lang.prefixis, server.prefix))
   if (msg.content.startsWith(prefix)) {
     if (!msg.content.startsWith(`${prefix}stop`)) ServerRanker.commons.temp.processing.add(msg.id)
     ServerRanker.commons.temp.commands++
+    if (cmdRatelimit.has(msg.author.id) || globalRatelimit.has(msg.author.id)) {
+      return msg.reply(`Cooldown! You have to wait ${(ratelimit[msg.author.id].endsAt-Date.now())/1000} seconds.`)
+    }
     dispatcher(msg, lang, prefix, config.owners, prefix).catch(e => {
       logger.error(e.stack || e)
       msg.react(emojis['x']['char'])
     })
+    if (!globalRatelimit.has(msg.author.id)) {
+      //if (ratelimit[msg.author.id])if (ratelimit[msg.author.id].endsAt < (Date.now()+3000))
+      ratelimit[msg.author.id] = { endsAt: Date.now() + 3000 }
+      globalRatelimit.add(msg.author.id)
+      setTimeout(() => {
+        globalRatelimit.delete(msg.author.id)
+      }, 3000)
+    }
+    /* not implemented yet
+    if (!msg.member.hasPermission(8) && !cmdRatelimit.has(msg.author.id)) {
+      const ct = ???
+      if (ratelimit[msg.author.id] && ratelimit[msg.author.id].endsAt < (Date.now()+3000)) ratelimit[msg.author.id] = { endsAt: Date.now() + ct }
+      cmdRatelimit.add(msg.author.id)
+      setTimeout(() => {
+        cmdRatelimit.delete(msg.author.id)
+      }, 3000)
+    }
+    */
   }
 })
 
@@ -76,7 +101,7 @@ client.on('guildDelete', guild => {
   client.user.setActivity(`${globalprefix}ping | ${client.guilds.size} guilds`)
 })
 
-logger.info('Waiting for db...')
+logger.info('Waiting for database...')
 process.once('dbready', () => {
   logger.info('Logging in...')
   client.login(config['token'])
