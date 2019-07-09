@@ -13,9 +13,10 @@ const emojis = require('emojilib/emojis')
 const client = new ServerRanker.Discord.Client()
 const { config } = ServerRanker
 const expRatelimit = new Set()
-const cmdRatelimit = new Set()
+//const cmdRatelimit = new Set()
 const globalRatelimit = new Set()
-const ratelimit = {}
+const globRatelimitData = {}
+//const cmdRatelimitData = {}
 const globalprefix = args['prefix'] || config['prefix']
 const { f } = ServerRanker.commons
 
@@ -63,29 +64,33 @@ client.on('message', async msg => {
   if (msg.content.startsWith(prefix)) {
     if (!msg.content.startsWith(`${prefix}stop`)) ServerRanker.commons.temp.processing.add(msg.id)
     ServerRanker.commons.temp.commands++
-    if (cmdRatelimit.has(msg.author.id) || globalRatelimit.has(msg.author.id)) {
-      return msg.reply(`Cooldown! You have to wait ${(ratelimit[msg.author.id].endsAt-Date.now())/1000} seconds.`)
+    if (globalRatelimit.has(msg.author.id)) {
+      const reply = await msg.reply(`Cooldown! You have to wait ${(globRatelimitData[msg.author.id].endsAt-Date.now())/1000} seconds.`)
+      reply.delete(10000)
+      return
     }
     dispatcher(msg, lang, prefix, config.owners, prefix).catch(e => {
       logger.error(e.stack || e)
       msg.react(emojis['x']['char'])
     })
     if (!globalRatelimit.has(msg.author.id)) {
-      //if (ratelimit[msg.author.id])if (ratelimit[msg.author.id].endsAt < (Date.now()+3000))
-      ratelimit[msg.author.id] = { endsAt: Date.now() + 3000 }
+      globRatelimitData[msg.author.id] = { endsAt: Date.now() + 3000 }
       globalRatelimit.add(msg.author.id)
       setTimeout(() => {
         globalRatelimit.delete(msg.author.id)
       }, 3000)
     }
-    /* not implemented yet
+    /*
     if (!msg.member.hasPermission(8) && !cmdRatelimit.has(msg.author.id)) {
-      const ct = ???
-      if (ratelimit[msg.author.id] && ratelimit[msg.author.id].endsAt < (Date.now()+3000)) ratelimit[msg.author.id] = { endsAt: Date.now() + ct }
+      const [, command] = /(.*?)(\s{1,}|)/g.exec(msg.content.replace(prefix, ''))
+      if (!commands[command] || !commands[command].cooldown || commands[command].cooldown <= 3000) return
+      const ct = commands[command].cooldown
+      if (cmdRatelimitData[msg.author.id] && cmdRatelimitData[msg.author.id].endsAt < (Date.now()+ct)) cmdRatelimitData[msg.author.id] = { endsAt: Date.now() + ct }
       cmdRatelimit.add(msg.author.id)
       setTimeout(() => {
         cmdRatelimit.delete(msg.author.id)
-      }, 3000)
+        delete cmdRatelimitData[msg.author.id]
+      }, ct)
     }
     */
   }

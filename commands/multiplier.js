@@ -5,6 +5,7 @@ const data = require('../src/data')
 module.exports = class extends Command {
   constructor() {
     super('multiplier', { allowedIn: ['TextChannel'], args: ['[confirm]', '[list server]', '[list]', '[activate]'] })
+    this.cooldown = 1000 * 30
     this.confirms = {}
   }
 
