@@ -9,7 +9,7 @@ This bot is developed for ranking for Discord users, gain rank by sending messag
 This bot includes something:
 
 - Points (Can use multiplier, and can spend points by buying multiplier, or something.)
-- pp (performance points, see `functions/genpp.js`)
+- exp (experience, see `functions/genexp.js`)
 
 ## Warning for Windows users
 

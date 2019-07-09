@@ -8,3 +8,7 @@ database:
   name:
   user:
   pass:
+battlepass:
+  currentSeason: 1
+  seasonEndsAt: 1567522800000 # Timestamp, in moment:
+                              # moment().add(90, 'days').set({ 'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0 }).toDate().getTime()

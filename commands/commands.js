@@ -1,4 +1,4 @@
-const ServerRanker = require('../server-ranker')
+const ServerRanker = require('../src/server-ranker')
 const { commons: { f }, Command } = ServerRanker
 
 module.exports = class extends Command {

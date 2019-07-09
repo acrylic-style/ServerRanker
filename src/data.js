@@ -5,7 +5,7 @@ logger.info('Connecting...')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const config = require('./config.yml')
-const sequelize = new Sequelize(config.database.name, config.database.user, config.database.pass, {
+const sequelize = new Sequelize.Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
   dialect: config.database.type,
   storage: `${__dirname}/../data/database.sqlite`,
@@ -14,6 +14,7 @@ const sequelize = new Sequelize(config.database.name, config.database.user, conf
 sequelize.authenticate()
   .then(() => {
     logger.info('Connection has been established successfully.')
+    process.emit('dbready')
   })
   .catch(err => {
     logger.emerg('Unable to connect to the database: ' + err)
@@ -63,9 +64,25 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     defaultValue: 'Unknown User#0000',
   },
-  pp: {
+  rawexp: { // unweighted exp
     type: Sequelize.INTEGER,
     defaultValue: 0,
+  },
+  exp: { // weighted exp
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
+  bp_tier: { // battle pass tier
+    type: Sequelize.INTEGER,
+    defaultValue: 1, // tier 0 is impossible
+  },
+  personal_expboost: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0, // +n% personal exp boost, you can get from battle pass rewards
+  },
+  premium: { // BattlePass Premium State
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
 })
 const Multipliers = sequelize.define('multipliers', {
@@ -89,6 +106,20 @@ const Multipliers = sequelize.define('multipliers', {
     allowNull: true,
   },
 })
+const Exps = sequelize.define('exps', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  user_id: {
+    type: Sequelize.STRING,
+  },
+  exp: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+  },
+})
 if (args.forceSync) logger.warn('Forced sync, it will drop table!!!')
 
 sequelize.sync({ force: args.forceSync })
@@ -109,6 +140,9 @@ module.exports = {
   updateUserTag(user_id, tag) {
     return User.update({ tag }, { where: { user_id } })
   },
+  setPremiumState(user_id, premium) {
+    return User.update({ premium }, { where: { user_id } })
+  },
   addServerPoint(server_id, point) {
     return Server.increment(['point'], {
       by: point,
@@ -121,11 +155,29 @@ module.exports = {
       where: { user_id },
     })
   },
-  addUserpp(user_id, point) {
-    return User.increment(['pp'], {
-      by: point,
+  async addUserBattlePassTier(user_id, tier) {
+    const user = await this.getUser(user_id)
+    if (user.bp_tier === 100) return false
+    return await User.update({ bp_tier: tier }, { where: { user_id } })
+  },
+  async addUserexp(user_id, exp) {
+    await Exps.create({ user_id, exp })
+    await User.increment(['rawexp'], {
+      by: exp,
       where: { user_id },
     })
+    return await User.update({ exp: await this.calcWeightedExp(user_id) }, {
+      where: { user_id },
+    })
+  },
+  async calcWeightedExp(user_id) {
+    const allExps = await Exps.findAll({
+      where: { user_id },
+      attributes: ['exp'],
+      order: [['exp', 'DESC']],
+      limit: 100,
+    })
+    return allExps.map((model, i) => model.exp * (100 - i) / 100).reduce((a , b) => a + b)
   },
   setServerPoint(user_id, point) {
     return Server.update(['point'], {
@@ -159,10 +211,10 @@ module.exports = {
       limit: 5,
     })
   },
-  getppUserLeaderboard() {
+  getexpUserLeaderboard() {
     return User.findAll({
-      attributes: ['user_id', 'pp'],
-      order: [['pp', 'DESC']],
+      attributes: ['user_id', 'exp'],
+      order: [['exp', 'DESC']],
       limit: 5,
     })
   },

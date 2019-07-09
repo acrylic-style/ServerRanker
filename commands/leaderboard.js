@@ -1,9 +1,9 @@
-const { commons: { f }, Command, Discord } = require('../server-ranker')
-const data = require('../data')
+const { commons: { f }, Command, Discord } = require('../src/server-ranker')
+const data = require('../src/data')
 
 module.exports = class extends Command {
   constructor() {
-    super('leaderboard', { allowedIn: ['TextChannel'] })
+    super('leaderboard', { allowedIn: ['TextChannel'], args: ['[exp]', '[server]'] })
   }
 
   async run(msg, lang, args) {
@@ -25,19 +25,19 @@ module.exports = class extends Command {
       if (servers[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(servers[3].point).toLocaleString()} points (${getServer(servers[3].server_id)})`)
       if (servers[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(servers[4].point).toLocaleString()} points (${getServer(servers[4].server_id)})`)
       embed.setFooter('https://server-ranker.ga/leaderboard/server')
-      msg.channel.send(embed)
+      return await msg.channel.send(embed)
     } else {
       let users
       let str = 'points'
       let property = 'point'
       let div = 1000
       let langproperty = 'points'
-      if (args.includes('pp')) {
-        users = await data.getppUserLeaderboard()
-        str = 'pp'
-        property = 'pp'
-        langproperty = 'pp'
-        div = 1
+      if (args.includes('exp')) {
+        users = await data.getexpUserLeaderboard()
+        str = 'exp'
+        property = 'exp'
+        langproperty = 'exp'
+        div = 2
       } else {
         users = await data.getUserLeaderboard()
       }
@@ -48,13 +48,13 @@ module.exports = class extends Command {
         .setTitle('Leaderboard')
         .setDescription(f(lang.points, user.point.toLocaleString(), server.point.toLocaleString(), Math.floor(Math.sqrt(4 + user.point/1000)-1), Math.floor(Math.sqrt(4 + server.point/3000)-1)))
         .setFooter(`Want to see server leaderboard? Type \`${server.prefix || 'sr!'}leaderboard server\``)
-      if (users[0]) embed.addField(':first_place:', `${parseInt(users[0][property]).toLocaleString()} ${str} (${await getUser(users[0].user_id)})`)
-      if (users[1]) embed.addField(':second_place:', `${parseInt(users[1][property]).toLocaleString()} ${str} (${await getUser(users[1].user_id)})`)
-      if (users[2]) embed.addField(':third_place:', `${parseInt(users[2][property]).toLocaleString()} ${str} (${await getUser(users[2].user_id)})`)
-      if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3][property]).toLocaleString()} ${str} (${await getUser(users[3].user_id)})`)
-      if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4][property]).toLocaleString()} ${str} (${await getUser(users[4].user_id)})`)
-      if (args.includes('pp')) embed.setDescription(f(lang[langproperty], user[property].toLocaleString(), Math.floor(Math.sqrt(4 + user[property]/div)-1)))
-      msg.channel.send(embed)
+      if (users[0]) embed.addField(':first_place:', `${parseInt(users[0][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[0][property]/div)-1)}) ${str} (${await getUser(users[0].user_id)})`)
+      if (users[1]) embed.addField(':second_place:', `${parseInt(users[1][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[1][property]/div)-1)}) ${str} (${await getUser(users[1].user_id)})`)
+      if (users[2]) embed.addField(':third_place:', `${parseInt(users[2][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[2][property]/div)-1)}) ${str} (${await getUser(users[2].user_id)})`)
+      if (users[3]) embed.addField('<:fourth_place:534409887027953694>', `${parseInt(users[3][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[3][property]/div)-1)}) ${str} (${await getUser(users[3].user_id)})`)
+      if (users[4]) embed.addField('<:fifth_place:534410165169029120>', `${parseInt(users[4][property]).toLocaleString()} (Lv ${Math.floor(Math.sqrt(4 + users[4][property]/div)-1)}) ${str} (${await getUser(users[4].user_id)})`)
+      if (args.includes('exp')) embed.setDescription(f(lang[langproperty], user[property].toLocaleString(), Math.floor(Math.sqrt(4 + user[property]/div)-1)))
+      return await msg.channel.send(embed)
     }
   }
 }

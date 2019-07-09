@@ -1,4 +1,4 @@
-const { commons: { f }, Command } = require('../server-ranker')
+const { commons: { f }, Command } = require('../src/server-ranker')
 
 module.exports = class extends Command {
   constructor() {

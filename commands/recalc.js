@@ -1,4 +1,4 @@
-const { Command, functions: { genpoint } } = require('../server-ranker')
+const { Command, functions: { genpoint } } = require('../src/server-ranker')
 //const data = require('../data')
 
 module.exports = class extends Command {

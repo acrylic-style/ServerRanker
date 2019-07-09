@@ -1,10 +1,11 @@
-const { commons: { f }, Command, Discord } = require('../server-ranker')
+const { commons: { f }, Command, Discord } = require('../src/server-ranker')
 const moment = require('moment')
-const data = require('../data')
+const data = require('../src/data')
 
 module.exports = class extends Command {
   constructor() {
-    super('multiplier', { allowedIn: ['TextChannel'] })
+    super('multiplier', { allowedIn: ['TextChannel'], args: ['[confirm]', '[list server]', '[list]', '[activate]'] })
+    this.cooldown = 1000 * 30
     this.confirms = {}
   }
 
