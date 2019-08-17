@@ -1,4 +1,4 @@
-const { Command, Discord, commons: { f, data } } = require('../src/server-ranker')
+const { Command, Discord, config, commons: { f } } = require('../src/server-ranker')
 
 module.exports = class extends Command {
   constructor() {
@@ -18,7 +18,7 @@ module.exports = class extends Command {
         .setTitle('About this command')
         .setDescription(
           (lang.commands[args[1]] || ' - Not available information - ')
-          + `\n\nUsage: ${(await data.getServer(msg.guild.id)).prefix}${args[1]} ${command.args !== [] ? command.args.join('\n') : ''}`
+          + `\n\nUsage: ${config.prefix}${args[1]} ${command.args !== [] ? command.args.join('\n') : ''}`
           + `\nAlias: ${command.alias !== [] ? command.alias.join('\n') : lang.no}`
           + `\nAllowed in: ${command.allowedIn.join(', ')}`
           + `\nRequired permissions for you: ${command.permission.bitfield ? command.permission.toArray(false).map(callback).join(', ') : 'None'}`
@@ -38,7 +38,7 @@ module.exports = class extends Command {
       .addField('commands', lang['commands']['commands'])
       .addField('recalc', lang['commands']['recalc'])
       .addField('version', lang['commands']['version'])
-      .addField('Note!', `\`${(await data.getServer(msg.guild.id)).prefix}help [Command]\` for more help!`)
+      .addField('Note!', `\`${config.prefix}help [Command]\` for more help!`)
       .setColor([0,255,0])
     sendDeletable(embed)
   }
