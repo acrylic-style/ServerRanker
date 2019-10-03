@@ -1,16 +1,18 @@
 const { LoggerFactory } = require('logger.js')
 const logger = LoggerFactory.getLogger('main', 'blue')
-let client
+const { AtomicReference } = require('bot-framework')
+const client = new AtomicReference()
 
 const start = async () => {
   logger.info('Booting...')
-  client = require('./client')
+  await client.set(require('./client'))
+  if (await client.get() === null || await client.get() === undefined) logger.warn('client is null')
 }
 
 const stop = async () => {
-  await client.destroy()
+  await (await client.get()).destroy()
   logger.info('Bot has been stopped.')
-  client = null
+  await client.set(null)
   Object.keys(require.cache).forEach(e => { !e.endsWith('.js') || delete require.cache[e]})
 }
 

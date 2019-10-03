@@ -173,10 +173,11 @@ bluebird@^3.5.0, bluebird@^3.5.3:
 
 bot-framework@acrylic-style/bot-framework:
   version "1.0.0"
-  resolved "https://codeload.github.com/acrylic-style/bot-framework/tar.gz/6a6ed873fda2fe593ee13c50c2b9f33580d2f60e"
+  resolved "https://codeload.github.com/acrylic-style/bot-framework/tar.gz/fcb8fab9ac019209e983d28086c523a1ccef3dbe"
   dependencies:
     discord.js "^11.4.2"
     emojilib "^2.4.0"
+    eslint "^6.5.1"
     minimist "^1.2.0"
     simple-git "^1.113.0"
 
