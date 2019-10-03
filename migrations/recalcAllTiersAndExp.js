@@ -1,6 +1,7 @@
 (async () => {
+  const start = Date.now()
   const { LoggerFactory } = require('logger.js')
-  const logger = LoggerFactory.getLogger('migrations:recalcAllTiersAndExp')
+  const logger = LoggerFactory.getLogger('migrations:recalcAllTiersAndExp', 'green')
   const data = require('../src/data')
   const getTier = require('../src/functions/getTier')
   const asyncForEach = async (array, callback) => {
@@ -17,4 +18,5 @@
     })
     await data.addUserBattlePassTier(user.user_id, getTier((await data.getUser(user.user_id)).exp))
   })
+  logger.info('done. took ' + ((Date.now()-start)/1000) + ' seconds.')
 })()
