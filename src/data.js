@@ -178,6 +178,7 @@ module.exports = {
       order: [['exp', 'DESC']],
       limit: 100,
     })
+    if (allExps.length <= 0) return 0
     return allExps.map((model, i) => model.exp * (100 - i) / 100).reduce((a , b) => a + b)
   },
   setServerPoint(user_id, point) {
