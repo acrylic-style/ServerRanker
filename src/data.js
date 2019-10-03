@@ -1,3 +1,4 @@
+require('./yaml')
 const Logger = require('logger.js').LoggerFactory
 const args = require('minimist')(process.argv.slice(2))
 const logger = Logger.getLogger('db', 'purple')
