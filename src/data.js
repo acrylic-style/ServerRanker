@@ -279,4 +279,8 @@ module.exports = {
       where: { multiplier_id },
     })
   },
+  getAllUsers() {
+    return User.findAll()
+  },
+  User,
 }

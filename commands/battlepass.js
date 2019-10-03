@@ -37,7 +37,7 @@ module.exports = class extends Command {
       return t ? t.name : '(None)'
     }
     const val = tier => `${n(tier)} | ${p(tier)}`
-    const tier = user.bp_tier || Math.min(Math.floor(Math.sqrt(4 + user.exp/2)-1), 100)
+    const tier = user.bp_tier || require('../src/functions/getTier')(user.exp)
     const embed = new Discord.RichEmbed()
       .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + `${user.premium ? ' (BattlePass✔)' : ` (FreePass, do \`${prefix}battlepass buy\` for get battlepass!)`} - ${lang['tier']} ${tier}`)
       .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)) + '\n\nTier Rewards:')
