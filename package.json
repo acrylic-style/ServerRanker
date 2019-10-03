@@ -26,6 +26,6 @@
     "yaml": "^1.2.0"
   },
   "devDependencies": {
-    "eslint": "^5.13.0"
+    "eslint": "^6.5.1"
   }
 }
