@@ -12,12 +12,16 @@
   process.once('dbready', async () => {
     logger.info('first, we\'ll load all users.')
     const users = await data.getAllUsers()
+    logger.info('users: ' + users.length)
+    logger.info('estimated time: ' + ((users.length*700)/1000) + ' seconds (or ' + ((users.length*700)/1000/60) + ' minutes)')
+    let usersLeft = users.length
     await asyncForEach(users, async user => {
-      logger.info('processing user: ' + user.user_id)
+      logger.info('processing user: ' + user.user_id + '     ETA: ' + ((usersLeft*700)/1000) + ' seconds')
       await data.User.update({ exp: await data.calcWeightedExp(user.user_id) }, {
         where: { user_id: user.user_id },
       })
       await data.addUserBattlePassTier(user.user_id, getTier((await data.getUser(user.user_id)).exp))
+      usersLeft--
     })
     logger.info('done. took ' + ((Date.now()-start)/1000) + ' seconds.')
   })
