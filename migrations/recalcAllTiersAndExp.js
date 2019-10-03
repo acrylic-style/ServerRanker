@@ -9,8 +9,8 @@
       await callback(array[index], index, array)
     }
   }
-  logger.info('first, we\'ll load all users.')
   process.once('dbready', async () => {
+    logger.info('first, we\'ll load all users.')
     const users = await data.getAllUsers()
     await asyncForEach(users, async user => {
       logger.info('processing user: ' + user.user_id)
