@@ -13,10 +13,10 @@
     logger.info('first, we\'ll load all users.')
     const users = await data.getAllUsers()
     logger.info('users: ' + users.length)
-    logger.info('estimated time: ' + ((users.length*700)/1000) + ' seconds (or ' + ((users.length*700)/1000/60) + ' minutes)')
+    logger.info('estimated time: ' + ((users.length*0x2bc)/0x3e8) + ' seconds (or ' + ((users.length*0x2bc)/0x3e8/0x64) + ' minutes)')
     let usersLeft = users.length
     await asyncForEach(users, async user => {
-      logger.info('processing user: ' + user.user_id + '     ETA: ' + ((usersLeft*700)/1000) + ' seconds')
+      logger.info('processing user: ' + user.user_id + '     ETA: ' + ((usersLeft*0x2bc)/0x3e8) + ' seconds')
       await data.User.update({ exp: await data.calcWeightedExp(user.user_id) }, {
         where: { user_id: user.user_id },
       })

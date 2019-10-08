@@ -1,6 +1,10 @@
 const { LoggerFactory } = require('logger.js')
 const logger = LoggerFactory.getLogger('main', 'blue')
 const { AtomicReference } = require('bot-framework')
+const { Client } = require('discord.js') // eslint-disable-line
+/**
+ * @type {AtomicReference<Client>}
+ */
 const client = new AtomicReference()
 
 const start = async () => {

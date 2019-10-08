@@ -6,6 +6,7 @@ logger.info('Connecting...')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const config = require('./config.yml')
+logger.info(`Connecting to the database using ${config.database.type}...`)
 const sequelize = new Sequelize.Sequelize(config.database.name, config.database.user, config.database.pass, {
   host: 'localhost',
   dialect: config.database.type,
@@ -14,7 +15,7 @@ const sequelize = new Sequelize.Sequelize(config.database.name, config.database.
 })
 sequelize.authenticate()
   .then(() => {
-    logger.info('Connection has been established successfully.')
+    logger.info(`Connection has been established successfully. (Type: ${sequelize.getDialect()})`)
     process.emit('dbready')
   })
   .catch(err => {
@@ -101,6 +102,7 @@ const Multipliers = sequelize.define('multipliers', {
   },
   multiplier: {
     type: Sequelize.INTEGER,
+    defaultValue: 100,
   },
   expires: {
     type: Sequelize.DATE,
