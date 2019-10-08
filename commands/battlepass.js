@@ -39,7 +39,7 @@ module.exports = class extends Command {
     const val = tier => `${n(tier)} | ${p(tier)}`
     const tier = user.bp_tier || require('../src/functions/getTier')(user.exp)
     const embed = new Discord.RichEmbed()
-      .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + `${user.premium ? ' (BattlePass✔)' : ` (FreePass, do \`${prefix}battlepass buy\` for get battlepass!)`} - ${lang['tier']} ${tier}`)
+      .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + `${user.premium ? ' (PremiumPass)' : ` (FreePass, do \`${prefix}battlepass buy\` for get battlepass!)`} - ${lang['tier']} ${tier}`)
       .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)) + '\n\nTier Rewards:')
       .setColor([0,255,0])
       .addField(`Tier ${tier-5}`, val(tier-5))
@@ -47,12 +47,13 @@ module.exports = class extends Command {
       .addField(`Tier ${tier-3}`, val(tier-3))
       .addField(`Tier ${tier-2}`, val(tier-2))
       .addField(`Tier ${tier-1}`, val(tier-1))
-      .addField(`Tier ${tier}`, val(tier))
+      .addField(`Tier ${tier} (Current)`, val(tier))
       .addField(`Tier ${tier+1}`, val(tier+1))
       .addField(`Tier ${tier+2}`, val(tier+2))
       .addField(`Tier ${tier+3}`, val(tier+3))
       .addField(`Tier ${tier+4}`, val(tier+4))
       .addField(`Tier ${tier+5}`, val(tier+5))
+      .setFooter('Battlepass Tier is calculated from your exp.')
     return await sendDeletable(embed)
   }
 }

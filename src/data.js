@@ -285,5 +285,11 @@ module.exports = {
   getAllUsers() {
     return User.findAll()
   },
+  getAllExps() {
+    return Exps.findAll()
+  },
   User,
+  Server,
+  Multipliers,
+  Exps,
 }
