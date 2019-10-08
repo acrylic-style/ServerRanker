@@ -25,7 +25,7 @@
         logger.info(`${usersLeft} users left.     ETA: ${Math.round(sum/numbers.length)} seconds`)
         numbers = []
       }
-      startf.set(Date.now())
+      await startf.set(Date.now())
       await data.User.update(
         {
           exp: 0,
@@ -34,7 +34,7 @@
           personal_expboost: 0,
           premium: false,
         }, { where: { user_id: user.user_id } })
-      endf.set(Date.now())
+      await endf.set(Date.now())
       numbers.push((usersLeft*((await endf.get())-(await startf.get())))/1000)
       usersLeft--
     })
