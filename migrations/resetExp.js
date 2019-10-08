@@ -23,7 +23,7 @@
         numbers.push((usersLeft*((await endf.get())-(await startf.get())))/1000)
         let sum = 0
         numbers.forEach(v => sum += v)
-        logger.info(`${usersLeft} users left.     ETA: ${sum/numbers.length} seconds`)
+        logger.info(`${usersLeft} users left.     ETA: ${Math.round(sum/numbers.length)} seconds`)
       }
       startf.set(Date.now())
       await data.User.update(
