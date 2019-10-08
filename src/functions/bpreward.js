@@ -1,7 +1,7 @@
 require('./typedefs')
 
 /**
- * @type {{ season1: SingleSeason }}
+ * @type {{ season1: SingleSeason, season2: SingleSeason }}
  */
 const rewards = require('../rewards.yml')
 const { battlepass: config } = require('../config.yml')

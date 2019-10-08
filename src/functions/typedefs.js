@@ -1,5 +1,6 @@
 /**
  * @typedef Tier
+ * @property {string} name
  * @property {"multiplier" | "expboost"} type
  */
 
