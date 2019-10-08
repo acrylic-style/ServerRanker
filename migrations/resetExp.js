@@ -2,6 +2,7 @@
   const start = Date.now()
   const { LoggerFactory } = require('logger.js')
   const logger = LoggerFactory.getLogger('migrations:resetExp', 'green')
+  const { AtomicReference } = require('bot-framework')
   const data = require('../src/data')
   const asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {
@@ -11,11 +12,14 @@
   process.once('dbready', async () => {
     const users = await data.getAllUsers()
     logger.info('users: ' + users.length)
-    logger.info(`wiping all exp data... (estimated time: ${(users.length*80)/1000} seconds)`)
+    logger.info('wiping all exp data...')
     const expStart = Date.now()
     let usersLeft = users.length
+    const startf = new AtomicReference(0)
+    const endf = new AtomicReference(80)
     await asyncForEach(users, async user => {
-      if (!(usersLeft % 50)) logger.info(`${usersLeft} users left.     ETA: ${(usersLeft*80)/1000} seconds`)
+      if (!(usersLeft % 50)) logger.info(`${usersLeft} users left.     ETA: ${(usersLeft*((await endf.get())-(await startf.get())))/1000} seconds`)
+      startf.set(Date.now())
       await data.User.update(
         {
           exp: 0,
@@ -24,6 +28,7 @@
           personal_expboost: 0,
           premium: false,
         }, { where: { user_id: user.user_id } })
+      endf.set(Date.now())
       usersLeft--
     })
     const expEnd = Date.now()
