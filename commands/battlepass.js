@@ -1,5 +1,6 @@
 const ServerRanker = require('../src/server-ranker')
-const { config, commons: { f }, Discord, Command } = ServerRanker
+const { config, commons: { f }, Discord, Command, Logger } = ServerRanker
+const logger = Logger.getLogger('commands:battlepass', 'lightpurple')
 const moment = require('moment')
 const data = require('../src/data')
 const rewards = require('../src/rewards.yml')
@@ -8,6 +9,7 @@ module.exports = class extends Command {
   constructor() {
     super('battlepass')
     this.confirms = {}
+    this.requiredPoints = 1000000
   }
 
   async run(msg, lang, args, sendDeletable, prefix) {
@@ -17,15 +19,28 @@ module.exports = class extends Command {
       setTimeout(() => {
         delete this.confirms[msg.author.id]
       }, 10000)
-      if (user.point <= 1000000) return msg.channel.send(f(lang.not_enough_points, 1000000))
+      if (user.point <= this.requiredPoints) return msg.channel.send(f(lang.not_enough_points, this.requiredPoints))
       this.confirms[msg.author.id] = async () => {
         await data.setPremiumState(msg.author.id, true)
       }
-      return await msg.channel.send(f(`${lang.user_points}\n${lang.areyousure}`, user.point, user.point - 1000000))
+      return await msg.channel.send(f(`${lang.user_points}\n${lang.areyousure}`, user.point, user.point - this.requiredPoints))
     } else if (args[1] === 'confirm') {
       if (!this.confirms[msg.author.id]) return msg.channel.send(lang.no_confirm)
-      await this.confirms[msg.author.id]()
-      delete this.confirms[msg.author.id]
+      await data.setUserPoint(msg.author.id, (await data.getUser(msg.author.id)).point - this.requiredPoints)
+      try { // eslint-disable-line no-restricted-syntax
+        await this.confirms[msg.author.id]()
+      } catch (e) {
+        logger.error(`Error while purchasing battlepass for ${msg.author.id} (Tried to buy battlepass): ${e.stack || e}`)
+        try { // eslint-disable-line no-restricted-syntax
+          await data.setUserPoint(msg.author.id, (await data.getUser(msg.author.id)).point + this.requiredPoints)
+          return await msg.channel.send('There was an error while purchasing BattlePass! Points has been refunded.')
+        } catch (e) {
+          logger.error(`Another error while purchasing battlepass for ${msg.author.id} (Tried to refund points): ${e.stack || e}`)
+          return await msg.channel.send('There was an another error while refunding points!\nPlease report it for developers. (You can show them by running `sr!version`)')
+        }
+      } finally {
+        delete this.confirms[msg.author.id]
+      }
       return await msg.channel.send(lang.bought_battlepass)
     }
     const n = tier => {
@@ -40,7 +55,7 @@ module.exports = class extends Command {
     const tier = user.bp_tier || require('../src/functions/getTier')(user.exp)
     const embed = new Discord.RichEmbed()
       .setTitle(f(lang['battlepass'], config.battlepass.currentSeason) + `${user.premium ? ' (PremiumPass)' : ` (FreePass, do \`${prefix}battlepass buy\` for get battlepass!)`} - ${lang['tier']} ${tier}`)
-      .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)) + '\n\nTier Rewards:')
+      .setDescription(f(lang['seasonEndsAt'], moment(config.battlepass.seasonEndsAt).locale(user.language).fromNow(true)) + '\n\nTier Rewards: ( Normal Rewards | Premium Rewards )')
       .setColor([0,255,0])
       .addField(`Tier ${tier-5}`, val(tier-5))
       .addField(`Tier ${tier-4}`, val(tier-4))

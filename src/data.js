@@ -157,9 +157,8 @@ module.exports = {
       where: { user_id },
     })
   },
-  async addUserBattlePassTier(user_id, tier) {
-    const user = await this.getUser(user_id)
-    if (user.bp_tier === 100) return false
+  async setUserBattlePassTier(user_id, tier) {
+    if (tier === 100) return false
     return await User.update({ bp_tier: tier }, { where: { user_id } })
   },
   async addUserexp(user_id, exp) {
@@ -168,9 +167,11 @@ module.exports = {
       by: exp,
       where: { user_id },
     })
-    return await User.update({ exp: await this.calcWeightedExp(user_id) }, {
+    await User.update({ exp: await this.calcWeightedExp(user_id) }, {
       where: { user_id },
     })
+    await this.setUserBattlePassTier(user_id, this.getTier((await this.getUser(user_id)).exp))
+    return await this.getUser(user_id)
   },
   async calcWeightedExp(user_id) {
     const allExps = await Exps.findAll({
@@ -292,4 +293,5 @@ module.exports = {
   Server,
   Multipliers,
   Exps,
+  getTier: require('./functions/getTier'),
 }
