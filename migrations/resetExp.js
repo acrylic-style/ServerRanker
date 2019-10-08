@@ -3,18 +3,29 @@
   const { LoggerFactory } = require('logger.js')
   const logger = LoggerFactory.getLogger('migrations:resetExp', 'green')
   const data = require('../src/data')
+  const asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array)
+    }
+  }
   process.once('dbready', async () => {
-    logger.info('users: ' + (await data.getAllUsers()).length)
+    const users = await data.getAllUsers()
+    logger.info('users: ' + users.length)
     logger.info('wiping all exp data... (estimated time: unknown)')
     const expStart = Date.now()
-    await data.User.update(
-      {
-        exp: 0,
-        rawexp: 0,
-        bp_tier: 1,
-        personal_expboost: 0,
-        premium: false,
-      })
+    let usersLeft = users.length
+    await asyncForEach(users, async user => {
+      if (!(usersLeft % 50)) logger.info(`${usersLeft} users left.     ETA: ${(usersLeft*500)/1000} seconds`)
+      await data.User.update(
+        {
+          exp: 0,
+          rawexp: 0,
+          bp_tier: 1,
+          personal_expboost: 0,
+          premium: false,
+        }, { where: { user_id: user.user_id } })
+      usersLeft--
+    })
     const expEnd = Date.now()
     logger.info('dropping all exp entries... (estimated time: unknown)')
     const dropStart = Date.now()
