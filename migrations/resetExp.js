@@ -11,11 +11,11 @@
   process.once('dbready', async () => {
     const users = await data.getAllUsers()
     logger.info('users: ' + users.length)
-    logger.info('wiping all exp data... (estimated time: unknown)')
+    logger.info(`wiping all exp data... (estimated time: ${(users.length*80)/1000} seconds)`)
     const expStart = Date.now()
     let usersLeft = users.length
     await asyncForEach(users, async user => {
-      if (!(usersLeft % 50)) logger.info(`${usersLeft} users left.     ETA: ${(usersLeft*500)/1000} seconds`)
+      if (!(usersLeft % 50)) logger.info(`${usersLeft} users left.     ETA: ${(usersLeft*80)/1000} seconds`)
       await data.User.update(
         {
           exp: 0,
