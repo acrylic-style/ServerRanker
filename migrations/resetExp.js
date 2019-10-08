@@ -17,12 +17,13 @@
     let usersLeft = users.length
     const startf = new AtomicReference(0)
     const endf = new AtomicReference(80)
-    const numbers = []
+    let numbers = []
     await asyncForEach(users, async user => {
       if (!(usersLeft % 50)) {
         let sum = 0
         numbers.forEach(v => sum += v)
         logger.info(`${usersLeft} users left.     ETA: ${Math.round(sum/numbers.length)} seconds`)
+        numbers = []
       }
       startf.set(Date.now())
       await data.User.update(
