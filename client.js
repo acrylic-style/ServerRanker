@@ -36,9 +36,11 @@ client.on('ready', async () => {
     ServerRanker.commons.temp.commands = 0
   }, moment().endOf('day').toDate().getTime() - Date.now())
   logger.info(`ServerRanker is ready! (${client.readyAt.getTime()-initTime}ms)`)
-  setTimeout(() => {
-    logger.info(`Season ${config.battlepass.currentSeason} has ended!`)
-  }, config.battlepass.seasonEndsAt-Date.now())
+  setInterval(() => { // DO NOT USE setTimeout it causes TimeoutOverflowWarning
+    if (Date.now() > config.battlepass.seasonEndsAt) {
+      logger.info(`Season ${config.battlepass.currentSeason} has ended!`)
+    }
+  }, 1000 * 60)
   if (Date.now() > config.battlepass.seasonEndsAt) logger.warn(`Season ${config.battlepass.currentSeason} is ALREADY ended.`)
 })
 
