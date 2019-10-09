@@ -157,9 +157,9 @@ module.exports = {
       where: { user_id },
     })
   },
-  async setUserBattlePassTier(user_id, tier) {
-    if (tier === 100) return false
-    return await User.update({ bp_tier: tier }, { where: { user_id } })
+  async setUserBattlePassTier(user_id, bp_tier) {
+    if (bp_tier > 100) return await User.update({ bp_tier: 100 }, { where: { user_id } })
+    return await User.update({ bp_tier }, { where: { user_id } })
   },
   async addUserexp(user_id, exp) {
     await Exps.create({ user_id, exp })
@@ -181,6 +181,7 @@ module.exports = {
       limit: 100,
     })
     if (allExps.length <= 0) return 0
+    User.update({ rawexp: allExps.reduce(({exp: a}, {exp: b}) => a + b) }, { where: { user_id } })
     return allExps.map((model, i) => model.exp * (100 - i) / 100).reduce((a , b) => a + b)
   },
   setServerPoint(user_id, point) {
