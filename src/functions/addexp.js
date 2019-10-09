@@ -4,7 +4,7 @@ const giveReward = require('./giveReward')
 
 module.exports = async msg => {
   if (!msg.guild) return
-  const tier = data.getTier((await this.getUser(msg.author.id)).exp)
+  const tier = data.getTier((await data.getUser(msg.author.id)).exp)
   const oldTier = (await data.getUser(msg.author.id)).bp_tier
   const rewardsa = []
   for (let i = oldTier; i < tier; i++) {
