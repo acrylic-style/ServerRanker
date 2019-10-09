@@ -6,11 +6,21 @@
   process.once('dbready', async () => {
     const expStart = Date.now()
     logger.info('removing personal_expboost column...')
-    await data.query('alter table users drop column personal_expboost;')
+    try { // eslint-disable-line no-restricted-syntax
+      await data.query('alter table users drop column personal_expboost;')
+    } catch (e) {
+      logger.error('personal_expboost column does not exist. did they already removed?')
+      logger.error(e.stack || e)
+    }
     const expEnd = Date.now()
     const pointStart = Date.now()
     logger.info('adding personal_pointboost column...')
-    await data.query('alter table users add column personal_pointboost;')
+    try { // eslint-disable-line no-restricted-syntax
+      await data.query('alter table users add column personal_pointboost;')
+    } catch (e) {
+      logger.error('couldn\'t create column!')
+      logger.error(e.stack || e)
+    }
     const pointEnd = Date.now()
     logger.info('all done, times:')
       .info(`remove personal_expboost: ${(expEnd-expStart)/1000} seconds`)
