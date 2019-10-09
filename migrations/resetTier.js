@@ -24,7 +24,7 @@
         numbers = []
       }
       await startf.set(Date.now())
-      await data.User.update({ bp_tier: 1 }, { where: { user_id: user.user_id } })
+      await data.User.update({ bp_tier: 1, personal_expboost: 0 }, { where: { user_id: user.user_id } })
       numbers.push((usersLeft*(Date.now()-(await startf.get())))/1000)
       usersLeft--
     })
