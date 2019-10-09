@@ -16,7 +16,7 @@
     const pointStart = Date.now()
     logger.info('adding personal_pointboost column...')
     try { // eslint-disable-line no-restricted-syntax
-      await data.query('alter table users add column personal_pointboost;')
+      await data.query('alter table users add column personal_pointboost int(255) default 0;')
     } catch (e) {
       logger.error('couldn\'t create column!')
       logger.error(e.stack || e)
