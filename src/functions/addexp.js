@@ -22,5 +22,5 @@ module.exports = async msg => {
       rewardsa.push(tierRewards.premium[`tier${index}`].name)
     }
   }
-  if (oldTier < tier) await msg.channel.send(msg.author.tag + ', You\'ve unlocked following rewards:\n' + rewardsa.join('\n')).catch(() => {})
+  if (oldTier < tier) await msg.channel.send(msg.author.username + ', You\'ve unlocked following rewards:\n' + rewardsa.join('\n')).catch(() => {})
 }
