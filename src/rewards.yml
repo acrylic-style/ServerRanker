@@ -1,88 +1,90 @@
 season1:
   normal:
     tier1:
-      name: "+0.5% Point Boost"
+      name: "+0.5% Personal Point Boost"
       type: pointboost
-      boost: 0.5
+      data: 0.5
   premium:
     tier10:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10 # +10% personal point boost
+      data: 10 # +10% personal point boost
     tier30:
       name: "2x Point Multiplier"
       type: multiplier
-      multiplier: 2 # 2x multiplier
+      data: 2 # 2x multiplier
     tier40:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
 season2:
-  normal:
-    tier1:
-      name: "+1% Point Boost"
+  normal: # do not make tier 1 rewards
+    tier2:
+      name: "+1% Personal Point Boost"
       type: pointboost
-      boost: 1
+      data: 1
     tier5:
-      name: "+1% Point Boost"
+      name: "+1% Personal Point Boost"
       type: pointboost
-      boost: 1
+      data: 1
     tier10:
-      name: "+5% Point Boost"
+      name: "+5% Personal Point Boost"
+      type: pointboost
+      data: 5
   premium:
-    tier1:
-      name: "+100% Point Boost"
+    tier2:
+      name: "+100% Personal Point Boost"
       type: pointboost
-      boost: 100
+      data: 100
     tier5:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier10:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier20:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 5
+      data: 5
     tier25:
-      name: "+1 2x Point Multiplier"
+      name: "+1 2x Personal Point Multiplier"
       type: multiplier
-      multiplier: 2
+      data: 2
     tier30:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier40:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier50:
-      name: "+1 3x Point Multiplier"
+      name: "+1 3x Personal Point Multiplier"
       type: multiplier
-      multiplier: 3
+      data: 3
     tier60:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier70:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier75:
-      name: "+1 4x Point Multiplier"
+      name: "+1 4x Personal Point Multiplier"
       type: multiplier
-      multiplier: 4
+      data: 4
     tier80:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier90:
-      name: "+10% Point Boost"
+      name: "+10% Personal Point Boost"
       type: pointboost
-      boost: 10
+      data: 10
     tier100:
-      name: "+1 10x Point Multiplier"
+      name: "+1 10x Personal Point Multiplier"
       type: multiplier
-      multiplier: 10
+      data: 10

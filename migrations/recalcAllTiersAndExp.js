@@ -11,7 +11,7 @@
   }
   process.once('dbready', async () => {
     logger.info('first, we\'ll load all users.')
-    const users = await data.getAllUsers()
+    const users = await data.getUsers()
     logger.info('users: ' + users.length)
     logger.info('estimated time: ' + ((users.length*0x2bc)/0x3e8) + ' seconds (or ' + ((users.length*0x2bc)/0x3e8/0x64) + ' minutes)')
     let usersLeft = users.length

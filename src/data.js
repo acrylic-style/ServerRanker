@@ -269,6 +269,10 @@ module.exports = {
       },
     })
   },
+  async activatedMultipliers(server_id) {
+    const multipliers = await Multipliers.findAll({ where: { server_id, expires: { [Op.not]: null, [Op.gte]: Date.now() } } })
+    return multipliers.reduce(({multiplier: a}, {multiplier: b}) => a + b)/100
+  },
   addMultiplier(user_id, multiplier) {
     return Multipliers.create({ user_id, multiplier })
   },
@@ -279,8 +283,8 @@ module.exports = {
       where: { multiplier_id },
     })
   },
-  getAllUsers() {
-    return User.findAll()
+  getUsers(options) {
+    return User.findAll(options)
   },
   getAllExps() {
     return Exps.findAll()
@@ -291,9 +295,16 @@ module.exports = {
   disconnect() {
     return sequelize.close()
   },
+  async isPremium(user_id) {
+    return (await this.getUser(user_id)).premium
+  },
+  updateUser(user_id, key, value) {
+    return User.update({ [key]: value }, { where: { user_id } })
+  },
   User,
   Server,
   Multipliers,
   Exps,
+  Op,
   getTier: require('./functions/getTier'),
 }

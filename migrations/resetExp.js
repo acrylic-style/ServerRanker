@@ -10,7 +10,7 @@
     }
   }
   process.once('dbready', async () => {
-    const users = await data.getAllUsers()
+    const users = await data.getUsers()
     logger.info('users: ' + users.length)
     logger.info('wiping all exp data...')
     const expStart = Date.now()
