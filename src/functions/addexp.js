@@ -22,5 +22,5 @@ module.exports = async msg => {
       rewardsa.push(tierRewards.premium[`tier${index}`].name)
     }
   }
-  //if (oldTier < tier) await msg.channel.send(msg.author.username + ', You\'ve unlocked following rewards:\n' + rewardsa.join('\n')).catch(() => {})
+  if ((await data.getUser(msg.author.id)).configRewardsNotifications && oldTier < tier) await msg.reply('You\'ve unlocked following rewards:\n' + rewardsa.join('\n')).catch(() => {})
 }

@@ -83,6 +83,10 @@ const User = sequelize.define('users', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
+  configRewardsNotifications: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
 })
 const Multipliers = sequelize.define('multipliers', {
   multiplier_id: {

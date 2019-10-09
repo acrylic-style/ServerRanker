@@ -31,6 +31,7 @@ module.exports = class extends Command {
     const embed = new Discord.RichEmbed()
       .setTitle('List of commands')
       .addField('points', lang['commands']['points'])
+      .addField('multiplier', lang['commands']['multiplier'])
       .addField('leaderboard', lang['commands']['leaderboard'])
       .addField('leaderboard server', lang['commands']['leaderboard_server'])
       .addField('ping', lang['commands']['ping'])
@@ -38,7 +39,7 @@ module.exports = class extends Command {
       .addField('commands', lang['commands']['commands'])
       .addField('recalc', lang['commands']['recalc'])
       .addField('version', lang['commands']['version'])
-      .addField('Note!', `\`${config.prefix}help [Command]\` for more help!`)
+      .addField('Note!', `\`${config.prefix}help [Command]\` for more help! (please view that help before asking for help)`)
       .setColor([0,255,0])
     sendDeletable(embed)
   }

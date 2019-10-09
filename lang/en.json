@@ -7,7 +7,8 @@
     "ping": "Check latency.",
     "help": "Just shows help / commands.",
     "recalc": "Recalculuate all points. May not apply multiplier(s), and calculated all points will be reduced to 0.95x. (As testing command, only can bot owners use this.)",
-    "version": "Shows bot version, commit hash, and more information."
+    "version": "Shows bot version, commit hash, and more information.",
+    "multiplier": "Buy and activate multiplier for increase rate of getting points for everyone in server!"
   },
   "error_occurred": "An error occurred in `{0}`, Oh no!",
   "disabled_command": "This({0}) command is disabled.",
