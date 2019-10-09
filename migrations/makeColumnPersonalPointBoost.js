@@ -6,11 +6,11 @@
   process.once('dbready', async () => {
     const expStart = Date.now()
     logger.info('removing personal_expboost column...')
-    data.query('alter table users drop column personal_expboost')
+    await data.query('alter table users drop column personal_expboost;')
     const expEnd = Date.now()
     const pointStart = Date.now()
     logger.info('adding personal_pointboost column...')
-    data.query('alter table users add column personal_pointboost')
+    await data.query('alter table users add column personal_pointboost;')
     const pointEnd = Date.now()
     logger.info('all done, times:')
       .info(`remove personal_expboost: ${(expEnd-expStart)/1000} seconds`)
