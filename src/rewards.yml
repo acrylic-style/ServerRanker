@@ -49,7 +49,7 @@ season2:
       type: pointboost
       data: 10
     tier25:
-      name: "+1 2x Personal Point Multiplier"
+      name: "+1 2x Point Multiplier"
       type: multiplier
       data: 2
     tier30:
@@ -61,7 +61,7 @@ season2:
       type: pointboost
       data: 10
     tier50:
-      name: "+1 3x Personal Point Multiplier"
+      name: "+1 3x Point Multiplier"
       type: multiplier
       data: 3
     tier60:
@@ -73,7 +73,7 @@ season2:
       type: pointboost
       data: 10
     tier75:
-      name: "+1 4x Personal Point Multiplier"
+      name: "+1 4x Point Multiplier"
       type: multiplier
       data: 4
     tier80:
@@ -85,6 +85,6 @@ season2:
       type: pointboost
       data: 10
     tier100:
-      name: "+1 10x Personal Point Multiplier"
+      name: "+1 10x Point Multiplier"
       type: multiplier
       data: 10
