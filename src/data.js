@@ -50,8 +50,6 @@ const User = sequelize.define('users', {
   },
   language: {
     type: Sequelize.STRING,
-    defaultValue: null,
-    allowNull: true,
   },
   banned: {
     type: Sequelize.BOOLEAN,
@@ -77,7 +75,7 @@ const User = sequelize.define('users', {
     type: Sequelize.INTEGER,
     defaultValue: 1, // tier 0 is impossible
   },
-  personal_expboost: {
+  personal_pointboost: {
     type: Sequelize.INTEGER,
     defaultValue: 0, // +n% personal exp boost, you can get from battle pass rewards
   },
@@ -94,7 +92,6 @@ const Multipliers = sequelize.define('multipliers', {
   },
   server_id: {
     type: Sequelize.STRING,
-    allowNull: true,
   },
   user_id: {
     type: Sequelize.STRING,
@@ -105,7 +102,6 @@ const Multipliers = sequelize.define('multipliers', {
   },
   expires: {
     type: Sequelize.DATE,
-    allowNull: true,
   },
 })
 const Exps = sequelize.define('exps', {
@@ -288,6 +284,9 @@ module.exports = {
   },
   getAllExps() {
     return Exps.findAll()
+  },
+  query(sql) {
+    return sequelize.query(sql)
   },
   User,
   Server,

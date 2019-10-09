@@ -1,86 +1,86 @@
 season1:
   normal:
     tier1:
-      name: "+0.5% Exp Boost"
-      type: expboost
+      name: "+0.5% Point Boost"
+      type: pointboost
       boost: 0.5
   premium:
     tier10:
-      name: "+10% Exp Boost"
-      type: expboost
-      boost: 10 # +10% personal exp boost
+      name: "+10% Point Boost"
+      type: pointboost
+      boost: 10 # +10% personal point boost
     tier30:
       name: "2x Point Multiplier"
       type: multiplier
       multiplier: 2 # 2x multiplier
     tier40:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
 season2:
   normal:
     tier1:
-      name: "+1% Exp Boost"
-      type: expboost
+      name: "+1% Point Boost"
+      type: pointboost
       boost: 1
     tier5:
-      name: "+1% Exp Boost"
-      type: expboost
+      name: "+1% Point Boost"
+      type: pointboost
       boost: 1
     tier10:
-      name: "+5% Exp Boost"
+      name: "+5% Point Boost"
   premium:
     tier1:
-      name: "+100% Exp Boost"
-      type: expboost
+      name: "+100% Point Boost"
+      type: pointboost
       boost: 100
     tier5:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier10:
-      name: "+10% Exp Boost"
-      type: expboost
-      boost: 10 # +10% personal exp boost
+      name: "+10% Point Boost"
+      type: pointboost
+      boost: 10
     tier20:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 5
     tier25:
       name: "+1 2x Point Multiplier"
       type: multiplier
       multiplier: 2
     tier30:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier40:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier50:
       name: "+1 3x Point Multiplier"
       type: multiplier
       multiplier: 3
     tier60:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier70:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier75:
       name: "+1 4x Point Multiplier"
       type: multiplier
       multiplier: 4
     tier80:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier90:
-      name: "+10% Exp Boost"
-      type: expboost
+      name: "+10% Point Boost"
+      type: pointboost
       boost: 10
     tier100:
       name: "+1 10x Point Multiplier"
