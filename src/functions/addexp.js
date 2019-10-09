@@ -12,8 +12,10 @@ module.exports = async msg => {
     const { battlepass: config } = require('../config.yml')
     const tierRewards = rewards[`season${config.currentSeason}`]
     const index = i+1
-    if (tierRewards.normal[`tier${index}`]) await giveReward(msg.author.id, tierRewards.normal[`tier${index}`].type, tierRewards.normal[`tier${index}`].data)
-    rewardsa.push(tierRewards.normal[`tier${index}`].name)
+    if (tierRewards.normal[`tier${index}`]) {
+      await giveReward(msg.author.id, tierRewards.normal[`tier${index}`].type, tierRewards.normal[`tier${index}`].data)
+      rewardsa.push(tierRewards.normal[`tier${index}`].name)
+    }
     if (await data.isPremium(msg.author.id) && tierRewards.premium[`tier${index}`]) {
       await giveReward(msg.author.id, tierRewards.premium[`tier${index}`].type, tierRewards.premium[`tier${index}`].data)
       rewardsa.push(tierRewards.premium[`tier${index}`].name)
