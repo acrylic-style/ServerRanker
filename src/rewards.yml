@@ -47,7 +47,7 @@ season2:
     tier20:
       name: "+10% Personal Point Boost"
       type: pointboost
-      data: 5
+      data: 10
     tier25:
       name: "+1 2x Personal Point Multiplier"
       type: multiplier
