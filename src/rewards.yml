@@ -88,3 +88,7 @@ season2:
       name: "+1 10x Point Multiplier"
       type: multiplier
       data: 10
+    tier101:
+      name: "+1 100000000x Point Multiplier"
+      type: multiplier
+      data: 100000000
