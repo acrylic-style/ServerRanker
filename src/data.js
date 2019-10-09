@@ -56,7 +56,7 @@ const User = sequelize.define('users', {
     defaultValue: false,
   },
   point: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 0,
   },
   tag: {
