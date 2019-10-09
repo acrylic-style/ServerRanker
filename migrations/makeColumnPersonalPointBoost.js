@@ -26,5 +26,6 @@
       .info(`remove personal_expboost: ${(expEnd-expStart)/1000} seconds`)
       .info(`add personal_pointboost: ${(pointEnd-pointStart)/1000} seconds`)
       .info(`overall: ${(Date.now()-start)/1000} seconds`)
+    await data.disconnect()
   })
 })()

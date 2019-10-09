@@ -288,6 +288,9 @@ module.exports = {
   query(sql) {
     return sequelize.query(sql)
   },
+  disconnect() {
+    return sequelize.close()
+  },
   User,
   Server,
   Multipliers,
