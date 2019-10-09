@@ -28,6 +28,6 @@
       numbers.push((usersLeft*(Date.now()-(await startf.get())))/1000)
       usersLeft--
     })
-    logger.info(`done, took ${Date.now()-start} seconds`)
+    logger.info(`done, took ${(Date.now()-start)/1000} seconds`)
   })
 })()
