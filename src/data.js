@@ -181,7 +181,7 @@ module.exports = {
       limit: 100,
     })
     if (allExps.length <= 0) return 0
-    User.update({ rawexp: allExps.reduce(({exp: a}, {exp: b}) => a + b) }, { where: { user_id } })
+    // User.update({ rawexp: allExps.reduce(({exp: a}, {exp: b}) => a + b) }, { where: { user_id } })
     return allExps.map((model, i) => model.exp * (100 - i) / 100).reduce((a , b) => a + b)
   },
   setServerPoint(user_id, point) {
