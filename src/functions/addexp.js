@@ -4,8 +4,9 @@ const giveReward = require('./giveReward')
 
 module.exports = async msg => {
   if (!msg.guild) return
-  const tier = data.getTier((await data.getUser(msg.author.id)).exp)
   const oldTier = (await data.getUser(msg.author.id)).bp_tier
+  await data.addUserexp(msg.author.id, generate(msg))
+  const tier = data.getTier((await data.getUser(msg.author.id)).exp)
   const rewardsa = []
   for (let i = oldTier; i < tier; i++) {
     const rewards = require('../rewards')
@@ -21,6 +22,5 @@ module.exports = async msg => {
       rewardsa.push(tierRewards.premium[`tier${index}`].name)
     }
   }
-  if (oldTier < tier) msg.reply('You\'ve unlocked following rewards:\n' + rewardsa.join('\n'))
-  await data.addUserexp(msg.author.id, generate(msg))
+  if (oldTier < tier) await msg.reply('You\'ve unlocked following rewards:\n' + rewardsa.join('\n')).catch(() => {})
 }
