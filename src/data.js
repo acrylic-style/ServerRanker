@@ -39,7 +39,7 @@ const Server = sequelize.define('servers', {
     defaultValue: false,
   },
   point: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 0,
   },
 })
@@ -64,11 +64,11 @@ const User = sequelize.define('users', {
     defaultValue: 'Unknown User#0000',
   },
   rawexp: { // unweighted exp
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 0,
   },
   exp: { // weighted exp
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 0,
   },
   bp_tier: { // battle pass tier
@@ -76,7 +76,7 @@ const User = sequelize.define('users', {
     defaultValue: 1, // tier 0 is impossible
   },
   personal_pointboost: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 0, // +n% personal exp boost, you can get from battle pass rewards
   },
   premium: { // BattlePass Premium State
@@ -101,7 +101,7 @@ const Multipliers = sequelize.define('multipliers', {
     type: Sequelize.STRING,
   },
   multiplier: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     defaultValue: 100,
   },
   expires: {
