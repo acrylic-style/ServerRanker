@@ -302,8 +302,8 @@ module.exports = {
   updateUser(user_id, key, value) {
     return User.update({ [key]: value }, { where: { user_id } })
   },
-  getPersonalPointBoost(user_id) {
-    return this.getUser(user_id).personal_pointboost
+  async getPersonalPointBoost(user_id) {
+    return (await this.getUser(user_id)).personal_pointboost
   },
   User,
   Server,
