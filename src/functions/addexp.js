@@ -8,9 +8,9 @@ module.exports = async msg => {
   const oldTier = (await data.getUser(msg.author.id)).bp_tier
   const rewardsa = []
   for (let i = oldTier; i < tier; i++) {
-    const rewards = require('../rewards.yml')
+    const rewards = require('../rewards')
     const { battlepass: config } = require('../config.yml')
-    const tierRewards = rewards[`season${config.season}`]
+    const tierRewards = rewards[`season${config.currentSeason}`]
     const index = i+1
     if (tierRewards.normal[`tier${index}`]) await giveReward(msg.author.id, tierRewards.normal[`tier${index}`].type, tierRewards.normal[`tier${index}`].data)
     rewardsa.push(tierRewards.normal[`tier${index}`].name)
