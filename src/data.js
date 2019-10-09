@@ -279,7 +279,7 @@ module.exports = {
     if (multipliers.length <= 0) return 0
     let multiplier = 0
     multipliers.forEach(({multiplier: m}) => multiplier += m)
-    return multiplier
+    return multiplier/100
   },
   addMultiplier(user_id, multiplier) {
     return Multipliers.create({ user_id, multiplier })
