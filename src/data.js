@@ -277,7 +277,9 @@ module.exports = {
   async activatedMultipliers(server_id) {
     const multipliers = await Multipliers.findAll({ where: { server_id, expires: { [Op.not]: null, [Op.gte]: Date.now() } } })
     if (multipliers.length <= 0) return 0
-    return multipliers.reduce(({multiplier: a}, {multiplier: b}) => a + b)/100
+    let multiplier = 0
+    multipliers.forEach(({multiplier: m}) => multiplier += m)
+    return multiplier
   },
   addMultiplier(user_id, multiplier) {
     return Multipliers.create({ user_id, multiplier })
