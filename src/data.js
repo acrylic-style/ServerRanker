@@ -7,7 +7,7 @@ const Op = Sequelize.Op
 const config = require('./config.yml')
 logger.info(`Connecting to the database using ${config.database.type}...`)
 const sequelize = new Sequelize.Sequelize(config.database.name, config.database.user, config.database.pass, {
-  host: 'localhost',
+  host: config.database.host,
   dialect: config.database.type,
   storage: `${__dirname}/../data/database.sqlite`,
   logging: false,

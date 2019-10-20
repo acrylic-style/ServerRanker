@@ -5,7 +5,8 @@ owners:
   - "User ID"
 database:
   type: sqlite # sqlite, mysql
-  name:
+  host:
+  name: serverranker
   user:
   pass:
 battlepass:
