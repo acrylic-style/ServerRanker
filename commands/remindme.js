@@ -9,11 +9,12 @@ module.exports = class extends Command {
   }
 
   async run(msg, lang, args, sendDeletable) {
-    if (!args[1]) return msg.channel.send(lang.invalid_args)
+    if (!args[1]) return await sendDeletable(lang.invalid_args)
     const number = Number.parseInt(args[1])
-    if (isNaN(number)) return await msg.channel.send('Please specify valid number.')
+    if (isNaN(number)) return await sendDeletable('Please specify valid number.')
     setTimeout(() => {
-      sendDeletable(`${msg.author}, ${args.slice(2)}`)
+      msg.channel.send(`${msg.author}, ${args.slice(2)}`)
     }, number*60*1000)
+    sendDeletable(`Ok, I'll remind you in ${number} minutes.`)
   }
 }
