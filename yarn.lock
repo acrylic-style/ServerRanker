@@ -172,8 +172,8 @@ bluebird@^3.5.0:
   integrity sha512-5am6HnnfN+urzt4yfg7IgTbotDjIT/u8AJpEt0sIU9FtXfVeezXAPKswrG+xKUCOYAINpSdgZVDU6QFh+cuH3w==
 
 bot-framework@acrylic-style/bot-framework:
-  version "1.0.0"
-  resolved "https://codeload.github.com/acrylic-style/bot-framework/tar.gz/53128788abb68872dbec93d05bf508b8f168216f"
+  version "1.0.1"
+  resolved "https://codeload.github.com/acrylic-style/bot-framework/tar.gz/b9b49c1e231cf1036badc8eb9de3233b2d1c24de"
   dependencies:
     discord.js "^11.4.2"
     emojilib "^2.4.0"
