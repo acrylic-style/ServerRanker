@@ -18,7 +18,7 @@
     "moment": "^2.23.0",
     "mysql2": "^1.6.4",
     "object-assign-deep": "^0.4.0",
-    "sequelize": "5.3.2",
+    "sequelize": "5.15.1",
     "simple-git": "^1.110.0",
     "sqlite3": "^4.0.8",
     "string-format": "^2.0.0",
